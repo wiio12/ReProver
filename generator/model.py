@@ -8,7 +8,7 @@ import pytorch_lightning as pl
 from torchmetrics import Metric
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional, Tuple
-from transformers import T5ForConditionalGeneration, AutoTokenizer
+from transformers import T5ForConditionalGeneration, AutoTokenizer, AutoModelForCausalLM
 
 from common import (
     zip_strict,
@@ -73,6 +73,95 @@ class TacticGenerator(ABC):
     ) -> List[List[Tuple[str, float]]]:
         raise NotImplementedError
 
+class LLamaTacticGenerator(TacticGenerator):
+    def __init__(
+        self,
+        model_name_or_path,
+        num_beams: int,
+        max_inp_seq_len: int = 2300,
+        max_oup_seq_len: int = 512,
+        length_penalty: float = 0.0,
+        device: str = "cpu",
+    ):
+        self.model_name_or_path = model_name_or_path
+        self.num_beams = num_beams
+        self.max_inp_seq_len = max_inp_seq_len
+        self.max_oup_seq_len = max_oup_seq_len
+        self.length_penalty = length_penalty
+        self.device = device
+
+        # we haven't train retrieval augmented generator yet
+        self.retriever = None
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
+        self.generator = AutoModelForCausalLM.from_pretrained(model_name_or_path).to(self.device)
+    
+    def generate(
+        self,
+        state: str,
+        file_path: str,
+        theorem_full_name: str,
+        theorem_pos: Pos,
+        num_samples: int,
+        
+    ) -> List[Tuple[str, float]]:
+        return self.batch_generate(
+            [state], [file_path], [theorem_full_name], [theorem_pos], num_samples
+        )[0]
+
+    def batch_generate(
+        self,
+        state: List[str],
+        num_samples: int,
+    ) -> List[List[Tuple[str, float]]]:
+        if self.retriever is not None:
+            raise NotImplementedError
+
+        prompt = f"GOAL {state} PROOFSTEP"
+        logger.debug(prompt)
+        tokenized_state = self.tokenizer(
+            prompt,
+            padding="longest",
+            max_length=self.max_inp_seq_len,
+            truncation=True,
+            return_tensors="pt",
+        )
+        state_ids = tokenized_state.input_ids.to(self.device)
+        state_mask = tokenized_state.attention_mask.to(self.device)
+
+        # Generate tactic candidates using beam search.
+        output = self.generator.generate(
+            input_ids=state_ids,
+            attention_mask=state_mask,
+            max_length=self.max_oup_seq_len,
+            num_beams=num_samples,
+            length_penalty=self.length_penalty,
+            do_sample=False,
+            num_return_sequences=num_samples,
+            early_stopping=False,
+            output_scores=True,
+            return_dict_in_generate=True,
+        )
+
+        # Return the output.
+        raw_output_text = self.tokenizer.batch_decode(
+            output.sequences, skip_special_tokens=True
+        )
+        raw_scores = output.sequences_scores.tolist()
+        tactics_with_scores = []
+
+        for i in range(len(state)):
+            output_text = []
+            output_score = []
+
+            for j in range(i * num_samples, (i + 1) * num_samples):
+                t = remove_marks(raw_output_text[j])
+                if t not in output_text:
+                    output_text.append(t)
+                    output_score.append(raw_scores[j])
+
+            tactics_with_scores.append(list(zip_strict(output_text, output_score)))
+
+        return tactics_with_scores
 
 class RetrievalAugmentedGenerator(TacticGenerator, pl.LightningModule):
     def __init__(
@@ -354,6 +443,75 @@ class RetrievalAugmentedGenerator(TacticGenerator, pl.LightningModule):
             tactics_with_scores.append(list(zip_strict(output_text, output_score)))
 
         return tactics_with_scores
+
+class FastChatTacticGenerator(TacticGenerator):
+    """
+    OpenAI API based tactic generator, the llm end point is hosted by fastchat
+    """
+    def __init__(
+        self,
+        base_url,
+        model: str = "leandojo_7b",
+        max_tokens: int = 1024,
+        num_retries: int = 3,
+        threshold: float = 0.9,
+    ):
+        super().__init__()
+        openai.api_key = "EMPTY"
+        openai.base_url = base_url
+        self.model = model
+        self.default_prompt = "GOAL {state} PROOFSTEP"
+        self.max_tokens = max_tokens
+        self.num_retries = num_retries
+        self.threshold = threshold
+
+    def generate(
+        self, 
+        state: str,
+        file_path: str,
+        theorem_full_name: str,
+        theorem_pos: Pos,
+        num_samples: int
+    ) -> List[Tuple[str, float]]:
+        prompt = self.default_prompt.format_map(
+            {"state": state}
+        )
+        logger.info(prompt)
+
+        for _ in range(self.num_retries):
+            response = None
+            # https://platform.openai.com/docs/guides/error-codes/python-library-error-types
+            try:
+                response = openai.completions.create(
+                    model=self.model,
+                    prompt=prompt,
+                    # temperature=0,
+                    max_tokens=self.max_tokens,
+                    # stop="E:" #
+                )
+            except openai.error.APIError as e:
+                # Handle API error here, e.g. retry or log
+                logger.info(f"OpenAI API returned an API Error: {e}")
+                continue
+            except openai.error.APIConnectionError as e:
+                # Handle connection error here
+                logger.info(f"Failed to connect to OpenAI API: {e}")
+                continue
+            except openai.error.RateLimitError as e:
+                # Handle rate limit error (we recommend using exponential backoff)
+                logger.info(f"OpenAI API request exceeded rate limit: {e}")
+                continue
+            except Exception as e:
+                logger.info(e)
+                continue
+
+            if response is None:
+                continue
+
+            logger.info(f"GPT-4 response: {response}")
+            output = response["choices"][0].text
+            indices = []
+        
 
 
 class GPT4TacticGenerator(TacticGenerator):
