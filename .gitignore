@@ -1,5 +1,6 @@
 data/
 lightning_logs/
+isadojo_benchmark_v0.1/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

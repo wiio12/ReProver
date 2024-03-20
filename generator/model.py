@@ -77,14 +77,12 @@ class LLamaTacticGenerator(TacticGenerator):
     def __init__(
         self,
         model_name_or_path,
-        num_beams: int,
         max_inp_seq_len: int = 2300,
         max_oup_seq_len: int = 512,
         length_penalty: float = 0.0,
         device: str = "cpu",
     ):
         self.model_name_or_path = model_name_or_path
-        self.num_beams = num_beams
         self.max_inp_seq_len = max_inp_seq_len
         self.max_oup_seq_len = max_oup_seq_len
         self.length_penalty = length_penalty
@@ -98,25 +96,27 @@ class LLamaTacticGenerator(TacticGenerator):
     def generate(
         self,
         state: str,
-        file_path: str,
-        theorem_full_name: str,
-        theorem_pos: Pos,
-        num_samples: int,
+        context: str = "",
+        num_samples: int = 8,
         
     ) -> List[Tuple[str, float]]:
         return self.batch_generate(
-            [state], [file_path], [theorem_full_name], [theorem_pos], num_samples
+            [state], [context], num_samples
         )[0]
 
     def batch_generate(
         self,
         state: List[str],
+        context: List[str],
         num_samples: int,
     ) -> List[List[Tuple[str, float]]]:
         if self.retriever is not None:
             raise NotImplementedError
 
-        prompt = f"GOAL {state} PROOFSTEP"
+        if all([len(c)==0 for c in context]):
+            prompt = [f"GOAL {s} PROOFSTEP" for s in state]
+        else:
+            prompt = [f"CONTEXT {ctx} GOAL {s} PROOFSTEP" for ctx, s in zip(context, state)]
         logger.debug(prompt)
         tokenized_state = self.tokenizer(
             prompt,

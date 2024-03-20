@@ -6,19 +6,22 @@ import ray
 import time
 import heapq
 import torch
+from multilevel_isabelle.src.main.python.pisa_client import (
+    IsaDojo, 
+    IsabelleError, 
+    TacticState, 
+    TimeoutError, 
+    ProofFinished, 
+    ProofGivenUp, 
+    DojoInitError, 
+    DojoHardTimeoutError, 
+    DojoCrashError
+)
 from lean_dojo import (
     Pos,
-    Dojo,
+    IsaTheorem,
     Theorem,
-    LeanGitRepo,
-    TacticState,
-    LeanError,
-    TimeoutError,
-    ProofFinished,
-    ProofGivenUp,
-    DojoInitError,
-    DojoCrashError,
-    DojoHardTimeoutError,
+    LeanTheorem,
 )
 from loguru import logger
 from dataclasses import dataclass
@@ -51,11 +54,13 @@ class BestFirstSearchProver:
 
     def __init__(
         self,
+        rank,
         tac_gen,  # A given tactic generator.
         timeout: int,
         num_sampled_tactics: int,
         debug: bool,
     ) -> None:
+        self.rank = rank,
         self.tac_gen = tac_gen
         self.timeout = timeout
         self.num_sampled_tactics = num_sampled_tactics
@@ -67,13 +72,11 @@ class BestFirstSearchProver:
         self.total_time = None
 
     def search(
-        self, repo: LeanGitRepo, thm: Theorem, pos: Pos
+        self, repo: dict, thm: Theorem
     ) -> Optional[SearchResult]:
         logger.info(f"Proving {thm}")
 
-        self.repo = repo
         self.theorem = thm
-        self.posision = pos
         self.actor_time = 0.0
         self.environment_time = 0.0
         self.num_expansions = 0
@@ -84,9 +87,16 @@ class BestFirstSearchProver:
             imps = []
 
         try:
-            with Dojo(thm, hard_timeout=60 + self.timeout) as (
+            with IsaDojo(
+                rank = 8000 + int(self.rank),
+                jar_path=repo["jar_path"],
+                isa_path=repo["isabelle_path"],
+                working_directory=thm.working_directory,
+                theory_file_path=thm.file_path,
+                theorem_name=thm.full_name,
+            ) as (
                 dojo,
-                init_state,
+                init_state
             ):
                 self.dojo = dojo
                 self.root = InternalNode(
@@ -173,9 +183,11 @@ class BestFirstSearchProver:
 
         if isinstance(search_node.state, TacticState):
             ts = search_node.state.pp
+            from_tactic = search_node.state.from_tactic
         else:
-            ts = search_node.state.unsolved_tactic_state
-        suggestions = self._generate_tactics(ts)
+            # ts = search_node.state.unsolved_tactic_state
+            assert False, "Why this will happen?"
+        suggestions = self._generate_tactics(ts, context=from_tactic)
 
         # Try all tactics in order of descending logprob, and collect the results. Any
         # new nodes are added to `self.nodes`, and edges are added to the result node.
@@ -198,19 +210,13 @@ class BestFirstSearchProver:
             )
             self.check_invariants()
 
-    def _generate_tactics(self, ts: str) -> List[Tuple[str, float]]:
+    def _generate_tactics(self, ts: str, context: str) -> List[Tuple[str, float]]:
         t0 = time.monotonic()
-
-        path = str(self.theorem.file_path)
-
-        if self.theorem.repo != self.repo:
-            path = self.theorem.repo.get_packages_dir() / self.theorem.repo.name / path
 
         suggestions = self.tac_gen.generate(
             state=ts,
-            file_path=path,
+            context=context,
             theorem_full_name=self.theorem.full_name,
-            theorem_pos=self.posision,
             num_samples=self.num_sampled_tactics,
         )
 
@@ -234,7 +240,7 @@ class BestFirstSearchProver:
             if isinstance(response, ProofFinished):
                 result_node = ProofFinishedNode(response)
             elif type(response) in (
-                LeanError,
+                IsabelleError,
                 TimeoutError,
                 ProofGivenUp,
             ):
@@ -278,7 +284,7 @@ class BestFirstSearchProver:
                 assert node not in self.priority_queue
                 assert self.root.status == Status.PROVED
             elif type(response) in (
-                LeanError,
+                IsabelleError,
                 TimeoutError,
                 ProofGivenUp,
             ):
@@ -301,6 +307,7 @@ class CpuProver(BestFirstSearchProver):
 
     def __init__(
         self,
+        rank,
         ckpt_path: Optional[str],
         indexed_corpus_path: Optional[str],
         tactic: Optional[str],
@@ -320,6 +327,7 @@ class CpuProver(BestFirstSearchProver):
                     tac_gen.retriever.load_corpus(indexed_corpus_path)
                 tac_gen.retriever.reindex_corpus(batch_size=32)
         super().__init__(
+            rank,
             tac_gen,
             timeout,
             num_sampled_tactics,
@@ -333,6 +341,7 @@ class GpuProver(BestFirstSearchProver):
 
     def __init__(
         self,
+        rank: int,
         ckpt_path: Optional[str],
         indexed_corpus_path: Optional[str],
         tactic: Optional[str],
@@ -352,6 +361,7 @@ class GpuProver(BestFirstSearchProver):
                     tac_gen.retriever.load_corpus(indexed_corpus_path)
                 tac_gen.retriever.reindex_corpus(batch_size=32)
         super().__init__(
+            rank,
             tac_gen,
             timeout,
             num_sampled_tactics,
@@ -405,6 +415,7 @@ class DistributedProver:
             logger.info(f"Launching {num_cpus} GPU workers.")
             provers = [
                 GpuProver.remote(
+                    rank,
                     ckpt_path,
                     indexed_corpus_path,
                     tactic,
@@ -413,12 +424,13 @@ class DistributedProver:
                     num_sampled_tactics=num_sampled_tactics,
                     debug=debug,
                 )
-                for _ in range(num_cpus)
+                for rank in range(num_cpus)
             ]
         else:
             logger.info(f"Launching {num_cpus} CPU workers.")
             provers = [
                 CpuProver.remote(
+                    rank,
                     ckpt_path,
                     indexed_corpus_path,
                     tactic,
@@ -427,26 +439,26 @@ class DistributedProver:
                     num_sampled_tactics=num_sampled_tactics,
                     debug=debug,
                 )
-                for _ in range(num_cpus)
+                for rank in range(num_cpus)
             ]
 
         self.prover_pool = ActorPool(provers)
 
     def search_unordered(
-        self, repo: LeanGitRepo, theorems: List[Theorem], positions: List[Pos]
+        self, repo: dict, theorems: List[Theorem]
     ) -> List[SearchResult]:
         """Parallel proof search for `theorems`. The order of the results is not guaranteed to match the order of the input."""
         if not self.distributed:
             return [
-                self.prover.search(repo, thm, pos)
-                for thm, pos in zip_strict(theorems, positions)
+                self.prover.search(repo, thm)
+                for thm in theorems
             ]
 
         try:
             results = list(
                 self.prover_pool.map_unordered(
-                    lambda p, x: p.search.remote(repo, x[0], x[1]),
-                    zip_strict(theorems, positions),
+                    lambda p, x: p.search.remote(repo, x),
+                    theorems,
                 )
             )
         except ray.exceptions.RayActorError as ex:
