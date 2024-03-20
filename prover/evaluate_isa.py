@@ -7,11 +7,10 @@ import pickle
 import hashlib
 import argparse
 from loguru import logger
-from lean_dojo import Theorem, LeanTheorem, IsaTheorem
 from typing import List, Tuple, Optional
-from lean_dojo import LeanGitRepo, Theorem, Pos, is_available_in_cache
 
 from common import set_logger
+from multilevel_isabelle.src.main.python.pisa_client import Theorem
 from prover.proof_search_isa import Status, DistributedProver
 
 
@@ -23,36 +22,16 @@ def _get_theorems(
     full_name: str,
     name_filter: str,
     num_theorems: int,
-) -> Tuple[LeanGitRepo, List[Theorem], List[Pos]]:
-    if formal_system == "lean":
-        repo, theorems, positions = _lean_get_theorems_from_files(
+) -> List[Theorem]:
+    theorems = _isa_get_theorems_from_files(
             data_path,
             split,
             file_path,
             full_name,
             name_filter,
             num_theorems,
-        )
-
-        all_repos = {thm.repo for thm in theorems}
-        for r in all_repos:
-            assert is_available_in_cache(
-                r
-            ), f"{r} has not been traced yet. Please use LeanDojo to trace it so that it's available in the cache."
-    elif formal_system == "isabelle":
-        positions = None,
-        theorems = _isa_get_theorems_from_files(
-            data_path,
-            split,
-            file_path,
-            full_name,
-            name_filter,
-            num_theorems,
-        )
-    else:
-        raise ValueError(f"Formal system {formal_system} not supported")
-
-    return repo, theorems, positions
+    )
+    return theorems
 
 def _isa_get_theorems_from_files(
     data_path: str,
@@ -87,47 +66,6 @@ def _isa_get_theorems_from_files(
 
     return theorems
 
-def _lean_get_theorems_from_files(
-    data_path: str,
-    split: str,
-    file_path: Optional[str],
-    full_name: Optional[str],
-    name_filter: Optional[str],
-    num_theorems: Optional[int],
-) -> Tuple[LeanGitRepo, List[Theorem], List[Pos]]:
-    data = json.load(open(os.path.join(data_path, f"{split}.json")))
-    theorems = []
-    positions = []
-
-    for t in data:
-        if file_path is not None and t["file_path"] != file_path:
-            continue
-        if full_name is not None and t["full_name"] != full_name:
-            continue
-        if name_filter is not None and not hashlib.md5(
-            t["full_name"].encode()
-        ).hexdigest().startswith(name_filter):
-            continue
-        repo = LeanGitRepo(t["url"], t["commit"])
-        theorems.append(LeanTheorem(repo=repo, file_path=t["file_path"], full_name=t["full_name"]))
-        positions.append(Pos(*t["start"]))
-    theorems = sorted(
-        theorems,
-        key=lambda t: hashlib.md5(
-            (str(t.file_path) + ":" + t.full_name).encode()
-        ).hexdigest(),
-    )
-    if num_theorems is not None:
-        theorems = theorems[:num_theorems]
-        positions = positions[:num_theorems]
-    logger.info(f"{len(theorems)} theorems loaded from {data_path}")
-
-    metadata = json.load(open(os.path.join(data_path, "../metadata.json")))
-    repo = LeanGitRepo(metadata["from_repo"]["url"], metadata["from_repo"]["commit"])
-
-    return repo, theorems, positions
-
-
 def evaluate(
     formal_system: str, 
     data_path: str,
@@ -151,14 +89,14 @@ def evaluate(
 ) -> float:
     set_logger(verbose)
 
-    repo, theorems, positions = _get_theorems(
+    theorems = _get_theorems(
         formal_system, data_path, split, file_path, full_name, name_filter, num_theorems
     )
-    if repo is None:
-        repo = {
-            "jar_path": jar_path,
-            "isa_path": isabelle_path,
-        }
+   
+    repo = {
+        "jar_path": jar_path,
+        "isa_path": isabelle_path,
+    }
 
     # Search for proofs using multiple concurrent provers.
     prover = DistributedProver(
@@ -172,7 +110,7 @@ def evaluate(
         num_sampled_tactics=num_sampled_tactics,
         debug=verbose,
     )
-    results = prover.search_unordered(repo, theorems, positions)
+    results = prover.search_unordered(repo, theorems)
 
     # Calculate the result statistics.
     num_proved = num_failed = num_discarded = 0

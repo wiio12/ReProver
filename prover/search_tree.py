@@ -2,9 +2,9 @@
 """
 import math
 from enum import Enum
-from lean_dojo import (
+from multilevel_isabelle.src.main.python.pisa_client import (
     TacticState,
-    LeanError,
+    IsabelleError,
     TimeoutError,
     ProofGivenUp,
     ProofFinished,
@@ -51,7 +51,7 @@ class ProofFinishedNode(Node):
 
 @dataclass
 class ErrorNode(Node):
-    inner: Union[LeanError, TimeoutError, ProofGivenUp]
+    inner: Union[IsabelleError, TimeoutError, ProofGivenUp]
     status = Status.FAILED
     distance_to_proof = math.inf
     is_terminal = True

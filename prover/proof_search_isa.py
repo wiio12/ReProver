@@ -15,14 +15,10 @@ from multilevel_isabelle.src.main.python.pisa_client import (
     ProofGivenUp, 
     DojoInitError, 
     DojoHardTimeoutError, 
-    DojoCrashError
-)
-from lean_dojo import (
-    Pos,
-    IsaTheorem,
+    DojoCrashError,
     Theorem,
-    LeanTheorem,
 )
+
 from loguru import logger
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
@@ -216,7 +212,6 @@ class BestFirstSearchProver:
         suggestions = self.tac_gen.generate(
             state=ts,
             context=context,
-            theorem_full_name=self.theorem.full_name,
             num_samples=self.num_sampled_tactics,
         )
 
