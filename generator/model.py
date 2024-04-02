@@ -8,7 +8,7 @@ import pytorch_lightning as pl
 from torchmetrics import Metric
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional, Tuple
-from transformers import T5ForConditionalGeneration, AutoTokenizer, AutoModelForCausalLM
+from transformers import T5ForConditionalGeneration, AutoTokenizer, AutoModelForCausalLM, GPTNeoXPreTrainedModel, GPTNeoXTokenizerFast
 
 from common import (
     zip_strict,
@@ -73,12 +73,13 @@ class TacticGenerator(ABC):
     ) -> List[List[Tuple[str, float]]]:
         raise NotImplementedError
 
-class LLamaTacticGenerator(TacticGenerator):
+
+class DecoderOnlyTacticGenerator(TacticGenerator):
     def __init__(
         self,
         model_name_or_path,
-        max_inp_seq_len: int = 2300,
-        max_oup_seq_len: int = 512,
+        max_inp_seq_len: int = 840,
+        max_oup_seq_len: int = 256,
         length_penalty: float = 0.0,
         device: str = "cpu",
     ):
@@ -90,15 +91,17 @@ class LLamaTacticGenerator(TacticGenerator):
 
         # we haven't train retrieval augmented generator yet
         self.retriever = None
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
         self.generator = AutoModelForCausalLM.from_pretrained(model_name_or_path).to(self.device)
+        if isinstance(self.generator, GPTNeoXPreTrainedModel):
+            self.tokenizer = GPTNeoXTokenizerFast.from_pretrained(model_name_or_path)
+        else:
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
     
     def generate(
         self,
         state: str,
         context: str = "",
         num_samples: int = 8,
-        
     ) -> List[Tuple[str, float]]:
         return self.batch_generate(
             [state], [context], num_samples
@@ -118,6 +121,7 @@ class LLamaTacticGenerator(TacticGenerator):
         else:
             prompt = [f"CONTEXT {ctx} GOAL {s} PROOFSTEP" for ctx, s in zip(context, state)]
         logger.debug(prompt)
+        self.tokenizer.truncation_side = "left"
         tokenized_state = self.tokenizer(
             prompt,
             padding="longest",
@@ -132,7 +136,7 @@ class LLamaTacticGenerator(TacticGenerator):
         output = self.generator.generate(
             input_ids=state_ids,
             attention_mask=state_mask,
-            max_length=self.max_oup_seq_len,
+            max_length=self.max_inp_seq_len + self.max_oup_seq_len,
             num_beams=num_samples,
             length_penalty=self.length_penalty,
             do_sample=False,
@@ -146,6 +150,17 @@ class LLamaTacticGenerator(TacticGenerator):
         raw_output_text = self.tokenizer.batch_decode(
             output.sequences, skip_special_tokens=True
         )
+
+        # extract the tactic
+        tactic_outputs = []
+        for rot in raw_output_text:
+            if "PROOFSTEP" in rot:
+                tactic_outputs.append(rot[rot.index("PROOFSTEP") + len("PROOFSTEP"):])
+            else:
+                # the input is too long and the proofstep is trucated, thus no meaningful tactic will generate. we use some easy dummy to replace.
+                tactic_outputs.append("by auto")
+        raw_output_text = tactic_outputs
+
         raw_scores = output.sequences_scores.tolist()
         tactics_with_scores = []
 

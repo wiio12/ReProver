@@ -26,7 +26,7 @@ from ray.util.actor_pool import ActorPool
 
 from common import zip_strict
 from prover.search_tree import *
-from generator.model import RetrievalAugmentedGenerator, FixedTacticGenerator
+from generator.model import RetrievalAugmentedGenerator, FixedTacticGenerator, DecoderOnlyTacticGenerator
 
 
 @dataclass(frozen=True)
@@ -56,7 +56,7 @@ class BestFirstSearchProver:
         num_sampled_tactics: int,
         debug: bool,
     ) -> None:
-        self.rank = rank,
+        self.rank = rank
         self.tac_gen = tac_gen
         self.timeout = timeout
         self.num_sampled_tactics = num_sampled_tactics
@@ -70,6 +70,8 @@ class BestFirstSearchProver:
     def search(
         self, repo: dict, thm: Theorem
     ) -> Optional[SearchResult]:
+        logger.remove()
+        logger.add(sys.stderr, level="DEBUG")
         logger.info(f"Proving {thm}")
 
         self.theorem = thm
@@ -77,19 +79,14 @@ class BestFirstSearchProver:
         self.environment_time = 0.0
         self.num_expansions = 0
 
-        if isinstance(self.tac_gen, FixedTacticGenerator):
-            imps = [self.tac_gen.module]
-        else:
-            imps = []
-
         try:
             with IsaDojo(
-                rank = 8000 + int(self.rank),
+                port=8000+int(self.rank),
                 jar_path=repo["jar_path"],
-                isa_path=repo["isabelle_path"],
-                working_directory=thm.working_directory,
-                theory_file_path=thm.file_path,
-                theorem_name=thm.full_name,
+                isa_path=repo["isa_path"],
+                working_directory=str(thm.working_directory),
+                theory_file_path=str(thm.file_path),
+                theorem_name=str(thm.full_name)
             ) as (
                 dojo,
                 init_state
@@ -221,7 +218,13 @@ class BestFirstSearchProver:
         return suggestions
 
     def _run_tactic(self, node: InternalNode, tactic: str, logprob: float) -> Edge:
+        def log_result(message, replace_newlines=True):
+            if replace_newlines:
+                message = message.replace("\n", " ")
+            logger.debug(message)
+        
         t0 = time.monotonic()
+        log_result(f"Running tactic: {tactic}")
         response = self.dojo.run_tac(node.state, tactic)
 
         elapsed = time.monotonic() - t0
@@ -230,22 +233,31 @@ class BestFirstSearchProver:
         try:
             # If we've seen this response before, use the existing node
             result_node = self.nodes[response]
+            if isinstance(response, ProofFinished):
+                log_result(f"Result: proof successed! - {str(response.message)}")
+            elif isinstance(response, IsabelleError):
+                log_result(f"Result: tactic failed! - {str(response)}")
+            else:
+                log_result(f"Result: duplicate result ! - {str(response.pp)}")
         except KeyError:
             # Build a new node
             if isinstance(response, ProofFinished):
                 result_node = ProofFinishedNode(response)
+                log_result(f'Result: proof successed! - {str(response.message)}')
             elif type(response) in (
                 IsabelleError,
                 TimeoutError,
                 ProofGivenUp,
             ):
                 result_node = ErrorNode(response)
+                log_result(f'Result: tactic failed! - {str(response)}')
             else:
                 assert isinstance(response, TacticState)
                 result_node = InternalNode(
                     state=response,
                     cumulative_logprob=logprob + node.cumulative_logprob,
                 )
+                log_result(f'Result: tactic success! - {response.pp}')
 
             if result_node.status == Status.OPEN:  # Don't search proved/failed nodes
                 heapq.heappush(self.priority_queue, result_node)  # type: ignore
@@ -313,14 +325,18 @@ class CpuProver(BestFirstSearchProver):
     ) -> None:
         if ckpt_path is None:
             tac_gen = FixedTacticGenerator(tactic, module)
+        # else:
+        #     tac_gen = RetrievalAugmentedGenerator.load(
+        #         ckpt_path, device=torch.device("cpu"), freeze=True
+        #     )
+        #     if tac_gen.retriever is not None:
+        #         if indexed_corpus_path is not None:
+        #             tac_gen.retriever.load_corpus(indexed_corpus_path)
+        #         tac_gen.retriever.reindex_corpus(batch_size=32)
         else:
-            tac_gen = RetrievalAugmentedGenerator.load(
-                ckpt_path, device=torch.device("cpu"), freeze=True
+            tac_gen = DecoderOnlyTacticGenerator(
+                model_name_or_path=ckpt_path, device=torch.device("cpu")
             )
-            if tac_gen.retriever is not None:
-                if indexed_corpus_path is not None:
-                    tac_gen.retriever.load_corpus(indexed_corpus_path)
-                tac_gen.retriever.reindex_corpus(batch_size=32)
         super().__init__(
             rank,
             tac_gen,
@@ -347,14 +363,18 @@ class GpuProver(BestFirstSearchProver):
     ) -> None:
         if ckpt_path is None:
             tac_gen = FixedTacticGenerator(tactic, module)
+        # else:
+        #     tac_gen = RetrievalAugmentedGenerator.load(
+        #         ckpt_path, device=torch.device("cuda"), freeze=True
+        #     )
+        #     if tac_gen.retriever is not None:
+        #         if indexed_corpus_path is not None:
+        #             tac_gen.retriever.load_corpus(indexed_corpus_path)
+        #         tac_gen.retriever.reindex_corpus(batch_size=32)
         else:
-            tac_gen = RetrievalAugmentedGenerator.load(
-                ckpt_path, device=torch.device("cuda"), freeze=True
+            tac_gen = LLamaTacticGenerator(
+                model_name_or_path=ckpt_path, device=torch.device("cuda")
             )
-            if tac_gen.retriever is not None:
-                if indexed_corpus_path is not None:
-                    tac_gen.retriever.load_corpus(indexed_corpus_path)
-                tac_gen.retriever.reindex_corpus(batch_size=32)
         super().__init__(
             rank,
             tac_gen,
@@ -394,14 +414,17 @@ class DistributedProver:
                 tac_gen = FixedTacticGenerator(tactic, module)
             else:
                 device = torch.device("cuda") if with_gpus else torch.device("cpu")
-                tac_gen = RetrievalAugmentedGenerator.load(
-                    ckpt_path, device=device, freeze=True
+                # tac_gen = RetrievalAugmentedGenerator.load(
+                #     ckpt_path, device=device, freeze=True
+                # )
+                # if tac_gen.retriever is not None:
+                #     assert indexed_corpus_path is not None
+                #     tac_gen.retriever.load_corpus(indexed_corpus_path)
+                tac_gen = LLamaTacticGenerator(
+                    model_name_or_path=ckpt_path, device=device,
                 )
-                if tac_gen.retriever is not None:
-                    assert indexed_corpus_path is not None
-                    tac_gen.retriever.load_corpus(indexed_corpus_path)
             self.prover = BestFirstSearchProver(
-                tac_gen, timeout, num_sampled_tactics, debug
+                0, tac_gen, timeout, num_sampled_tactics, debug
             )
             return
 
