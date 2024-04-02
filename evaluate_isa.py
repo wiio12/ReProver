@@ -178,7 +178,7 @@ def main() -> None:
     parser.add_argument(
         "--ckpt_path",
         type=str,
-        default="/hpc2hdd/home/zyang398/wanghaiming/MetaMath_run_ToDppixc/train_llm_isabelle/checkpoints_isabelle_oneline_context_0126_lr9e-5_epoch4_wd0.1/checkpoint-7500-hf",
+        default="/hpc2hdd/home/zyang398/wanghaiming/MetaMath_run_ToDppixc/train_llm_neox_isabelle/checkpoints_isabelle_marchdata_gptf_lr3e-4_wd0.1_epoch_10/checkpoint-37200",
         help="Checkpoint of the tactic generator.",
     )
     parser.add_argument(

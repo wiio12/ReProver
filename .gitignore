@@ -4,6 +4,8 @@ isadojo_benchmark_v0.1/
 .metals/
 .vscode/
 temp/
+*.pickle
+output*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

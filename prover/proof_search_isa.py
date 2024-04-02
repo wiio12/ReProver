@@ -67,11 +67,14 @@ class BestFirstSearchProver:
         self.environment_time = 0.0
         self.total_time = None
 
+        if debug:
+            logger.remove()
+            logger.add(sys.stderr, level="DEBUG")
+            
+
     def search(
         self, repo: dict, thm: Theorem
     ) -> Optional[SearchResult]:
-        logger.remove()
-        logger.add(sys.stderr, level="DEBUG")
         logger.info(f"Proving {thm}")
 
         self.theorem = thm
@@ -91,20 +94,28 @@ class BestFirstSearchProver:
                 dojo,
                 init_state
             ):
-                self.dojo = dojo
-                self.root = InternalNode(
-                    state=init_state,
-                    cumulative_logprob=0.0,
-                )
-                self.nodes = {init_state: self.root}
-                self.priority_queue = [self.root]
+                if init_state is not None:
+                    self.dojo = dojo
+                    self.root = InternalNode(
+                        state=init_state,
+                        cumulative_logprob=0.0,
+                    )
+                    self.nodes = {init_state: self.root}
+                    self.priority_queue = [self.root]
 
-                with torch.no_grad():
-                    try:
-                        self._best_first_search()
-                    except DojoCrashError:
-                        logger.warning(f"Dojo crashed when proving {thm}")
-                        pass
+                    with torch.no_grad():
+                        try:
+                            self._best_first_search()
+                        except DojoCrashError:
+                            logger.warning(f"Dojo crashed when proving {thm}")
+                            pass
+                else:
+                    logger.warning(f"IsaDojo fail to init when proving {thm}")
+                    self.root = InternalNode(
+                        state=init_state,
+                        cumulative_logprob=0.0,
+                    )
+                    self.nodes = {init_state: self.root}
 
             if self.root.status == Status.PROVED:
                 proof = [e.tactic for e in self.root.extract_proof()]
@@ -372,7 +383,7 @@ class GpuProver(BestFirstSearchProver):
         #             tac_gen.retriever.load_corpus(indexed_corpus_path)
         #         tac_gen.retriever.reindex_corpus(batch_size=32)
         else:
-            tac_gen = LLamaTacticGenerator(
+            tac_gen = DecoderOnlyTacticGenerator(
                 model_name_or_path=ckpt_path, device=torch.device("cuda")
             )
         super().__init__(
@@ -420,7 +431,7 @@ class DistributedProver:
                 # if tac_gen.retriever is not None:
                 #     assert indexed_corpus_path is not None
                 #     tac_gen.retriever.load_corpus(indexed_corpus_path)
-                tac_gen = LLamaTacticGenerator(
+                tac_gen = DecoderOnlyTacticGenerator(
                     model_name_or_path=ckpt_path, device=device,
                 )
             self.prover = BestFirstSearchProver(

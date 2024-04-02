@@ -117,11 +117,12 @@ class DecoderOnlyTacticGenerator(TacticGenerator):
             raise NotImplementedError
 
         if all([len(c)==0 for c in context]):
-            prompt = [f"GOAL {s} PROOFSTEP" for s in state]
+            prompt = [f"GOAL {s} STEP\n" for s in state]
         else:
-            prompt = [f"CONTEXT {ctx} GOAL {s} PROOFSTEP" for ctx, s in zip(context, state)]
+            prompt = [f"CONTEXT {ctx} GOAL {s} STEP\n" for ctx, s in zip(context, state)]
         logger.debug(prompt)
         self.tokenizer.truncation_side = "left"
+        self.tokenizer.padding_side = "left"
         tokenized_state = self.tokenizer(
             prompt,
             padding="longest",
@@ -144,6 +145,7 @@ class DecoderOnlyTacticGenerator(TacticGenerator):
             early_stopping=False,
             output_scores=True,
             return_dict_in_generate=True,
+            pad_token_id=self.tokenizer.eos_token_id,
         )
 
         # Return the output.
@@ -154,8 +156,8 @@ class DecoderOnlyTacticGenerator(TacticGenerator):
         # extract the tactic
         tactic_outputs = []
         for rot in raw_output_text:
-            if "PROOFSTEP" in rot:
-                tactic_outputs.append(rot[rot.index("PROOFSTEP") + len("PROOFSTEP"):])
+            if "STEP\n" in rot:
+                tactic_outputs.append(rot[rot.index("STEP\n") + len("STEP\n"):])
             else:
                 # the input is too long and the proofstep is trucated, thus no meaningful tactic will generate. we use some easy dummy to replace.
                 tactic_outputs.append("by auto")
