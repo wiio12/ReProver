@@ -17,7 +17,7 @@ from typing import Optional, List, Tuple, Iterable, Union
 
 class Status(Enum):
     """Status of a node or a proof search."""
-
+    HALF_PROVED = "HalfProved"   # This node is half proved, with complete verifiable sketeches.
     PROVED = "Proved"  # This node (or search) has at least one known proof.
     FAILED = "Failed"  # This node (or search) has exhausted its options and cannot be proved within the current run.
     OPEN = "Open"  # This node (or search) has not been proven or given up on yet.
