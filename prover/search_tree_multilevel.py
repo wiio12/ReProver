@@ -74,6 +74,8 @@ class InternalNode(Node):
     # The sum of action logprobs along edges from the root to this node
     cumulative_logprob: float = field(compare=False, repr=False)
 
+    is_root: bool = field(default=False, compare=False, repr=False)
+
     # All edges known to lead to this node.
     # May change at any time as other nodes are explored.
     in_edges: List["Edge"] = field(
@@ -134,17 +136,53 @@ class InternalNode(Node):
         """
         assert self.is_explored and self.out_edges is not None
 
-        # If this node is proved or failed, nothing can change that
-        if self._status != Status.OPEN:
+        # # If this node is proved or failed, nothing can change that
+        # if self._status not in [Status.OPEN, Status.HALF_PROVED]:
+        #     return
+        if self._status == Status.FAILED:
             return
+        
+        # merge status in sorry edge
+        temp_dst_nodes = []
+        new_failed_nodes = []
+        for edge in self.out_edges:
+            if isinstance(edge, SorryEdge):
+                # if sub-root is proved, it have no effect on the status of dst node
+                if edge.sorry_root.status == Status.PROVED:
+                    edge.dst.status = edge.dst.status
+                # if sub-root is failed, it fails the dst node. Only true when sub-root is not allow to revisit!
+                elif edge.sorry_root.status == Status.FAILED:
+                    edge.dst.status = Status.FAILED
+                    new_failed_nodes.append(edge.dst)
+                # if sub-root is open or half-proved, it does not affect the status of dst node, but creates a special half-flag.
+                elif edge.sorry_root.status in [Status.OPEN, Status.HALF_PROVED]:
+                    # for implementation convenience, we use half-proved to represent the sorry edge
+                    if edge.dst.status == Status.PROVED:
+                        edge.dst.status = Status.HALF_PROVED
+                        temp_dst_nodes.append(edge.dst)
 
-        # If any child is proved, this node is proved, and so are parents recursively
-        if any(edge.dst.status == Status.PROVED for edge in self.out_edges):
-            self._status = Status.PROVED
+        # If any child is half-proved (path to this node contains sorry edge), 
+        # this node is half-proved, and so are parents recursively
+        if any(edge.dst.status == Status.HALF_PROVED for edge in self.out_edges):
+            self._status = Status.HALF_PROVED
+        else:
+            self._status = Status.OPEN
 
+        # If any children are proved, and no, this node is proved. This may prove some parents too.
+        if any(edge.dst.status == Status.HALF_PROVED for edge in self.out_edges):
+            self._status = Status.PROVED          
+            
         # If all children failed, this node is failed. This may fail some parents too.
         if all(edge.dst.status == Status.FAILED for edge in self.out_edges):
             self._status = Status.FAILED
+        
+        # reset the temp dst nodes
+        for node in temp_dst_nodes:
+            node.status = Status.PROVED
+        
+        # boardcast the failure
+        for node in new_failed_nodes:
+            node.boardcast_failure()
 
         # If this node was proved or failed, parents may need to recompute.
         # This is guaranteed to terminate because only open nodes can change, and
@@ -152,6 +190,12 @@ class InternalNode(Node):
         if self._status != Status.OPEN:
             for edge in self.in_edges:
                 edge.src._recompute_status()
+
+    def boardcast_failure(self):
+        if self.status == Status.FAILED:
+            for edge in self.out_edges:
+                edge.dst.status = Status.FAILED
+                edge.dst.boardcast_failure()
 
     @property
     def distance_to_proof(self) -> float:
@@ -202,6 +246,28 @@ class InternalNode(Node):
             child_proof = proving_edge.dst.extract_proof()
             assert child_proof
             return [proving_edge, *child_proof]
+    
+    # def get_sorry_root(self):
+    #     """
+    #     Get the sub-root of the current node.
+    #     """
+    #     if len(self.in_edges) == 0:
+    #         return self
+        
+    #     if len(self.in_edges) == 1:
+    #         if isinstance(self.in_edges[0], SorryEdge) and self.in_edges[0].sorry_root == self:
+
+                
+        
+    #     if len(self.in_edges) > 1:
+    #         for edge in self.in_edges:
+    #             assert not isinstance(edge, SorryEdge), "sorry edge can't have duplicate"
+            
+        
+    #     for edge in self.in_edges:
+    #         if isinstance(edge, SorryEdge):
+    #             return edge.sorry_root
+        
 
     #########
     # Debug #

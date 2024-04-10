@@ -1,6 +1,7 @@
 """Proof search using best-first search.
 """
 import os
+from queue import Queue
 import sys
 import ray
 import time
@@ -25,7 +26,7 @@ from typing import List, Optional, Tuple
 from ray.util.actor_pool import ActorPool
 
 from common import zip_strict
-from prover.search_tree import *
+from prover.search_tree_multilevel import *
 from generator.model import RetrievalAugmentedGenerator, FixedTacticGenerator, DecoderOnlyTacticGenerator
 
 
@@ -99,9 +100,14 @@ class BestFirstSearchProver:
                     self.root = InternalNode(
                         state=init_state,
                         cumulative_logprob=0.0,
+                        is_root=True
                     )
                     self.nodes = {init_state: self.root}
                     self.priority_queue = [self.root]
+
+                    self.focus_root = self.root
+                    self.focus_nodes = self.nodes
+                    self.focus_priority_queue = self.priority_queue
 
                     with torch.no_grad():
                         try:
@@ -114,6 +120,7 @@ class BestFirstSearchProver:
                     self.root = InternalNode(
                         state=init_state,
                         cumulative_logprob=0.0,
+                        is_root=True,
                     )
                     self.nodes = {init_state: self.root}
 
@@ -139,36 +146,59 @@ class BestFirstSearchProver:
             logger.warning(ex)
             return None
 
-    def _best_first_search(self) -> None:
+    def _best_first_search(self, root, nodes, priority_queue) -> None:
         time_start = time.monotonic()
 
         while True:
-            if len(self.priority_queue) == 0:
+            if len(priority_queue) == 0:
                 logger.info("Ran out of nodes to search.")
                 break
 
             try:
-                self._step()
+                self._step(root, nodes, priority_queue)
             except DojoHardTimeoutError:
                 assert time.monotonic() - time_start >= self.timeout
 
             self.total_time = time.monotonic() - time_start
             if self.total_time > self.timeout:
-                if self.root.status == Status.PROVED:
+                if root.status == Status.PROVED:
                     logger.info("Found a proof but timed out.")
-                self.root.status = Status.OPEN
+                root.status = Status.OPEN
                 logger.info("Search timed out.")
                 break
 
-            if self.root.status == Status.FAILED:
+            if root.status == Status.FAILED:
                 logger.info("Failed early!")
                 break
 
-            if self.root.status == Status.PROVED:
+            if root.status == Status.PROVED:
                 logger.info("Found a proof!")
                 break
 
-    def _step(self):
+            if root.status == Status.HALF_PROVED:
+                # last first
+                c_root = self._get_last_half_proved_roots(root)
+                c_nodes = {c_root.state: c_root}
+                c_priority_queue = [c_root]
+                self._best_first_search(c_root, c_nodes, c_priority_queue)
+    
+    def _get_last_half_proved_roots(self, root):
+        sorry_roots = []
+        node_queue = Queue()
+        node_queue.put(root)
+        while not node_queue.empty():
+            node = node_queue.get()
+            for edge in node.out_edges:
+                if edge.dst.status in [Status.PROVED, Status.HALF_PROVED]:
+                    node_queue.put(edge.dst)
+                    if isinstance(edge, SorryEdge) and edge.sorry_root.status == Status.OPEN:
+                        sorry_roots.append(edge.sorry_root)
+        return sorry_roots[-1]
+                
+                    
+
+
+    def _step(self, root, nodes, priority_queue):
         """
         Perform a single step of search.
 
@@ -177,12 +207,12 @@ class BestFirstSearchProver:
         a new node for each valid result.
         """
         # Search the node with highest priority.
-        search_node = heapq.heappop(self.priority_queue)
+        search_node = heapq.heappop(priority_queue)
         logger.debug(f"Expanding node: {search_node}")
 
         if self.debug:
             assert all(
-                search_node.priority >= node.priority for node in self.priority_queue
+                search_node.priority >= node.priority for node in priority_queue
             )
 
         if isinstance(search_node.state, TacticState):
@@ -196,9 +226,11 @@ class BestFirstSearchProver:
         # Try all tactics in order of descending logprob, and collect the results. Any
         # new nodes are added to `self.nodes`, and edges are added to the result node.
         results = [
-            self._run_tactic(search_node, tactic, logprob)
+            self._run_tactic(search_node, tactic, logprob, root=root, nodes=nodes, priority_queue=priority_queue)
             for tactic, logprob in suggestions
         ]
+
+        results = list(filter(lambda x: x is not None, results))
 
         # Store the fixed out edges of this node, marking it as explored.
         # This will trigger recursively recomputing tree statistics.
@@ -225,10 +257,18 @@ class BestFirstSearchProver:
 
         self.actor_time += time.monotonic() - t0
 
+        # change the order of the tactics, make tactic with sorry come higher:
+        def custom_sort_key(item):
+            contains_sorry = 'sorry' in item[0].lower()
+            return (not contains_sorry, item[1])
+
+        suggestions = sorted(suggestions, key=custom_sort_key)
+
+
         logger.debug(f"Tactic suggestions: {suggestions}")
         return suggestions
 
-    def _run_tactic(self, node: InternalNode, tactic: str, logprob: float) -> Edge:
+    def _run_tactic(self, node: InternalNode, tactic: str, logprob: float, root: InternalNode, nodes, priority_queue) -> Edge:
         def log_result(message, replace_newlines=True):
             if replace_newlines:
                 message = message.replace("\n", " ")
@@ -236,14 +276,19 @@ class BestFirstSearchProver:
         
         t0 = time.monotonic()
         log_result(f"Running tactic: {tactic}")
-        response = self.dojo.run_tac(node.state, tactic)
+        response = self.dojo.run_tac(node.state, tactic, root.state)
+        no_sorry_response = None
+        if "sorry" in tactic:
+            no_sorry_tactic = tactic[:tactic.index("sorry")].strip()
+            no_sorry_response = self.dojo.run_tac(node.state, no_sorry_tactic, root.state)
 
         elapsed = time.monotonic() - t0
         self.environment_time += elapsed
 
         try:
             # If we've seen this response before, use the existing node
-            result_node = self.nodes[response]
+            # TODO: I don't know if this is good to do
+            result_node = nodes[response]
             if isinstance(response, ProofFinished):
                 log_result(f"Result: proof successed! - {str(response.message)}")
             elif isinstance(response, IsabelleError):
@@ -269,19 +314,41 @@ class BestFirstSearchProver:
                     cumulative_logprob=logprob + node.cumulative_logprob,
                 )
                 log_result(f'Result: tactic success! - {response.pp}')
+                if no_sorry_response is not None:
+                    assert isinstance(no_sorry_response, TacticState)
+                    sorry_root = InternalNode(
+                        state=no_sorry_response,
+                        cumulative_logprob=logprob + node.cumulative_logprob,    # TODO: correct way to calculate the logprob
+                        is_root=True
+                    )
 
             if result_node.status == Status.OPEN:  # Don't search proved/failed nodes
-                heapq.heappush(self.priority_queue, result_node)  # type: ignore
+                heapq.heappush(priority_queue, result_node)  # type: ignore
+            
+            # if sorry_root.status == Status.OPEN:
+            #     heapq.heappush(priority_queue, sorry_root)
+        
+        # if the tactic gives a root node, don's search here, return None
+        if result_node.is_root:
+            return None
 
         # Record the new node and add it to the search queue.
-        self.nodes[response] = result_node
+        nodes[response] = result_node
+        if no_sorry_response is not None:
+            nodes[no_sorry_response] = sorry_root
 
         # Build an edge connecting these nodes.
         # Will be added to the source node externally.
-        edge = Edge(tactic=tactic, src=node, dst=result_node)
+        if no_sorry_response is None:
+            edge = Edge(tactic=tactic, src=node, dst=result_node)
+        else:
+            edge = SorryEdge(tactic=tactic, src=node, dst=result_node, sorry_root=sorry_root, sorry_tactic=no_sorry_tactic)
 
         if isinstance(result_node, InternalNode):
             result_node.in_edges.append(edge)
+        
+        if isinstance(sorry_root, InternalNode):
+            sorry_root.in_edges.append(edge)
 
         return edge
 
