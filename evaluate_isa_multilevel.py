@@ -11,7 +11,7 @@ from typing import List, Tuple, Optional
 
 from common import set_logger
 from multilevel_isabelle.src.main.python.pisa_client import Theorem
-from prover.proof_search_isa import Status, DistributedProver
+from prover.proof_search_isa_multilevel import Status, DistributedProver
 
 
 def _get_theorems(
@@ -47,7 +47,7 @@ def _isa_get_theorems_from_files(
     for elem in data:
         if file_path is not None and elem["file_path"] != file_path:
             continue
-        if full_name is not None and elem["full_name"] != full_name:
+        if full_name is not None and not elem["full_name"].startswith(full_name):
             continue
         if name_filter is not None and not hashlib.md5(
             elem["full_name"].encode()
@@ -172,13 +172,13 @@ def main() -> None:
     )
     # `file_path`, `full_name`, `name_filter`, and `num_theorems` can be used to filter theorems.
     parser.add_argument("--file-path", type=str)
-    parser.add_argument("--full-name", type=str)
+    parser.add_argument("--full-name", type=str,) #default=r'''lemma circ_circ_sub_mult:''')
     parser.add_argument("--name-filter", type=str)
     parser.add_argument("--num-theorems", type=int)
     parser.add_argument(
         "--ckpt_path",
         type=str,
-        default="/hpc2hdd/home/zyang398/wanghaiming/MetaMath_run_ToDppixc/train_llm_neox_isabelle/checkpoints_isabelle_marchdata_gptf_lr3e-4_wd0.1_epoch_10/checkpoint-34800",
+        default="/hpc2hdd/home/zyang398/wanghaiming/MetaMath_run_ToDppixc/train_llm_neox_isabelle/checkpoints_isabelle_marchdata_multilevel_lr3e-4_wd0.1_epoch_10/checkpoint-34800",
         help="Checkpoint of the tactic generator.",
     )
     parser.add_argument(

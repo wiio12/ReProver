@@ -84,7 +84,7 @@ class BestFirstSearchProver:
 
         try:
             with IsaDojo(
-                port=8000+int(self.rank),
+                port=8015+int(self.rank),
                 jar_path=repo["jar_path"],
                 isa_path=repo["isa_path"],
                 working_directory=str(thm.working_directory),

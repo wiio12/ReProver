@@ -1,4 +1,7 @@
 """Lightning module for the tactic generator."""
+from collections import defaultdict
+import json
+import random
 import torch
 import openai
 import pickle
@@ -19,6 +22,8 @@ from common import (
     format_augmented_state,
 )
 from retrieval.model import PremiseRetriever
+
+
 
 
 torch.set_float32_matmul_precision("medium")
@@ -91,7 +96,11 @@ class DecoderOnlyTacticGenerator(TacticGenerator):
 
         # we haven't train retrieval augmented generator yet
         self.retriever = None
-        self.generator = AutoModelForCausalLM.from_pretrained(model_name_or_path).to(self.device)
+        self.generator = AutoModelForCausalLM.from_pretrained(
+            model_name_or_path,
+            torch_dtype=torch.bfloat16,
+            attn_implementation="flash_attention_2",
+        ).to(self.device)
         if isinstance(self.generator, GPTNeoXPreTrainedModel):
             self.tokenizer = GPTNeoXTokenizerFast.from_pretrained(model_name_or_path)
         else:
@@ -688,3 +697,40 @@ class FixedTacticGenerator(TacticGenerator):
             self.generate(s, f, tfn, tp, num_samples)
             for s, f, tfn, tp in zip(state, file_path, theorem_full_name, theorem_pos)
         ]
+
+
+
+class DummyTacticGenerator(TacticGenerator):
+    def __init__(
+        self,
+        data_path,
+    ):
+        self.data_path = data_path
+        with open(data_path, "r") as f:
+            data = json.load(f)
+        self.io_pair = defaultdict(list)
+        for line in data:
+            self.io_pair[line[0]].append(line[1])
+    
+    def generate(
+        self,
+        state: str,
+        context: str = "",
+        num_samples: int = 8,
+    ) -> List[Tuple[str, float]]:
+        prompt = f"CONTEXT {context} GOAL {state} STEP"
+        answer = []
+        if prompt in self.io_pair:
+            answer = self.io_pair[prompt]
+        answer_with_score = []
+        for a in answer:
+            answer_with_score.append((a, -random.random()))
+        return answer_with_score
+
+    def batch_generate(
+        self,
+        state: List[str],
+        context: List[str],
+        num_samples: int,
+    ) -> List[List[Tuple[str, float]]]:
+        raise NotImplementedError

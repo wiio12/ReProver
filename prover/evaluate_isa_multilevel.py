@@ -11,7 +11,7 @@ from typing import List, Tuple, Optional
 
 from common import set_logger
 from multilevel_isabelle.src.main.python.pisa_client import Theorem
-from prover.proof_search_isa import Status, DistributedProver
+from prover.proof_search_isa_multilevel import Status, DistributedProver
 
 
 def _get_theorems(
@@ -44,18 +44,16 @@ def _isa_get_theorems_from_files(
     data = json.load(open(os.path.join(data_path, f"{split}.json")))
     theorems = []
 
-    for elem in data:
-        if file_path is not None and elem["file_path"] != file_path:
+    for t in data:
+        if file_path is not None and t["file_path"] != file_path:
             continue
-        if full_name is not None and elem["full_name"] != full_name:
+        if full_name is not None and t["full_name"] != full_name:
             continue
         if name_filter is not None and not hashlib.md5(
-            elem["full_name"].encode()
+            t["full_name"].encode()
         ).hexdigest().startswith(name_filter):
             continue
-        new_file_path = elem["file_path"].replace("/data2/wanghaiming/Isabelle2022", "/hpc2hdd/home/zyang398/Isabelle2022").replace("/data2/wanghaiming/afp-2022-12-06", "/hpc2hdd/home/zyang398/afp-2022-12-06")
-        theorems.append(Theorem(file_path=new_file_path, full_name=elem["full_name"], count=elem["count"]))
-
+        theorems.append(file_path=IsaTheorem(t["file_path"], full_name=t["full_name"]), count=t["count"])
     theorems = sorted(
         theorems,
         key=lambda t: hashlib.md5(
@@ -64,7 +62,6 @@ def _isa_get_theorems_from_files(
     )
     if num_theorems is not None:
         theorems = theorems[:num_theorems]
-
     logger.info(f"{len(theorems)} theorems loaded from {data_path}")
 
     return theorems
@@ -158,11 +155,11 @@ def main() -> None:
     parser.add_argument(
         "--data-path",
         type=str,
-        default="/hpc2hdd/home/zyang398/wanghaiming/data/isabelle/isadojo_benchmark_v0.1/",
+        required=True,
         help="Path to the data extracted by LeanDojo/IsaDojo (e.g., data/leandojo_benchmark/random).",
     )
-    parser.add_argument("--jar-path", type=str, help="Path to the jar file.", default="multilevel_isabelle/target/scala-2.13/PISA-assembly-0.1.jar")
-    parser.add_argument("--isabelle-path", type=str, help="Path to the Isabelle installation.", default="/hpc2hdd/home/zyang398/Isabelle2022")
+    parser.add_argument("--jar-path", type=str, help="Path to the jar file.", default="multilevel_isabelle/target/scala-2.13/multilevel_isabelle-assembly-0.1.0.jar")
+    parser.add_argument("--isabelle-path", type=str, help="Path to the Isabelle installation.", default="/data2/wanghaiming/Isabelle2022")
     parser.add_argument("--exp-id", type=str, help="Experiment ID used for logging.")
     parser.add_argument(
         "--split",
@@ -172,14 +169,14 @@ def main() -> None:
     )
     # `file_path`, `full_name`, `name_filter`, and `num_theorems` can be used to filter theorems.
     parser.add_argument("--file-path", type=str)
-    parser.add_argument("--full-name", type=str)
+    parser.add_argument("--full-name", type=str, default='''"lemma var_order_string_le[sepref_import_param]:\n  \\<open>((<), var_order') \\<in> string_rel \\<rightarrow> string_rel \\<rightarrow> bool_rel\\<close>"''')
     parser.add_argument("--name-filter", type=str)
     parser.add_argument("--num-theorems", type=int)
     parser.add_argument(
         "--ckpt_path",
         type=str,
-        default="/hpc2hdd/home/zyang398/wanghaiming/MetaMath_run_ToDppixc/train_llm_neox_isabelle/checkpoints_isabelle_marchdata_gptf_lr3e-4_wd0.1_epoch_10/checkpoint-34800",
         help="Checkpoint of the tactic generator.",
+        default="/hpc2hdd/home/zyang398/wanghaiming/MetaMath_run_ToDppixc/train_llm_neox_isabelle/checkpoints_isabelle_marchdata_multilevel_lr3e-4_wd0.1_epoch_10/checkpoint-34800"
     )
     parser.add_argument(
         "--indexed-corpus-path",
@@ -215,8 +212,6 @@ def main() -> None:
 
     logger.info(f"PID: {os.getpid()}")
     logger.info(args)
-
-    args.with_gpus = True
 
     pass_1 = evaluate(
         args.formal_system,

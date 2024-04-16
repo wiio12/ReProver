@@ -22,7 +22,6 @@ class Status(Enum):
     FAILED = "Failed"  # This node (or search) has exhausted its options and cannot be proved within the current run.
     OPEN = "Open"  # This node (or search) has not been proven or given up on yet.
 
-
 class Node(ABC):
     @property
     @abstractmethod
@@ -47,7 +46,12 @@ class ProofFinishedNode(Node):
     status = Status.PROVED
     distance_to_proof = 0
     is_terminal = True
-
+    in_edges: List["Edge"] = field(
+        default_factory=list, init=False, compare=False, repr=False
+    )
+    def boardcast_failure(self):
+        self.status = Status.FAILED
+        return [edge.src for edge in self.in_edges]
 
 @dataclass
 class ErrorNode(Node):
@@ -55,6 +59,11 @@ class ErrorNode(Node):
     status = Status.FAILED
     distance_to_proof = math.inf
     is_terminal = True
+    in_edges: List["Edge"] = field(
+        default_factory=list, init=False, compare=False, repr=False
+    )
+    def boardcast_failure(self):
+        return [edge.src for edge in self.in_edges]
 
 
 @total_ordering
@@ -145,13 +154,14 @@ class InternalNode(Node):
         # merge status in sorry edge
         temp_dst_nodes = []
         new_failed_nodes = []
+        re_opened = False
         for edge in self.out_edges:
             if isinstance(edge, SorryEdge):
                 # if sub-root is proved, it have no effect on the status of dst node
                 if edge.sorry_root.status == Status.PROVED:
                     edge.dst.status = edge.dst.status
                 # if sub-root is failed, it fails the dst node. Only true when sub-root is not allow to revisit!
-                elif edge.sorry_root.status == Status.FAILED:
+                elif edge.sorry_root.status == Status.FAILED and edge.dst.status != Status.FAILED:
                     edge.dst.status = Status.FAILED
                     new_failed_nodes.append(edge.dst)
                 # if sub-root is open or half-proved, it does not affect the status of dst node, but creates a special half-flag.
@@ -166,36 +176,51 @@ class InternalNode(Node):
         if any(edge.dst.status == Status.HALF_PROVED for edge in self.out_edges):
             self._status = Status.HALF_PROVED
         else:
-            self._status = Status.OPEN
+            if self._status != Status.OPEN:
+                self._status = Status.OPEN
+                re_opened = True
 
         # If any children are proved, and no, this node is proved. This may prove some parents too.
-        if any(edge.dst.status == Status.HALF_PROVED for edge in self.out_edges):
+        if any(edge.dst.status == Status.PROVED for edge in self.out_edges):
             self._status = Status.PROVED          
             
         # If all children failed, this node is failed. This may fail some parents too.
         if all(edge.dst.status == Status.FAILED for edge in self.out_edges):
             self._status = Status.FAILED
-        
+
         # reset the temp dst nodes
         for node in temp_dst_nodes:
             node.status = Status.PROVED
-        
+
         # boardcast the failure
         for node in new_failed_nodes:
-            node.boardcast_failure()
+            in_nodes_to_update = node.boardcast_failure()
+            print("in_nodes_to_update:", len(in_nodes_to_update))
+            for in_node in in_nodes_to_update*2:
+                # if in_node != self:
+                in_node._recompute_status()
 
         # If this node was proved or failed, parents may need to recompute.
         # This is guaranteed to terminate because only open nodes can change, and
         # there are a finite number of open nodes in the tree.
-        if self._status != Status.OPEN:
+        if self._status != Status.OPEN or re_opened:
             for edge in self.in_edges:
                 edge.src._recompute_status()
 
     def boardcast_failure(self):
-        if self.status == Status.FAILED:
+        in_nodes_to_updates = []
+        if self.status == Status.FAILED and self.out_edges is not None:
             for edge in self.out_edges:
                 edge.dst.status = Status.FAILED
-                edge.dst.boardcast_failure()
+                in_nodes = edge.dst.boardcast_failure()
+                in_nodes_to_updates.extend(in_nodes)
+
+            # It seems like we have to update the parent as well. Chile: Proved -> Failure, Parent: Proved/HalfProved -> Open/Failure
+            if self.in_edges is not None:
+                for edge in self.in_edges:
+                    in_nodes_to_updates.append(edge.src)
+
+        return in_nodes_to_updates
 
     @property
     def distance_to_proof(self) -> float:
@@ -235,17 +260,20 @@ class InternalNode(Node):
             self.out_edges,
             key=Edge.distance_to_proof,
         )
+        sorry_proof = []
+        if isinstance(proving_edge, SorryEdge):
+            sorry_proof = proving_edge.sorry_root.extract_proof()
 
         if proving_edge.dst.is_terminal:
             # Base case: this edge is all that's required to finish the proof
             assert isinstance(proving_edge.dst, ProofFinishedNode)
-            return [proving_edge]
+            return [proving_edge] + sorry_proof
         else:
             # Recursive case: prove the child, then add this edge
             assert isinstance(proving_edge.dst, InternalNode)
             child_proof = proving_edge.dst.extract_proof()
             assert child_proof
-            return [proving_edge, *child_proof]
+            return [proving_edge] + sorry_proof + child_proof
     
     # def get_sorry_root(self):
     #     """
@@ -282,7 +310,10 @@ class InternalNode(Node):
             return  # Nothing more can be said about unexplored nodes
 
         for edge in self.in_edges:
-            assert edge.dst is self
+            if isinstance(edge, SorryEdge):
+                assert edge.dst is self or edge.sorry_root is self
+            else:
+                assert edge.dst is self
 
         if self.out_edges == []:
             assert self.status == Status.FAILED
@@ -293,7 +324,7 @@ class InternalNode(Node):
         if self.status == Status.PROVED:
             assert self.out_edges
             assert any(edge.dst.status == Status.PROVED for edge in self.out_edges)
-            assert all(edge.dst.status == Status.PROVED for edge in self.in_edges)
+            assert all(edge.dst.status in [Status.PROVED, Status.HALF_PROVED] for edge in self.in_edges)
 
             proof_by_steps = self.extract_proof()
             assert proof_by_steps is not None
@@ -322,11 +353,35 @@ class Edge:
     def distance_to_proof(self) -> float:
         return 1 + self.dst.distance_to_proof
 
+@dataclass
 class SorryEdge(Edge):
-    
+
     sorry_tactic: str
     sorry_root: InternalNode = field(repr=False)
     sorry_distance: float = math.inf
 
     def distance_to_proof(self) -> float:
-        return self.sorry_distance + 1 + self.dst.distance_to_proof
+        return self.sorry_root.distance_to_proof + 1 + self.dst.distance_to_proof
+
+@dataclass
+class Trajectory:
+    traj: List[Union[Node, Edge]]
+
+    def __repr__(self) -> str:
+        traj = []
+        for elem in self.traj:
+            if isinstance(elem, Edge):
+                traj.append(elem.tactic)
+        return f"Trajectory({str(traj)})"
+
+    def __add__(self, o: "Trajectory"):
+        return Trajectory(self.traj + o.traj)
+
+    def __radd__(self, o: "Trajectory"):
+        return Trajectory(o.traj + self.traj)
+    
+    def __contains__(self, key):
+        return key in self.traj
+
+    def reverse(self):
+        self.traj.reverse()
