@@ -158,7 +158,8 @@ class BestFirstSearchProver:
                 break
 
             try:
-                self._step(root, nodes, priority_queue)
+                if root.status in [Status.OPEN, Status.HALF_PROVED]:
+                    self._step(root, nodes, priority_queue)
             except DojoHardTimeoutError:
                 assert time.monotonic() - time_start >= self.timeout
 
@@ -202,7 +203,7 @@ class BestFirstSearchProver:
                 continue
             for edge in node.out_edges:
                 if edge.dst.status in [Status.PROVED, Status.HALF_PROVED]:
-                    print(edge)
+                    # print(edge)
                     node_queue.put(edge.dst)
                     if isinstance(edge, SorryEdge) and edge.sorry_root.status == Status.OPEN:
                         sorry_roots.append(edge.sorry_root)
@@ -210,7 +211,10 @@ class BestFirstSearchProver:
         success_traj = [self._get_traj(node, status_requirements = [Status.PROVED, Status.HALF_PROVED]) for node in success_node]
         return sorry_roots[-1], success_traj
 
-    def _get_traj(self, node, status_requirements=None):
+    def _get_traj(self, node, status_requirements=None, recursive_level=0):
+        if recursive_level > 50:
+            print("ehereherh")
+
         if len(node.in_edges) == 0:
             return [Trajectory([node])]
         
@@ -218,11 +222,22 @@ class BestFirstSearchProver:
         for edge in node.in_edges:
             if status_requirements and edge.src.status not in status_requirements:
                 continue
-            trajs_to_node = self._get_traj(edge.src, status_requirements=status_requirements)
+            trajs_to_node = self._get_traj(edge.src, status_requirements=status_requirements, recursive_level=recursive_level+1)
             for traj in trajs_to_node:
                 all_traj.append(traj + Trajectory([edge, node]))
         # all_traj = random.sample(all_traj, min(3, len(all_traj)))
         return all_traj
+    
+    def ring_detector(self, node, vistied_traj=[]):
+        if len(vistied_traj)> 0 and node == vistied_traj[0]:
+            return True
+        
+        if len(node.in_edges) == 0:
+            return False
+
+        for edge in node.in_edges:
+            vistied_traj.extend([node, edge])
+            return self.ring_detector(edge.src, vistied_traj)
 
     def _step(self, root, nodes, priority_queue):
         """
@@ -314,17 +329,13 @@ class BestFirstSearchProver:
 
         elapsed = time.monotonic() - t0
         self.environment_time += elapsed
+        trajctory_to_node = self._get_traj(node)
 
         try:
             # If we've seen this response before, use the existing node
             # TODO: I don't know if this is good to do
             result_node = nodes[response]
-
-            # if the result is itself, this have no meaning!
-            # if tactic == "thus?thesis sorry":
-            #     print("jherere")
-            trajs = self._get_traj(node)
-            if any([result_node in traj for traj in trajs]):
+            if any([result_node in traj for traj in trajctory_to_node]):
                 return None
 
             if isinstance(response, ProofFinished):
@@ -355,18 +366,23 @@ class BestFirstSearchProver:
                 log_result(f'Result: tactic success! - {response.pp}')
                 if no_sorry_response is not None:
                     assert isinstance(no_sorry_response, TacticState)
-                    sorry_root = InternalNode(
-                        state=no_sorry_response,
-                        cumulative_logprob=0,    # TODO: correct way to calculate the logprob, I think for now it's 0 is good
-                        is_root=True
-                    )
+                    if no_sorry_response not in nodes:
+                        sorry_root = InternalNode(
+                            state=no_sorry_response,
+                            cumulative_logprob=0,    # TODO: correct way to calculate the logprob, I think for now it's 0 is good
+                            is_root=True
+                        )
+                    else:
+                        sorry_root = nodes[no_sorry_response]
+                        if any([sorry_root in traj for traj in trajctory_to_node]):
+                            return None
 
             if result_node.status == Status.OPEN:  # Don't search proved/failed nodes
                 heapq.heappush(priority_queue, result_node)  # type: ignore
             
             # if sorry_root.status == Status.OPEN:
             #     heapq.heappush(priority_queue, sorry_root)
-                
+
         if sorry_root is None and "sorry" in tactic and isinstance(response, TacticState):
             assert response in nodes
             if no_sorry_response in nodes:
@@ -379,6 +395,8 @@ class BestFirstSearchProver:
                     logger.warning("There are common sorry root but diffent result after sorry root in this tree")
                 assert isinstance(no_sorry_response, TacticState)
                 sorry_root = nodes[no_sorry_response]
+                if any([sorry_root in traj for traj in trajctory_to_node]):
+                    return None
                 assert sorry_root.is_root is True
             if sorry_root is None:
                 assert isinstance(no_sorry_response, TacticState)
@@ -392,8 +410,6 @@ class BestFirstSearchProver:
         # if the tactic gives a root node, don's search here, return None
         if isinstance(result_node, InternalNode) and result_node.is_root:
             return None
-        
-
 
         # Record the new node and add it to the search queue.
         nodes[response] = result_node
@@ -409,9 +425,12 @@ class BestFirstSearchProver:
 
         # if isinstance(result_node, InternalNode):
         result_node.in_edges.append(edge)
+        # self._get_traj(node)
         
         if sorry_root is not None:
+            # self._get_traj(node)
             sorry_root.in_edges.append(edge)
+            # self._get_traj(node)
 
         return edge
 

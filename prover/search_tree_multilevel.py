@@ -2,6 +2,8 @@
 """
 import math
 from enum import Enum
+
+import numpy as np
 from multilevel_isabelle.src.main.python.pisa_client import (
     TacticState,
     IsabelleError,
@@ -256,10 +258,14 @@ class InternalNode(Node):
             return None
         assert self.is_explored
 
-        proving_edge = min(
-            self.out_edges,
-            key=Edge.distance_to_proof,
-        )
+        # proving_edge = min(
+        #     self.out_edges,
+        #     key=Edge.distance_to_proof,
+        # )
+        proving_edge = self.out_edges[
+            np.argmin([edge.distance_to_proof() for edge in self.out_edges])
+        ]
+
         sorry_proof = []
         if isinstance(proving_edge, SorryEdge):
             sorry_proof = proving_edge.sorry_root.extract_proof()
@@ -358,7 +364,6 @@ class SorryEdge(Edge):
 
     sorry_tactic: str
     sorry_root: InternalNode = field(repr=False)
-    sorry_distance: float = math.inf
 
     def distance_to_proof(self) -> float:
         return self.sorry_root.distance_to_proof + 1 + self.dst.distance_to_proof

@@ -1,0 +1,3945 @@
+[
+    [
+        "'lemma existence_ivl_empty1[simp]: \"t0 \\\\<notin> T \\\\<Longrightarrow> existence_ivl t0 x0 = {}\"\\n  and existence_ivl_empty2[simp]: \"x0 \\\\<notin> X \\\\<Longrightarrow> existence_ivl t0 x0 = {}\"'",
+        true,
+        [
+            "by simp_all"
+        ]
+    ],
+    [
+        "'lemma fst_crit_pair_below_lcs:\\n  \"fst (crit_pair p q) \\\\<prec>\\\\<^sub>p monomial 1 (term_of_pair (lcs (lp p) (lp q), component_of_term (lt p)))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma random_member_is_member:\\n  \"random_member ss = Some s \\\\<Longrightarrow> s |\\\\<in>| ss\"'",
+        true,
+        [
+            "apply(induction ss)",
+            "apply (auto simp add: random_member_def)",
+            "by (metis (mono_tags) someI_ex)"
+        ]
+    ],
+    [
+        "\"lemma var_order_string_le[sepref_import_param]:\\n  \\\\<open>((<), var_order') \\\\<in> string_rel \\\\<rightarrow> string_rel \\\\<rightarrow> bool_rel\\\\<close>\"",
+        false,
+        []
+    ],
+    [
+        "'lemma tyvrs_of_subst: \"tyvrs_of (B[X \\\\<mapsto> T]\\\\<^sub>b) = tyvrs_of B\"'",
+        true,
+        [
+            "by (nominal_induct B rule: binding.strong_induct, auto simp add: type_subst_identity)"
+        ]
+    ],
+    [
+        "'lemma tendsto_within_open: \"a \\\\<in> S \\\\<Longrightarrow> open S \\\\<Longrightarrow> (f \\\\<longlongrightarrow> l) (at a within S) \\\\<longleftrightarrow> (f \\\\<midarrow>a\\\\<rightarrow> l)\"'",
+        true,
+        [
+            "unfolding tendsto_def",
+            "by (intro all_cong1 imp_cong) (auto simp: eventually_at_topological)"
+        ]
+    ],
+    [
+        "'lemma T_init_observation_eq:\\n  \"T (s, o) {\\\\<omega> \\\\<in> space S. L os \\\\<omega>} = T (s, o\\') {\\\\<omega> \\\\<in> space S. L os \\\\<omega>}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma is_element_ptr_kind_none:\\n  assumes \"\\\\<not>is_element_ptr_kind node_ptr\"\\n  shows \"cast\\\\<^sub>n\\\\<^sub>o\\\\<^sub>d\\\\<^sub>e\\\\<^sub>_\\\\<^sub>p\\\\<^sub>t\\\\<^sub>r\\\\<^sub>2\\\\<^sub>e\\\\<^sub>l\\\\<^sub>e\\\\<^sub>m\\\\<^sub>e\\\\<^sub>n\\\\<^sub>t\\\\<^sub>_\\\\<^sub>p\\\\<^sub>t\\\\<^sub>r node_ptr = None\"'",
+        true,
+        [
+            "using assms",
+            "by(auto simp add: is_element_ptr_kind_def cast\\<^sub>e\\<^sub>l\\<^sub>e\\<^sub>m\\<^sub>e\\<^sub>n\\<^sub>t\\<^sub>_\\<^sub>p\\<^sub>t\\<^sub>r\\<^sub>2\\<^sub>n\\<^sub>o\\<^sub>d\\<^sub>e\\<^sub>_\\<^sub>p\\<^sub>t\\<^sub>r_def cast\\<^sub>n\\<^sub>o\\<^sub>d\\<^sub>e\\<^sub>_\\<^sub>p\\<^sub>t\\<^sub>r\\<^sub>2\\<^sub>e\\<^sub>l\\<^sub>e\\<^sub>m\\<^sub>e\\<^sub>n\\<^sub>t\\<^sub>_\\<^sub>p\\<^sub>t\\<^sub>r_def\n      split: option.splits Option.bind_splits)"
+        ]
+    ],
+    [
+        "'lemma non_irreducible_nonneg_mat_split: \\n  fixes A :: \"\\'a :: linordered_idom mat\" \\n  assumes A: \"A \\\\<in> carrier_mat n n\" \\n  and nonneg: \"nonneg_mat A\" \\n  and not: \"\\\\<not> irreducible_mat A\" \\n  and n: \"n > 1\" \\nshows \"\\\\<exists> n1 n2 A1 A2. char_poly A = char_poly A1 * char_poly A2 \\n    \\\\<and> nonneg_mat A1 \\\\<and> nonneg_mat A2\\n    \\\\<and> A1 \\\\<in> carrier_mat n1 n1 \\\\<and> A2 \\\\<in> carrier_mat n2 n2\\n    \\\\<and> 0 < n1 \\\\<and> n1 < n \\\\<and> 0 < n2 \\\\<and> n2 < n \\\\<and> n1 + n2 = n\"'",
+        false,
+        []
+    ],
+    [
+        "'theorem TS_OPT2\\':  \"(x::nat) \\\\<noteq> y \\\\<Longrightarrow> set \\\\<sigma> \\\\<subseteq> {x,y}\\n     \\\\<Longrightarrow> T\\\\<^sub>p_on (rTS []) [x,y] \\\\<sigma>  \\\\<le> 2 * real (T\\\\<^sub>p_opt [x,y] \\\\<sigma>) + 2\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sets_embed_measure:\\n  assumes inj: \"inj f\"\\n  shows \"sets (embed_measure M f) = {f ` A |A. A \\\\<in> sets M}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma prime_ge_Suc_0_nat: \"prime p \\\\<Longrightarrow> p \\\\<ge> Suc 0\"'",
+        true,
+        [
+            "by (drule prime_ge_2_nat) auto"
+        ]
+    ],
+    [
+        "'lemma is_sublist_simp[simp]: \"a \\\\<noteq> v \\\\<Longrightarrow> is_sublist (a#as) (v#vs) = is_sublist (a#as) vs\"'",
+        true,
+        [
+            "apply (cases vs)",
+            "by (auto simp: is_sublist_rec)"
+        ]
+    ],
+    [
+        "'lemma morphic_propE:\\n  fixes R (structure)\\n  assumes \"morphic_prop R P\"\\n  shows \"P \\\\<one>\"\\n    and \"\\\\<And>r. r \\\\<in> carrier R \\\\<Longrightarrow> P r\"\\n    and \"\\\\<And>r1 r2. \\\\<lbrakk> r1 \\\\<in> carrier R; r2 \\\\<in> carrier R \\\\<rbrakk> \\\\<Longrightarrow> P (r1 \\\\<otimes> r2)\"\\n    and \"\\\\<And>r1 r2. \\\\<lbrakk> r1 \\\\<in> carrier R; r2 \\\\<in> carrier R \\\\<rbrakk> \\\\<Longrightarrow> P (r1 \\\\<oplus> r2)\"'",
+        true,
+        [
+            "using assms",
+            "unfolding morphic_prop_def",
+            "by simp +"
+        ]
+    ],
+    [
+        "'lemma parts_Diff_notin: \"[| Y \\\\<notin> H; Nonce n \\\\<notin> parts (H - {Y}) |]\\n==> Nonce n \\\\<notin> parts H\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sum_card:\\n  fixes U :: \"\\'a set set\"\\n    and n :: nat\\n  assumes \"\\\\<forall>S \\\\<in> U. card S \\\\<le> n\"\\n  shows \"sum card U \\\\<le> card U * n\"'",
+        true,
+        [
+            "using assms",
+            "by (induct U rule: infinite_finite_induct) auto"
+        ]
+    ],
+    [
+        "'lemma ereal_divide_le_neg:\\n  fixes x y z :: ereal\\n  shows \"x < 0 \\\\<Longrightarrow> x \\\\<noteq> -\\\\<infinity> \\\\<Longrightarrow> z / x \\\\<le> y \\\\<longleftrightarrow> x * y \\\\<le> z\"'",
+        true,
+        [
+            "by (cases rule: ereal3_cases[of x y z])\n     (auto simp: field_simps mult_le_0_iff divide_le_0_iff)"
+        ]
+    ],
+    [
+        "'lemma imp_OO_imp [simp]: \"(\\\\<longrightarrow>) OO (\\\\<longrightarrow>) = (\\\\<longrightarrow>)\"'",
+        true,
+        [
+            "by (intro ext) (auto simp: OO_def)"
+        ]
+    ],
+    [
+        "'lemma circ_circ_sub_mult:\\n  \"1\\\\<^sup>\\\\<circ> * x\\\\<^sup>\\\\<circ> \\\\<le> x\\\\<^sup>\\\\<circ>\\\\<^sup>\\\\<circ>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma merge_sort_poly_sort_poly_spec:\\n  \\\\<open>(RETURN o merge_sort_poly, sort_poly_spec) \\\\<in> \\\\<langle>Id\\\\<rangle>list_rel \\\\<rightarrow>\\\\<^sub>f \\\\<langle>\\\\<langle>Id\\\\<rangle>list_rel\\\\<rangle>nres_rel\\\\<close>'",
+        false,
+        []
+    ],
+    [
+        "'lemma of_numeral: \"f (numeral n) = f 0\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma keyset_init [iff]: \"keyset (initState A)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma subdegree_fps_const [simp]: \"subdegree (fps_const c) = 0\"'",
+        true,
+        [
+            "unfolding subdegree_def",
+            "by (auto intro: Least_eq_0)"
+        ]
+    ],
+    [
+        "'lemma (in order) mono_on_subset:\\n  fixes f :: \"\\'a \\\\<Rightarrow> \\'b::order\"\\n  shows \"mono_on f X \\\\<Longrightarrow> Y \\\\<subseteq> X \\\\<Longrightarrow> mono_on f Y\"'",
+        true,
+        [
+            "by (auto simp: mono_on_def intro: subset_trans)"
+        ]
+    ],
+    [
+        "'lemma \"Integer[1] \\\\<squnion> (Real[?] :: classes1 type) = Real[?]\"'",
+        true,
+        [
+            "by (simp add: Real_def)"
+        ]
+    ],
+    [
+        "'lemma call_has_return_edge:\\n  assumes \"valid_edge wfp a\" and \"kind a = Q:r\\\\<hookrightarrow>\\\\<^bsub>p\\\\<^esub>fs\"\\n  obtains a\\' where \"valid_edge wfp a\\'\" and \"\\\\<exists>Q\\' f\\'. kind a\\' = Q\\'\\\\<hookleftarrow>\\\\<^bsub>p\\\\<^esub>f\\'\"\\n  and \"targetnode a\\' = r\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sum_4: \"sum f (UNIV::4 set) = f 1 + f 2 + f 3 + f 4\"'",
+        true,
+        [
+            "unfolding UNIV_4",
+            "by (simp add: field_simps)"
+        ]
+    ],
+    [
+        "'lemma perm_nonempty :\\n  assumes \"is_det_state_cover M2 V\"\\n  and \"OFSM M1\"\\n  and \"OFSM M2\"\\n  and \"inputs M1 = inputs M2\"\\nshows \"Perm V M1 \\\\<noteq> {}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma set_iterator_no_cond_rule_P:\\n\"\\\\<lbrakk> set_iterator it S0;\\n   I S0 \\\\<sigma>0;\\n   !!S \\\\<sigma> x. \\\\<lbrakk> x \\\\<in> S; I S \\\\<sigma>; S \\\\<subseteq> S0 \\\\<rbrakk> \\\\<Longrightarrow> I (S - {x}) (f x \\\\<sigma>);\\n   !!\\\\<sigma>. I {} \\\\<sigma> \\\\<Longrightarrow> P \\\\<sigma>\\n \\\\<rbrakk> \\\\<Longrightarrow> P (it (\\\\<lambda>_. True) f \\\\<sigma>0)\"'",
+        true,
+        [
+            "unfolding set_iterator_def",
+            "by (rule set_iterator_genord.iteratei_rule_P [of it S0 \"\\<lambda>_ _. True\" I \\<sigma>0 \"\\<lambda>_. True\" f P]) simp_all"
+        ]
+    ],
+    [
+        "'lemma \"\\\\<nu>\\\\<^sup>\\\\<natural> (\\\\<Squnion> P) = \\\\<Squnion>{\\\\<nu>\\\\<^sup>\\\\<natural> p |p. p \\\\<in> P}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma fgl_invarI[intro?]:\\n    \"\\\\<lbrakk> invar v0 D0 PDPE; \\n       invar v0 D0 PDPE \\\\<Longrightarrow> fgl_invar_part (B,PDPE)\\\\<rbrakk> \\n     \\\\<Longrightarrow> fgl_invar v0 D0 (B,PDPE)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma proj_out:\\n  fixes \\\\<phi> :: \"(\\'a :: infinite, \\'b) fo_fmla\"\\n    and J :: \"((\\'a, nat) fo_t, \\'b) fo_intp\"\\n  assumes \"wf_fo_intp \\\\<phi> I\" \"esat \\\\<phi> I \\\\<sigma> UNIV\"\\n  shows \"\\\\<exists>\\\\<tau>. esat \\\\<phi> I (Inl \\\\<circ> \\\\<tau>) UNIV \\\\<and> (\\\\<forall>i x. i \\\\<in> fv_fo_fmla \\\\<phi> \\\\<and> \\\\<sigma> i = Inl x \\\\<longrightarrow> \\\\<tau> i = x) \\\\<and>\\n    ad_agr_list (act_edom \\\\<phi> I) (map \\\\<sigma> (fv_fo_fmla_list \\\\<phi>)) (map (Inl \\\\<circ> \\\\<tau>) (fv_fo_fmla_list \\\\<phi>))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma skl1_step3_refines_a0i_commit_skip_i:\\n  \"{R0sk1iai \\\\<inter> (UNIV \\\\<times> skl1_inv3)}\\n      a0i_commit A B \\\\<langle>NonceF (Ra$ni), Nr, Exp gny (NonceF (Ra$nx))\\\\<rangle> \\\\<union> Id,\\n      skl1_step3 Ra A B Nr gny\\n   {>R0sk1iai}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma not_ccw_eq: \"distinct3 p q r \\\\<Longrightarrow> in3 S p q r \\\\<Longrightarrow> \\\\<not> ccw p q r \\\\<longleftrightarrow> ccw p r q\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma weak_reduction_coupled_simulation_and_closures:\\n  fixes Rel :: \"(\\'proc \\\\<times> \\'proc) set\"\\n    and Cal :: \"\\'proc processCalculus\"\\n  assumes coupledSimulation: \"weak_reduction_coupled_simulation Rel Cal\"\\n  shows \"weak_reduction_coupled_simulation (Rel\\\\<^sup>=) Cal\"\\n    and \"weak_reduction_coupled_simulation (Rel\\\\<^sup>+) Cal\"\\n    and \"weak_reduction_coupled_simulation (Rel\\\\<^sup>*) Cal\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma jnf_vector: assumes A: \"A \\\\<in> carrier_mat n n\"\\n  and jb: \"\\\\<And> i j. i < n \\\\<Longrightarrow> j < n \\\\<Longrightarrow> jb A i j\"\\n  and evb: \"ev_block n A\"\\nshows \"jordan_matrix (jnf_vector A) = (A :: \\'a mat)\"\\n  \"0 \\\\<notin> fst ` set (jnf_vector A)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma commutes_emp [simp]: \"commutes {\\\\<epsilon>, w}\"'",
+        true,
+        [
+            "by (auto simp:commutes_def)"
+        ]
+    ],
+    [
+        "'lemma HInfinite_hcmod_iff: \"(z \\\\<in> HInfinite) = (hcmod z \\\\<in> HInfinite)\"'",
+        true,
+        [
+            "by (simp add: HInfinite_def Infinitesimal_hcmod_iff)"
+        ]
+    ],
+    [
+        "'lemma disjoint_family_Suc:\\n  \"(\\\\<And>n. A n \\\\<subseteq> A (Suc n)) \\\\<Longrightarrow> disjoint_family (\\\\<lambda>i. A (Suc i) - A i)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma bounded_induct:\\n     \"[| wf r;      \\n         \\\\<forall>m \\\\<in> I. F \\\\<in> (A \\\\<inter> f-`{m}) leadsTo                    \\n                      ((A \\\\<inter> f-`(r\\\\<inverse> `` {m})) \\\\<union> B) |]  \\n      ==> F \\\\<in> A leadsTo ((A - (f-`I)) \\\\<union> B)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma fund_sym_poly_wit_insertion:\\n  assumes \"symmetric_mpoly A p\"\\n  shows   \"insertion (sym_mpoly A) (fund_sym_poly_wit p) = p\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma zorder_exist_pole:\\n  fixes f::\"complex \\\\<Rightarrow> complex\" and z::complex\\n  defines \"n\\\\<equiv>zorder f z\" and \"g\\\\<equiv>zor_poly f z\"\\n  assumes  holo: \"f holomorphic_on s-{z}\" and\\n          \"open s\" \"z\\\\<in>s\"\\n      and \"is_pole f z\"\\n  shows \"n < 0 \\\\<and> g z\\\\<noteq>0 \\\\<and> (\\\\<exists>r. r>0 \\\\<and> cball z r \\\\<subseteq> s \\\\<and> g holomorphic_on cball z r\\n    \\\\<and> (\\\\<forall>w\\\\<in>cball z r - {z}. f w  = g w / (w-z) ^ nat (- n) \\\\<and> g w \\\\<noteq>0))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma last_message_not_NoMsg_conv: \"\\n  (last_message xs \\\\<noteq> \\\\<NoMsg>) = (\\\\<exists>i<length xs. xs ! i \\\\<noteq> \\\\<NoMsg>)\"'",
+        true,
+        [
+            "by (simp add: last_message_NoMsg_conv nth_append)"
+        ]
+    ],
+    [
+        "'lemma cka_1: \"(x \\\\<cdot> y)\\\\<^sup>\\\\<star> \\\\<le> x\\\\<^sup>\\\\<star> \\\\<cdot> y\\\\<^sup>\\\\<star>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma unfold_zipWithStep:\\n  fixes f :: \"\\'a \\\\<rightarrow> \\'b \\\\<rightarrow> \\'c\"\\n  fixes ha :: \"\\'s \\\\<rightarrow> (\\'a, \\'s) Step\"\\n  fixes hb :: \"\\'t \\\\<rightarrow> (\\'b, \\'t) Step\"\\n  defines h_def: \"h \\\\<equiv> zipWithStep\\\\<cdot>f\\\\<cdot>ha\\\\<cdot>hb\"\\n  shows\\n  \"(\\\\<forall>sa sb. sa \\\\<noteq> \\\\<bottom> \\\\<longrightarrow> sb \\\\<noteq> \\\\<bottom> \\\\<longrightarrow>\\n    unfold\\\\<cdot>h\\\\<cdot>(sa :!: sb :!: Nothing) =\\n      zipWithL\\\\<cdot>f\\\\<cdot>(unfold\\\\<cdot>ha\\\\<cdot>sa)\\\\<cdot>(unfold\\\\<cdot>hb\\\\<cdot>sb)) \\\\<and>\\n   (\\\\<forall>sa sb a. sa \\\\<noteq> \\\\<bottom> \\\\<longrightarrow> sb \\\\<noteq> \\\\<bottom> \\\\<longrightarrow>\\n    unfold\\\\<cdot>h\\\\<cdot>(sa :!: sb :!: Just\\\\<cdot>(L\\\\<cdot>a)) =\\n      zipWithL\\\\<cdot>f\\\\<cdot>(LCons\\\\<cdot>a\\\\<cdot>(unfold\\\\<cdot>ha\\\\<cdot>sa))\\\\<cdot>(unfold\\\\<cdot>hb\\\\<cdot>sb))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma spmf_restrict_spmf: \"spmf (p \\\\<upharpoonleft> A) x = (if x \\\\<in> A then spmf p x else 0)\"'",
+        true,
+        [
+            "by(simp add: spmf_conv_measure_spmf measure_pmf_zero_iff)"
+        ]
+    ],
+    [
+        "'lemma shows_sep_append [show_law_simps]:\\n  assumes \"\\\\<And>r s. \\\\<forall>x \\\\<in> set xs. showsx x (r @ s) = showsx x r @ s\"\\n    and \"\\\\<And>r s. sep (r @ s) = sep r @ s\"\\n  shows \"shows_sep showsx sep xs (r @ s) = shows_sep showsx sep xs r @ s\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma has_integral_monotone_convergence_increasing:\\n  fixes f :: \"nat \\\\<Rightarrow> \\'a::euclidean_space \\\\<Rightarrow> real\"\\n  assumes f: \"\\\\<And>k. (f k has_integral x k) s\"\\n  assumes \"\\\\<And>k x. x \\\\<in> s \\\\<Longrightarrow> f k x \\\\<le> f (Suc k) x\"\\n  assumes \"\\\\<And>x. x \\\\<in> s \\\\<Longrightarrow> (\\\\<lambda>k. f k x) \\\\<longlonglongrightarrow> g x\"\\n  assumes \"x \\\\<longlonglongrightarrow> x\\'\"\\n  shows \"(g has_integral x\\') s\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma inv_locate_b_Oc_via_a[simp]: \\n  assumes \"inv_locate_a (as, lm) (q, l, Oc # r) ires\"\\n  shows \"inv_locate_b (as, lm) (q, Oc # l, r) ires\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma \"\\\\<lfloor>(\\\\<lambda>X. \\\\<^bold>\\\\<diamond>\\\\<^bold>\\\\<exists>X) \\\\<^bold>\\\\<down>(P::\\\\<up>\\\\<langle>\\\\<langle>\\\\<zero>\\\\<rangle>\\\\<rangle>) \\\\<^bold>\\\\<rightarrow> \\\\<^bold>\\\\<diamond>((\\\\<lambda>X. \\\\<^bold>\\\\<exists>X) \\\\<^bold>\\\\<down>P)\\\\<rfloor>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma dtail_root_in_set:\\n  assumes \"e \\\\<in> darcs t\" and \"t = Node r xs\" and \"dtail t dt e = r\"\\n  shows \"e \\\\<in> snd ` fset xs\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma l3_obs_inv10 [iff]: \"oreach l3 \\\\<subseteq> l3_inv10\"'",
+        true,
+        [
+            "by (auto simp add: oreach_def)"
+        ]
+    ],
+    [
+        "'lemma new_element_get_disconnected_nodes_is_l_new_element_get_disconnected_nodes [instances]:\\n  \"l_new_element_get_disconnected_nodes get_disconnected_nodes_locs\"'",
+        true,
+        [
+            "by(simp add: get_disconnected_nodes_new_element l_new_element_get_disconnected_nodes_def)"
+        ]
+    ],
+    [
+        "'lemma set_traceOf_validTrans:\\nassumes \"trn \\\\<in>\\\\<in> traceOf s al\"  shows \"validTrans trn\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma not_in_interior_convex_hull_3:\\n  fixes a :: \"complex\"\\n  shows \"a \\\\<notin> interior(convex hull {a,b,c})\"\\n        \"b \\\\<notin> interior(convex hull {a,b,c})\"\\n        \"c \\\\<notin> interior(convex hull {a,b,c})\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma le_any_nat[simp]: \"v \\\\<sqsubseteq> VNat n \\\\<Longrightarrow> v = VNat n\"'",
+        true,
+        [
+            "by (case_tac n, auto)"
+        ]
+    ],
+    [
+        "'lemma wfzf_implies_wf: \"wfzf R \\\\<Longrightarrow> wf R\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma blinding_of_rt_F\\\\<^sub>m_hash:\\n  assumes \"boa \\\\<le> vimage2p ha ha (=)\" \"bob \\\\<le> vimage2p hb hb (=)\"\\n  shows \"blinding_of_rt_F\\\\<^sub>m ha boa hb bob \\\\<le> vimage2p (hash_rt_F\\\\<^sub>m ha hb) (hash_rt_F\\\\<^sub>m ha hb) (=)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma vD_addpreRT [simp]:\\n  fixes rt dip npre\\n  assumes \"dip \\\\<in> kD rt\"\\n  shows \"vD (the (addpreRT rt dip npre)) = vD rt\"'",
+        true,
+        [
+            "unfolding vD_def addpreRT_def",
+            "using assms [THEN kD_Some]",
+            "by force"
+        ]
+    ],
+    [
+        "'lemma iT_Div_cut_le: \"\\n  0 < k \\\\<Longrightarrow> (I \\\\<oslash> k) \\\\<down>\\\\<le> t = I \\\\<down>\\\\<le> (t * k + (k - Suc 0)) \\\\<oslash> k\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma rel_fset_transfer [transfer_rule]:\\n  \"((A ===> B ===> (=)) ===> rel_fset A ===> rel_fset B ===> (=))\\n    rel_fset rel_fset\"'",
+        true,
+        [
+            "unfolding rel_fun_def rel_fset_alt_def",
+            "by smt"
+        ]
+    ],
+    [
+        "'lemma termMOD_igWlsAbsIsInBar: \"igWlsAbsIsInBar termMOD\"'",
+        true,
+        [
+            "unfolding igWlsAbsIsInBar_def",
+            "proof clarify",
+            "fix us s A",
+            "assume \"igWlsAbs termMOD (us,s) A\"",
+            "thus \"isInBar (us,s)\" sorry",
+            "unfolding isInBar_def",
+            "apply simp",
+            "apply(erule wlsAbs_cases)",
+            "subgoal for x X sorry",
+            "apply(cases \"wls s X\")",
+            "subgoal sorry",
+            "using Op",
+            "by (auto simp add: isInBar_def split: option.splits)",
+            "by blast",
+            "done\n\n\\<comment> \\<open>This weaker version was previously called @{text ucast_less_ucast}\\<close>",
+            "qed\n\n\\<comment> \\<open>This weaker version was previously called @{text ucast_less_ucast}\\<close>"
+        ]
+    ],
+    [
+        "'lemma A6_NSources:\\n\"\\\\<forall> C \\\\<in> (AbstrLevel level0). (C \\\\<noteq> sA9 \\\\<and> C \\\\<noteq> sA8 \\\\<and> C \\\\<noteq> sA7 \\\\<longrightarrow> sA6 \\\\<notin> (Sources level0 C))\"'",
+        true,
+        [
+            "by (metis (full_types) A6_Acc Acc_Sources insert_iff singleton_iff)"
+        ]
+    ],
+    [
+        "'lemma map_\\\\<I>_full [simp]: \"map_\\\\<I> f g \\\\<I>_full = \\\\<I>_uniform UNIV (range g)\"'",
+        true,
+        [
+            "unfolding \\<I>_full_def map_\\<I>_def",
+            "by(simp add: \\<I>_uniform_def Abs_\\<I>_inverse)"
+        ]
+    ],
+    [
+        "'lemma problem_plan_bound_works: \\n  fixes PROB :: \"\\'a problem\" and as and s :: \"\\'a state\"\\n  assumes \"finite PROB\" \"(s \\\\<in> valid_states PROB)\" \"(as \\\\<in> valid_plans PROB)\" \\n  shows \"(\\\\<exists>as\\'. \\n      (exec_plan s as = exec_plan s as\\') \\n      \\\\<and> (subseq as\\' as)\\n      \\\\<and> (length as\\' \\\\<le> problem_plan_bound PROB)\\n    )\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma swap_commute:\\n\"\\\\<lbrakk>good X; zs \\\\<noteq> zs\\' \\\\<or> {x,y} \\\\<inter> {x\\',y\\'} = {}\\\\<rbrakk> \\\\<Longrightarrow>\\n ((X #[x \\\\<and> y]_zs) #[x\\' \\\\<and> y\\']_zs\\') = ((X #[x\\' \\\\<and> y\\']_zs\\') #[x \\\\<and> y]_zs)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma fv_list\\\\<^sub>s\\\\<^sub>s\\\\<^sub>t_is_fv\\\\<^sub>s\\\\<^sub>s\\\\<^sub>t: \"fv\\\\<^sub>s\\\\<^sub>s\\\\<^sub>t S = set (fv_list\\\\<^sub>s\\\\<^sub>s\\\\<^sub>t S)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma simple_cg_empty_invar :\\n  \"convergence_graph_lookup_invar M1 M2 simple_cg_lookup simple_cg_empty\"'",
+        true,
+        [
+            "unfolding simple_cg_empty_def",
+            "by (simp add: convergence_graph_lookup_invar_def)"
+        ]
+    ],
+    [
+        "'lemma left_adjoints_compose:\\n    assumes \"is_left_adjoint f\" and \"is_left_adjoint f\\'\" and \"src f = trg f\\'\"\\n    shows \"is_left_adjoint (f \\\\<star> f\\')\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma vec_first_add:\\n  assumes \"dim_vec x \\\\<ge> n\"\\n    and \"dim_vec y \\\\<ge> n\"\\n  shows\"vec_first (x + y) n = vec_first x n + vec_first y n\"'",
+        true,
+        [
+            "using assms",
+            "by (auto simp add: vec_first_def)"
+        ]
+    ],
+    [
+        "'lemma const_subterms_subst_cases\\':\\n  assumes \"Fun c [] \\\\<sqsubseteq>\\\\<^sub>s\\\\<^sub>e\\\\<^sub>t M \\\\<cdot>\\\\<^sub>s\\\\<^sub>e\\\\<^sub>t \\\\<sigma>\"\\n  shows \"Fun c [] \\\\<sqsubseteq>\\\\<^sub>s\\\\<^sub>e\\\\<^sub>t M \\\\<or> Fun c [] \\\\<sqsubseteq>\\\\<^sub>s\\\\<^sub>e\\\\<^sub>t subst_range \\\\<sigma>\"'",
+        true,
+        [
+            "using assms const_subterms_subst_cases",
+            "by (cases \"Fun c [] \\<sqsubseteq>\\<^sub>s\\<^sub>e\\<^sub>t M \\<cdot>\\<^sub>s\\<^sub>e\\<^sub>t \\<sigma>\") force+"
+        ]
+    ],
+    [
+        "'lemma vec_of_basis_enum_ket:\\n  \"vec_of_basis_enum (ket i) = unit_vec (CARD(\\'a)) (enum_idx i)\"\\n  for i::\"\\'a::enum\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma set_as_mapping_refined[code] :\\n  fixes t :: \"(\\'a :: ccompare \\\\<times> \\'c :: ccompare) set_rbt\" \\n  and   xs:: \"(\\'b :: ceq \\\\<times> \\'d :: ceq) set_dlist\"\\n  shows \"set_as_mapping (RBT_set t) = (case ID CCOMPARE((\\'a \\\\<times> \\'c)) of\\n           Some _ \\\\<Rightarrow> (RBT_Set2.fold (\\\\<lambda> (x,z) m . case Mapping.lookup m (x) of\\n                        None \\\\<Rightarrow> Mapping.update (x) {z} m |\\n                        Some zs \\\\<Rightarrow> Mapping.update (x) (Set.insert z zs) m)\\n                      t\\n                      Mapping.empty) |\\n           None   \\\\<Rightarrow> Code.abort (STR \\'\\'set_as_map RBT_set: ccompare = None\\'\\') \\n                                (\\\\<lambda>_. set_as_mapping (RBT_set t)))\"\\n    (is \"set_as_mapping (RBT_set t) = ?C1 (RBT_set t)\")\\n  and   \"set_as_mapping (DList_set xs) = (case ID CEQ((\\'b \\\\<times> \\'d)) of\\n            Some _ \\\\<Rightarrow> (DList_Set.fold (\\\\<lambda> (x,z) m . case Mapping.lookup m (x) of\\n                        None \\\\<Rightarrow> Mapping.update (x) {z} m |\\n                        Some zs \\\\<Rightarrow> Mapping.update (x) (Set.insert z zs) m)\\n                      xs\\n                      Mapping.empty) |\\n           None   \\\\<Rightarrow> Code.abort (STR \\'\\'set_as_map RBT_set: ccompare = None\\'\\') \\n                                (\\\\<lambda>_. set_as_mapping (DList_set xs)))\"\\n    (is \"set_as_mapping (DList_set xs) = ?C2 (DList_set xs)\")'",
+        false,
+        []
+    ],
+    [
+        "'lemma add_left_commute:\\n  \"x \\\\<in> V \\\\<Longrightarrow> y \\\\<in> V \\\\<Longrightarrow> z \\\\<in> V \\\\<Longrightarrow> x + (y + z) = y + (x + z)\"'",
+        true,
+        [
+            "using add_assoc add_commute",
+            "by (simp add: local.add_commute)"
+        ]
+    ],
+    [
+        "'lemma inner_prod_is_sesquilinear:\\n  fixes u1 u2 v1 v2:: \"complex vec\" and c1 c2 c3 c4:: complex and n:: nat\\n  assumes \"dim_vec u1 = n\" and \"dim_vec u2 = n\" and \"dim_vec v1 = n\" and \"dim_vec v2 = n\"\\n  shows \"\\\\<langle>c1 \\\\<cdot>\\\\<^sub>v u1 + c2 \\\\<cdot>\\\\<^sub>v u2|c3 \\\\<cdot>\\\\<^sub>v v1 + c4 \\\\<cdot>\\\\<^sub>v v2\\\\<rangle> = cnj (c1) * c3 * \\\\<langle>u1|v1\\\\<rangle> + cnj (c2) * c3 * \\\\<langle>u2|v1\\\\<rangle> + \\n                                                 cnj (c1) * c4 * \\\\<langle>u1|v2\\\\<rangle> + cnj (c2) * c4 * \\\\<langle>u2|v2\\\\<rangle>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma preallocated_dom [simp]: \\n  \"\\\\<lbrakk> preallocated h; C \\\\<in> sys_xcpts \\\\<rbrakk> \\\\<Longrightarrow> addr_of_sys_xcpt C \\\\<in> dom h\"'",
+        true,
+        [
+            "by (unfold preallocated_def) auto"
+        ]
+    ],
+    [
+        "'lemma Lr_subs_L: \"subs (Lr UNIV ts) (L UNIV ts)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma zip_option_simps [simp]:\\n  \"zip_option xs ys = None \\\\<Longrightarrow> length xs = length ys \\\\<Longrightarrow> False\"\\n  \"zip_option xs ys = None \\\\<Longrightarrow> length xs \\\\<noteq> length ys\"\\n  \"zip_option xs ys = Some zs \\\\<Longrightarrow> zs = zip xs ys\"'",
+        true,
+        [
+            "by(auto split: option.split)"
+        ]
+    ],
+    [
+        "'lemma step_defNode: \"v \\\\<in> allVars g \\\\<Longrightarrow> v \\\\<noteq> chooseNext g \\\\<Longrightarrow> step.defNode g v = defNode g v\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma cont_true_cont_2[PLM]:\\n      \"[ContingentlyFalse p \\\\<^bold>\\\\<rightarrow> Contingent p in v]\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma forall_coeffs_conv:\\n  \"(\\\\<forall>n. P (coeff p n)) \\\\<longleftrightarrow> (\\\\<forall>c \\\\<in> set (coeffs p). P c)\" if \"P 0\"'",
+        true,
+        [
+            "using that",
+            "proof (induction p)",
+            "case 0",
+            "then",
+            "show?case sorry",
+            "by (simp)",
+            "qed (auto simp add: coeff_pCons split: nat.splits)"
+        ]
+    ],
+    [
+        "'lemma SETId: assumes \"x |\\\\<in>| X\" shows \"(Id SET X) |@| x = x\"'",
+        true,
+        [
+            "proof -",
+            "have \"x \\<in> Obj (Op SET)\" sorry",
+            "using assms",
+            "apply (simp add: OppositeCategory_def)",
+            "by(simp add: SET_def SET'_def MakeCat_def)",
+            "thus?thesis sorry",
+            "proof -",
+            "assume assms: \"x \\<in> obj\\<^bsub>Op SET\\<^esub>\"",
+            "show?thesis sorry",
+            "proof(simp add: SET_def)",
+            "show \"id\\<^bsub>MakeCat SET'\\<^esub> X |@| x = x\" sorry",
+            "proof(cases \"x |\\<in>| X\")",
+            "case True",
+            "thus?thesis sorry",
+            "apply(simp add: SET'_def)",
+            "apply (simp add: MakeCat_def)",
+            "by(rule ZFfunApp)",
+            "qed (simp add: assms)",
+            "qed\n\n\\<comment> \\<open>NOTE added lemma.\\<close>",
+            "qed\n\n\\<comment> \\<open>\\<^const>\\<open>X\\<close>\\<close>",
+            " qed"
+        ]
+    ],
+    [
+        "'lemma greater_bounded_Suc_iff[simp]: \"(Suc x,x)\\\\<in>greater_bounded N \\\\<longleftrightarrow> Suc x \\\\<le> N\"'",
+        true,
+        [
+            "by (auto simp: greater_bounded_def intro: Suc_leI)"
+        ]
+    ],
+    [
+        "'lemma supto_bottom_iff[simp]:\\n  \"(supto\\\\<cdot>i\\\\<cdot>j = \\\\<bottom>) \\\\<longleftrightarrow> (i = \\\\<bottom> \\\\<or> j = \\\\<bottom>)\"'",
+        true,
+        [
+            "by (cases i; cases j; fastforce)"
+        ]
+    ],
+    [
+        "'lemma SeqHaddP_Zero_E: \"{SeqHaddP s w Zero z} \\\\<turnstile> w EQ z\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma norm_power_int: \"norm (power_int x n) = power_int (norm x) n\"\\n  for x :: \"\\'a::real_normed_div_algebra\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma lower_real_interval[simp]: \"lower (real_interval x) = lower x\"'",
+        true,
+        [
+            "by transfer force"
+        ]
+    ],
+    [
+        "'lemma siterate_transfer [transfer_rule]:\\n  \"((=) ===> (=) ===> pcr_stream (=)) iterates siterate\"'",
+        true,
+        [
+            "by(simp add: rel_fun_def stream.pcr_cr_eq cr_stream_def)"
+        ]
+    ],
+    [
+        "'lemma pre_post_right_sub_dist:\\n  \"-r\\\\<stileturn>-p \\\\<le> -r\\\\<stileturn>-p\\\\<squnion>-q\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma BC_rel: \"Fr_2 \\\\<F> \\\\<Longrightarrow> \\\\<B> \\\\<^bold>\\\\<equiv> \\\\<B>\\\\<^sub>C \\\\<C>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma lprefixI [consumes 1, case_names lprefix,\\n                case_conclusion lprefix LeLNil LeLCons]:\\n  assumes major: \"(xs, ys) \\\\<in> X\"\\n  and step:\\n      \"\\\\<And>xs ys. (xs, ys) \\\\<in> X\\n       \\\\<Longrightarrow> lnull xs \\\\<or> (\\\\<exists>x xs\\' ys\\'. xs = LCons x xs\\' \\\\<and> ys = LCons x ys\\' \\\\<and>\\n                                   ((xs\\', ys\\') \\\\<in> X \\\\<or> xs\\' \\\\<sqsubseteq> ys\\'))\"\\n  shows \"xs \\\\<sqsubseteq> ys\"'",
+        true,
+        [
+            "using major",
+            "by(coinduct)(auto dest: step)"
+        ]
+    ],
+    [
+        "'lemma bounded_semilattice_inf_top_transfer[transfer_rule]:\\n  assumes [transfer_rule]: \"bi_unique A\" \"right_total A\" \\n  shows \\n    \"(\\n      (A ===> A ===> A) ===> \\n      (A ===> A ===> (=)) ===> \\n      (A ===> A ===> (=)) ===> \\n      A ===> \\n      (=)\\n    ) \\n    (bounded_semilattice_inf_top_ow (Collect (Domainp A))) \\n    class.bounded_semilattice_inf_top\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma eq_FnI:\\n  \"(\\\\<And> v. eq (pred\\\\<cdot>n) (f1\\\\<cdot>v) (f2\\\\<cdot>v)) \\\\<Longrightarrow> eq n (Fn\\\\<cdot>f1) (Fn\\\\<cdot>f2)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma  (in dist_execution) happened_before_same:\\n  assumes \"i < j\"\\n  assumes \"j < length (events k)\"\\n  shows \"(happened_immediately_before)\\\\<^sup>+\\\\<^sup>+ (k,i) (k,j)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma poly_pos_between_leq_less:\\n  \"(\\\\<forall>x. a \\\\<le> x \\\\<and> x < b \\\\<longrightarrow> poly p x > 0) \\\\<longleftrightarrow> \\n   ((a \\\\<ge> b \\\\<or> (p \\\\<noteq> 0 \\\\<and> poly p a > 0 \\\\<and> count_roots_between p a b = \\n        (if a < b \\\\<and> poly p b = 0 then 1 else 0))))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ground_range_vars[intro]: \"ground (subst_range s) \\\\<Longrightarrow> range_vars s = {}\"'",
+        true,
+        [
+            "by (auto simp: range_vars_alt_def subst_domain_def)"
+        ]
+    ],
+    [
+        "'lemma continuous_on_eval_fps\\' [continuous_intros]:\\n  assumes \"continuous_on A g\"\\n  assumes \"g ` A \\\\<subseteq> eball 0 (fps_conv_radius f)\"\\n  shows   \"continuous_on A (\\\\<lambda>x. eval_fps f (g x))\"'",
+        true,
+        [
+            "using assms",
+            "by (intro continuous_on_compose2[OF continuous_on_eval_fps]) auto"
+        ]
+    ],
+    [
+        "'lemma Sup_pres_ladj_eq:\\n  fixes f :: \"\\'a::complete_lattice_with_dual \\\\<Rightarrow> \\'b::complete_lattice_with_dual\"\\n  shows  \"(Sup_pres f) = (\\\\<exists>g. f \\\\<stileturn> g)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma simplex_index:\\n  \"simplex_index cs = Unsat I \\\\<Longrightarrow> set I \\\\<subseteq> fst ` set cs \\\\<and> \\\\<not> (\\\\<exists> v. (set I, v) \\\\<Turnstile>\\\\<^sub>i\\\\<^sub>c\\\\<^sub>s set cs) \\\\<and> \\n     (distinct_indices cs \\\\<longrightarrow> (\\\\<forall> J \\\\<subset> set I. (\\\\<exists> v. (J, v) \\\\<Turnstile>\\\\<^sub>i\\\\<^sub>c\\\\<^sub>s set cs)))\" \\\\<comment> \\\\<open>minimal unsat core\\\\<close>\\n  \"simplex_index cs = Sat v \\\\<Longrightarrow> \\\\<langle>v\\\\<rangle> \\\\<Turnstile>\\\\<^sub>c\\\\<^sub>s (snd ` set cs)\" \\\\<comment> \\\\<open>satisfying assingment\\\\<close>'",
+        false,
+        []
+    ],
+    [
+        "'lemma td_ext_sbin:\\n  \"td_ext (sint :: \\'a word \\\\<Rightarrow> int) word_of_int (sints (LENGTH(\\'a::len)))\\n    (signed_take_bit (LENGTH(\\'a) - 1))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ex_k_mod:\\n  assumes coprime: \"coprime (e :: nat) ((P-1)*(Q-1))\" \\n    and \"P \\\\<noteq> Q\"\\n    and \"prime P\"\\n    and \"prime Q\"\\n    and \"d \\\\<noteq> 0\"\\n    and \" [e*d = 1] (mod (P-1))\"\\n  shows \"\\\\<exists> k. e*d = 1 + k*(P-1)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma nearly_healthy_wlp_DC:\\n  fixes f::\"\\'s prog\"\\n  assumes hf: \"nearly_healthy (wlp f)\"\\n      and hg: \"nearly_healthy (wlp g)\"\\n  shows \"nearly_healthy (wlp (f \\\\<Sqinter> g))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma vsv_ex1_app2[iff]: \\n  assumes \"a \\\\<in>\\\\<^sub>\\\\<circ> \\\\<D>\\\\<^sub>\\\\<circ> r\"\\n  shows \"r\\\\<lparr>a\\\\<rparr> = b \\\\<longleftrightarrow> \\\\<langle>a, b\\\\<rangle> \\\\<in>\\\\<^sub>\\\\<circ> r\"'",
+        true,
+        [
+            "using assms vsv_ex1_app1",
+            "by (auto intro!: vsubset_antisym)"
+        ]
+    ],
+    [
+        "'lemma C3_a: \"x l\\\\<rightarrow> 0 = -l x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma path2_not_Nil2[simp]: \"\\\\<not> g \\\\<turnstile> n-[]\\\\<rightarrow>m\"'",
+        true,
+        [
+            "by (metis path2_not_Nil path_not_Nil)"
+        ]
+    ],
+    [
+        "'lemma singleActionChain:\\n  fixes P  :: pi\\n  and   \\\\<alpha>  :: freeRes\\n  and   P\\' :: pi\\n  \\n  assumes \"P \\\\<longmapsto>\\\\<alpha> \\\\<prec> P\\'\"\\n  \\n  shows \"P \\\\<Longrightarrow>\\\\<^sub>l\\\\<^sup>^(\\\\<alpha> \\\\<prec> P\\')\"'",
+        true,
+        [
+            "using assms",
+            "by(auto simp add: weakTransition_def intro: Weak_Late_Step_Semantics.singleActionChain)"
+        ]
+    ],
+    [
+        "'lemma trueFormulaWithSingleLiteralClause:\\n  fixes formula :: Formula and literal :: Literal and valuation :: Valuation\\n  assumes \"formulaTrue (removeAll [literal] formula) (valuation @ [literal])\"\\n  shows \"formulaTrue formula (valuation @ [literal])\"'",
+        true,
+        [
+            "using assms",
+            "by (auto simp add:formulaTrueIffAllClausesAreTrue)"
+        ]
+    ],
+    [
+        "'lemma summable_comparison_test_ev:\\n  \"eventually (\\\\<lambda>n. norm (f n) \\\\<le> g n) sequentially \\\\<Longrightarrow> summable g \\\\<Longrightarrow> summable f\"'",
+        true,
+        [
+            "using summable_comparison_test",
+            "by (auto simp add: eventually_at_top_linorder)"
+        ]
+    ],
+    [
+        "'lemma mopup_jump_over1_2_aft_erase_a[simp]:  \\n  assumes \"mopup_jump_over1 (Suc (2 * n), l, Bk # xs) lm n ires\"\\n  shows \"mopup_aft_erase_a (Suc (Suc (2 * n)), Bk # l, xs) lm n ires\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma size_list_length [simp]: \"length (list stack) = size stack\"'",
+        true,
+        [
+            "by(cases stack) auto"
+        ]
+    ],
+    [
+        "'lemma sorted_spvec_addmult_spvec_helper: \"\\\\<lbrakk>sorted_spvec (addmult_spvec y ((a, b) # arr) brr); aa < a; sorted_spvec ((a, b) # arr); \\n  sorted_spvec ((aa, ba) # brr)\\\\<rbrakk> \\\\<Longrightarrow> sorted_spvec ((aa, y * ba) # addmult_spvec y ((a, b) # arr) brr)\"'",
+        true,
+        [
+            "apply (induct brr)",
+            "apply (auto simp add: sorted_spvec.simps split: if_splits)",
+            "done\n\n\\<comment> \\<open>auxiliary lemma\\<close>"
+        ]
+    ],
+    [
+        "'lemma not_essential_times[singularity_intros]:\\n  assumes f_ness:\"not_essential f z\" and g_ness:\"not_essential g z\"\\n  assumes f_iso:\"isolated_singularity_at f z\" and g_iso:\"isolated_singularity_at g z\"\\n  shows \"not_essential (\\\\<lambda>w. f w * g w) z\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma HEndPhase2_HInv4b_q:\\n  assumes act: \"HEndPhase2 s  s\\' p\"\\n  and pnq: \"p\\\\<noteq>q\"\\n  and inv: \"HInv4b s q\"\\n  shows \"HInv4b s\\' q\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma The_onI:\\n  assumes \"a \\\\<in> U\" and \"P a\" and \"\\\\<And>x. x \\\\<in> U \\\\<Longrightarrow> P x \\\\<Longrightarrow> x = a\"\\n  shows \"P (the (THE x on U. P x))\"'",
+        true,
+        [
+            "by (metis (mono_tags, lifting) assms The_on_equality)"
+        ]
+    ],
+    [
+        "'lemma ZObis_transT2[consumes 3, case_names Match MatchO MatchS]: \\nassumes 0: \"c \\\\<approx>01 d\" and \"s \\\\<approx> t\" and \"(d,t) \\\\<rightarrow>t t\\'\"\\nand \"\\\\<And> s\\'. \\\\<lbrakk>(c,s) \\\\<rightarrow>t s\\'; s\\' \\\\<approx> t\\'\\\\<rbrakk> \\\\<Longrightarrow> thesis\"\\nand \"\\\\<And> c\\' s\\'. \\\\<lbrakk>(c,s) \\\\<rightarrow>c (c\\',s\\'); s\\' \\\\<approx> t\\'; discr c\\'\\\\<rbrakk> \\\\<Longrightarrow> thesis\"\\nand \"\\\\<lbrakk>s \\\\<approx> t\\'; discr c\\\\<rbrakk> \\\\<Longrightarrow> thesis\"\\nshows thesis'",
+        true,
+        [
+            "using assms ZObis_matchT_ZO_rev[OF 0] ZObis_Sym",
+            "unfolding matchT_ZO_def2",
+            "by (metis BisT_Sym indis_sym)"
+        ]
+    ],
+    [
+        "'lemma (in Ring) ideal_nprod_inc:\"\\\\<lbrakk>ideal R A; \\\\<forall>i \\\\<le> n. f i \\\\<in> carrier R;\\n                \\\\<exists>l \\\\<le> n. f l \\\\<in> A\\\\<rbrakk> \\\\<Longrightarrow> nprod R f n \\\\<in> A\"'",
+        true,
+        [
+            "by (simp add:ideal_nprod_incTr)"
+        ]
+    ],
+    [
+        "'lemma decisive1_witness:\\n  assumes has3A: \"hasw [x,y,z] A\"\\n      and profileP: \"profile A Is P\"\\n      and jIs: \"j \\\\<in> Is\"\\n  obtains P\\'\\n  where \"profile A Is P\\'\"\\n    and \"x \\\\<^bsub>(P\\' j)\\\\<^esub>\\\\<prec> y \\\\<and> y \\\\<^bsub>(P\\' j)\\\\<^esub>\\\\<prec> z\"\\n    and \"\\\\<And>i. i \\\\<noteq> j \\\\<Longrightarrow> y \\\\<^bsub>(P\\' i)\\\\<^esub>\\\\<prec> x \\\\<and> y \\\\<^bsub>(P\\' i)\\\\<^esub>\\\\<prec> z \\\\<and> ((x \\\\<^bsub>(P\\' i)\\\\<^esub>\\\\<preceq> z) = (x \\\\<^bsub>(P i)\\\\<^esub>\\\\<preceq> z)) \\\\<and> ((z \\\\<^bsub>(P\\' i)\\\\<^esub>\\\\<preceq> x) = (z \\\\<^bsub>(P i)\\\\<^esub>\\\\<preceq> x))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma L_While_pfp: \"L c (L (WHILE b DO c) X) \\\\<subseteq> L (WHILE b DO c) X\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma skip_merge_swap: \"swap\\\\<^sub>m ;; skip\\\\<^sub>m = skip\\\\<^sub>m\"'",
+        true,
+        [
+            "by (rel_auto)"
+        ]
+    ],
+    [
+        "'lemma cf_rcomp_ObjMap_vsv: \"vsv (cf_rcomp \\\\<CC> \\\\<SS> \\\\<FF>\\\\<lparr>ObjMap\\\\<rparr>)\"'",
+        true,
+        [
+            "unfolding cf_rcomp_def",
+            "by (auto simp: cf_bcomp_ObjMap_vsv)"
+        ]
+    ],
+    [
+        "'lemma reflection_of_barbs_and_set_of_barbs:\\n  fixes Rel :: \"(\\'proc \\\\<times> \\'proc) set\"\\n    and CWB :: \"(\\'proc, \\'barbs) calculusWithBarbs\"\\n  shows \"rel_reflects_barbs Rel CWB = (\\\\<forall>Barbs. rel_reflects_barb_set Rel CWB Barbs)\"'",
+        true,
+        [
+            "by force"
+        ]
+    ],
+    [
+        "'lemma scalar_right_zero: \"scalar_prod v (vec0 nn) = zero\"'",
+        true,
+        [
+            "unfolding scalar_prodI_def vec0I_def",
+            "proof (induct nn arbitrary: v)",
+            "case (Suc m)",
+            "thus?case sorry",
+            "by (cases v, simp_all)",
+            "qed (simp add: zero_power)"
+        ]
+    ],
+    [
+        "'lemma(in UP_cring) n_mult_closed:\\n  assumes \"f \\\\<in> carrier P\"\\n  shows \"n_mult f \\\\<in> carrier P\"'",
+        true,
+        [
+            "proof(rule UP_car_memI[of \"deg R f\"])",
+            "show \"\\<And>n. deg R f < n \\<Longrightarrow> n_mult f n = \\<zero>\" sorry",
+            "unfolding n_mult_def",
+            "using assms",
+            "unfolding P_def",
+            "by (simp add: UP_car_memE(2))",
+            "show \"\\<And>n. n_mult f n \\<in> carrier R\" sorry",
+            "using assms",
+            "unfolding n_mult_def",
+            "by (simp add: assms cfs_closed)",
+            "qed\n\n\\<comment> \\<open>All quantification over zipped lists\\<close>"
+        ]
+    ],
+    [
+        "'lemma bprv_\\\\<phi>L_eqv:\\n\"\\\\<phi> \\\\<in> fmla \\\\<Longrightarrow> Fvars \\\\<phi>  = {} \\\\<Longrightarrow> bprv (eqv (\\\\<phi>L \\\\<phi>) (imp (PP \\\\<langle>\\\\<phi>L \\\\<phi>\\\\<rangle>) \\\\<phi>))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma std_apart_instance_of\\\\<^sub>l\\\\<^sub>s2: \"instance_of\\\\<^sub>l\\\\<^sub>s C2 (std\\\\<^sub>2 C2)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma (in metric_space) metric_Cauchy_iff2:\\n  \"Cauchy X = (\\\\<forall>j. (\\\\<exists>M. \\\\<forall>m \\\\<ge> M. \\\\<forall>n \\\\<ge> M. dist (X m) (X n) < inverse(real (Suc j))))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma path_target_append : \"target q1 p1 = q2 \\\\<Longrightarrow> target q2 p2 = q3 \\\\<Longrightarrow> target q1 (p1@p2) = q3\"'",
+        true,
+        [
+            "by (induction p1 rule: rev_induct; auto)"
+        ]
+    ],
+    [
+        "'lemma compress_normalize_output_interfaces_hasdisc:\\n    \"\\\\<not> has_disc disc m \\\\<Longrightarrow> (\\\\<forall>a. \\\\<not> disc (OIface a)) \\\\<Longrightarrow> normalized_nnf_match m \\\\<Longrightarrow> compress_normalize_output_interfaces m = Some m\\' \\\\<Longrightarrow>\\n     normalized_nnf_match m\\' \\\\<and> \\\\<not> has_disc disc m\\'\"'",
+        true,
+        [
+            "unfolding compress_normalize_output_interfaces_def",
+            "using compress_normalize_primitive_hasdisc[OF _ wf_disc_sel_common_primitive(6)]",
+            "."
+        ]
+    ],
+    [
+        "'lemma csin_ccos_squared_add:\\n  \"ccos (a::real) * ccos a + csin a * csin a = 1\"'",
+        true,
+        [
+            "by (simp add: complex_eq_iff)"
+        ]
+    ],
+    [
+        "'lemma insert_somewhere:\\n  assumes \"ref = None \\\\<or> (ref = Some r \\\\<and> r \\\\<in> set list)\"\\n  shows \"\\\\<exists>xs ys. list = xs @ ys \\\\<and> insert_spec list (oid, ref) = xs @ oid # ys\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma odd_word_imp_even_next:\"odd (unat (x::(\\'a::len) word)) \\\\<Longrightarrow> x + 1 = 0 \\\\<or> even (unat (x + 1))\"'",
+        true,
+        [
+            "by unat_arith"
+        ]
+    ],
+    [
+        "'lemma zero_fract:\\n  assumes \"a \\\\<in> nonzero Q\\\\<^sub>p\"\\n  shows \"\\\\<zero> \\\\<div> a = \\\\<zero>\"'",
+        true,
+        [
+            "by (simp add: Qp.nonzero_closed assms nonzero_inverse_Qp)"
+        ]
+    ],
+    [
+        "'lemma equiv_coregion: \"equiv UNIV (coregion X)\"'",
+        true,
+        [
+            "proof(rule equivI)",
+            "show \"refl (coregion X)\" sorry",
+            "unfolding refl_on_def",
+            "by transfer auto",
+            "show \"sym (coregion X)\" sorry",
+            "by (rule symI, auto simp: coregion_def)",
+            "show \"trans (coregion X)\" sorry",
+            "apply (rule transI)",
+            "by (simp add: coregion_def)",
+            "qed\n\n  \\<comment> \\<open>Correctness of result of @{text X}\\<close>"
+        ]
+    ],
+    [
+        "'lemma kruskal_reroot_edge:\\n  assumes \"injective (e\\\\<^sup>T * top)\"\\n      and \"acyclic w\"\\n    shows \"((w \\\\<sqinter> -(top * e * w\\\\<^sup>T\\\\<^sup>\\\\<star>)) \\\\<squnion> (w \\\\<sqinter> top * e * w\\\\<^sup>T\\\\<^sup>\\\\<star>)\\\\<^sup>T) * e\\\\<^sup>T = bot\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma coeff_img_restrict: \"(coeff p) ` {..< length p} = set p\"'",
+        true,
+        [
+            "proof (induction p)",
+            "case (Cons a p)",
+            "thus?case sorry",
+            "using Cons",
+            "by fastforce",
+            "qed (auto simp add:length_0_conv)"
+        ]
+    ],
+    [
+        "'lemma simple_cg_empty_invar :\\n  \"convergence_graph_lookup_invar M1 M2 simple_cg_lookup simple_cg_empty\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma null_eqI:\\n    assumes \"\\\\<And>f. n \\\\<cdot> f = n \\\\<and> f \\\\<cdot> n = n\"\\n    shows \"n = null\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma init_valuation_eq_None[simp]: \"init_valuation vd x = None \\\\<longleftrightarrow> x\\\\<notin>set vd\"'",
+        true,
+        [
+            "by (cases vd) (auto simp: init_valuation_def)"
+        ]
+    ],
+    [
+        "'lemma bools_of_nat_inverse: \"nat_of_bools (bools_of_nat k n) = n\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma fds_scale_one [simp]: \"c > 0 \\\\<Longrightarrow> fds_scale c 1 = 1\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma orientable_6_7:\\n  \"orientable_6 x \\\\<longleftrightarrow> orientable_7 x\"'",
+        true,
+        [
+            "proof",
+            "assume \"orientable_6 x\"",
+            "thus \"orientable_7 x\" sorry",
+            "using loop_super_orientable_def",
+            "using loop_orientation_diagonal",
+            "by force",
+            "qed auto"
+        ]
+    ],
+    [
+        "'lemma Inter_commute: \"(P ||| Q) = (Q ||| P)\"'",
+        true,
+        [
+            "by (rule sync_commute)"
+        ]
+    ],
+    [
+        "'lemma (in gram_schmidt_fs_lin_indpt) Gramian_matrix_times_\\\\<kappa> :\\n  assumes \"i < m\" \"l \\\\<le> i\"\\n  shows \"Gramian_matrix fs l *\\\\<^sub>v (vec l (\\\\<lambda>t. \\\\<kappa> i l t)) = (vec l (\\\\<lambda>j. - (fs ! i \\\\<bullet> fs ! j)))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma OclImplies_true1[simp]:\"(true implies X) = X\"'",
+        true,
+        [
+            "by(simp add: OclImplies_def bot_option_def)"
+        ]
+    ],
+    [
+        "'lemma (in group) generate_inv_eq:\\n  assumes \"a \\\\<in> carrier G\"\\n  shows \"generate G {a} = generate G {inv a}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma subseqs_length_simple_False:\\n  assumes \"b \\\\<in> set (subseqs xs)\" \" length xs < length b\" shows False'",
+        false,
+        []
+    ],
+    [
+        "'lemma thmD13_part2:      \\n  assumes start: \"items_le k (\\\\<J> k 0) = Gen (paths_le k (\\\\<P> k 0))\"\\n  assumes valid_k: \"k \\\\<le> length Doc\"\\n  shows \"items_le k (\\\\<I> k) = Gen (paths_le k (\\\\<Q> k))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma poly_pos_greater:\\n  \"(\\\\<forall>x::real. x > a \\\\<longrightarrow> poly p x > 0) \\\\<longleftrightarrow>\\n    poly_inf p = 1 \\\\<and> (\\\\<forall>x. x > a \\\\<longrightarrow> poly p x \\\\<noteq> 0)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma non_empty_cycle_root_one_strongly_connected:\\n  assumes \"non_empty_cycle_root r x\"\\n    shows \"one_strongly_connected x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma dlverts_eq_verts: \"dlverts to_list_dtree = verts T\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma strong_intersecttwo:\\n  \"\\\\<lbrakk> A\\\\<in>\\\\<A>; A\\'\\\\<in>\\\\<A>; chamber C; C \\\\<in> A\\\\<inter>A\\' \\\\<rbrakk> \\\\<Longrightarrow>\\n    \\\\<exists>f. ChamberComplexIsomorphism A A\\' f \\\\<and> fixespointwise f (\\\\<Union>(A\\\\<inter>A\\'))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma span_insertD:\\n  assumes \"p \\\\<in> span (insert r B)\" and \"r \\\\<in> span B\"\\n  shows \"p \\\\<in> span B\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma partList4_empty: \"{} \\\\<notin> set ts \\\\<Longrightarrow> {} \\\\<notin> set (partList4 s ts)\"'",
+        true,
+        [
+            "by(induction ts arbitrary: s, auto)"
+        ]
+    ],
+    [
+        "'lemma fbox_mult: \"|x \\\\<cdot> y] z = |x] |y] z\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma n2l_l2n_id: \"x \\\\<noteq> [] \\\\<Longrightarrow> n2l (l2n x) = x\"'",
+        true,
+        [
+            "by (induct x rule: l2n.induct) auto"
+        ]
+    ],
+    [
+        "'lemma powser_MSLCons:\\n  assumes \"convergent_powser (MSLCons c cs)\"\\n  shows   \"eventually (\\\\<lambda>x. powser (MSLCons c cs) x = x * powser cs x + c) (nhds 0)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma even_take_bit_eq [simp]:\\n  \\\\<open>even (take_bit n a) \\\\<longleftrightarrow> n = 0 \\\\<or> even a\\\\<close>'",
+        true,
+        [
+            "proof (cases \\<open>n = 0\\<close>)",
+            "case True",
+            "then",
+            "show?thesis sorry",
+            "by (simp add: take_bit_0 take_bit_eq_mod)",
+            "qed (simp_all add: take_bit_Suc)"
+        ]
+    ],
+    [
+        "'lemma SeqHaddP_fresh_iff [simp]: \"a \\\\<sharp> SeqHaddP s j k y \\\\<longleftrightarrow> a \\\\<sharp> s \\\\<and> a \\\\<sharp> j \\\\<and> a \\\\<sharp> k \\\\<and> a \\\\<sharp> y\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ESem_ignores_fresh[simp]: \"\\\\<lbrakk> e \\\\<rbrakk>\\\\<^bsub>\\\\<rho>(fresh_var e := v)\\\\<^esub> = \\\\<lbrakk> e \\\\<rbrakk>\\\\<^bsub>\\\\<rho>\\\\<^esub>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma preallocatedE [elim?]:\\n  \"\\\\<lbrakk> preallocated h;  C \\\\<in> sys_xcpts; \\\\<And>S. h (addr_of_sys_xcpt C) = Some(C,S) \\\\<Longrightarrow> P h C\\\\<rbrakk>\\n  \\\\<Longrightarrow> P h C\"'",
+        true,
+        [
+            "by(auto simp: preallocated_def)"
+        ]
+    ],
+    [
+        "'lemma semilattice_sup_transfer[transfer_rule]:\\n  assumes [transfer_rule]: \"bi_unique A\" \"right_total A\" \\n  shows \\n    \"(\\n      (A ===> A ===> A) ===> \\n      (A ===> A ===> (=)) ===> \\n      (A ===> A ===> (=)) ===> \\n      (=)\\n    ) (semilattice_sup_ow (Collect (Domainp A))) class.semilattice_sup\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma admits_diagonal_imp_admits_triangular:\\n  assumes a: \"\\\\<forall>A\\\\<in>carrier_mat 1 2. admits_diagonal_reduction (A::\\'a mat)\"\\n  shows \"\\\\<forall>A. admits_triangular_reduction (A::\\'a mat)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma may_lock_unlock_lock_lock_lock_id [simp]:\\n  \"may_lock l t \\\\<Longrightarrow> unlock_lock (lock_lock l t) = l\"'",
+        true,
+        [
+            "by(cases l)(auto split: if_split_asm elim: may_lock.cases)"
+        ]
+    ],
+    [
+        "'theorem time_vebt_member: \"invar_vebt t n \\\\<Longrightarrow> u =  2^n \\\\<Longrightarrow>  T\\\\<^sub>m\\\\<^sub>e\\\\<^sub>m\\\\<^sub>b\\\\<^sub>e\\\\<^sub>r t x \\\\<le> 30 + 15 * lb (lb u)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma square_irreflexive_part_2:\\n  \"x * x - 1 \\\\<le> x\\\\<^sup>\\\\<star> - 1\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma nth_mset_bound_right:\\n  assumes \"k < size M\"\\n  assumes \"count_le x M > k\"\\n  shows \"nth_mset k M \\\\<le> x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma (in group) ord_pow_gen:\\n  assumes \"x \\\\<in> carrier G\"\\n  shows \"ord (pow G x k) = (if k = 0 then 1 else ord x div gcd (ord x) k)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma bit_numeral_odd [simp]:\\n  \\\\<open>numeral (Num.Bit1 n) = (1 :: bit)\\\\<close>'",
+        true,
+        [
+            "by (simp only: numeral_Bit1) simp"
+        ]
+    ],
+    [
+        "'lemma onorm_le_matrix_component:\\n  fixes A :: \"real^\\'n^\\'m\"\\n  assumes \"\\\\<And>i j. abs(A$i$j) \\\\<le> B\"\\n  shows \"onorm((*v) A) \\\\<le> real (CARD(\\'m)) * real (CARD(\\'n)) * B\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma subst_rename: \\n  assumes a: \"y\\\\<sharp>t\"\\n  shows \"t[x::=s] = ([(y,x)]\\\\<bullet>t)[y::=s]\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma word_rec_0 [simp]: \"word_rec z s 0 = z\"'",
+        true,
+        [
+            "by (simp add: word_rec_def word_size)"
+        ]
+    ],
+    [
+        "'lemma scalar_product_times:\\n \"\\\\<forall>w1 w2.(length w1 = length w2) \\\\<and>(length w1 = n) \\\\<longrightarrow> \\n           (f (x*y) (scalar_product w1 w2)) \\n                      = (scalar_product \\n                               (times x w1) \\n                               (times y w2))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma iu_condition_imply_secure_1 [rule_format]:\\n  assumes\\n    RUC: \"ref_union_closed P\" and\\n    IU: \"weakly_future_consistent P I D (rel_ipurge P I D)\"\\n  shows \"(xs @ y # ys, Y) \\\\<in> failures P \\\\<longrightarrow>\\n    (xs @ ipurge_tr I D (D y) ys, ipurge_ref I D (D y) ys Y) \\\\<in> failures P\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma insert_None_index_neq_None [dest]:\\n  assumes \"insert xs e i = None\"\\n  shows   \"i \\\\<noteq> None\"'",
+        true,
+        [
+            "using assms",
+            "by (cases i, auto)"
+        ]
+    ],
+    [
+        "'lemma card_Ex_subset:\\n  \"k \\\\<le> card M \\\\<Longrightarrow> \\\\<exists>N. N \\\\<subseteq> M \\\\<and> card N = k\"'",
+        true,
+        [
+            "by (metis obtain_subset_with_card_n subsetI)"
+        ]
+    ],
+    [
+        "'lemma bind_returns_error_eq: \\n  assumes \"h \\\\<turnstile> f \\\\<rightarrow>\\\\<^sub>e e\"\\n    and \"h \\\\<turnstile> g \\\\<rightarrow>\\\\<^sub>e e\"\\n  shows \"h \\\\<turnstile> f = h \\\\<turnstile> g\"'",
+        true,
+        [
+            "using assms",
+            "by(auto simp add: returns_error_def returns_heap_def execute_def split: sum.splits)"
+        ]
+    ],
+    [
+        "'lemma assumes wf: \"wwf_J_prog P\"\\nshows Red_fv: \"P \\\\<turnstile> \\\\<langle>e,(h,l)\\\\<rangle> \\\\<rightarrow> \\\\<langle>e\\',(h\\',l\\')\\\\<rangle> \\\\<Longrightarrow> fv e\\' \\\\<subseteq> fv e\"\\n  and  \"P \\\\<turnstile> \\\\<langle>es,(h,l)\\\\<rangle> [\\\\<rightarrow>] \\\\<langle>es\\',(h\\',l\\')\\\\<rangle> \\\\<Longrightarrow> fvs es\\' \\\\<subseteq> fvs es\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma Tp_darstellung: \"length qs = length Strat\\n        \\\\<Longrightarrow> T\\\\<^sub>p init qs Strat =\\n        (\\\\<Sum>i\\\\<in>{..<length qs}. t\\\\<^sub>p (steps\\' init qs Strat i) (qs!i) (Strat!i))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma Lindelof_space_quotient_map_image:\\n   \"\\\\<lbrakk>quotient_map X Y q; Lindelof_space X\\\\<rbrakk> \\\\<Longrightarrow> Lindelof_space Y\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sum_with_empty[simp]: \"sum_with pls z f {} = z\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma Confidentiality_Tgs_bis:\\n     \"\\\\<lbrakk> Says Kas A\\n               (Crypt Ka \\\\<lbrace>Key authK, Agent Tgs, Number Ta, authTicket\\\\<rbrace>)\\n           \\\\<in> set evs;\\n         Says Tgs A\\n              (Crypt authK \\\\<lbrace>Key servK, Agent B, Number Ts, servTicket\\\\<rbrace>)\\n           \\\\<in> set evs;\\n         \\\\<not> expiredAK Ta evs; \\\\<not> expiredSK Ts evs;\\n         A \\\\<notin> bad;  B \\\\<notin> bad; evs \\\\<in> kerbIV_gets \\\\<rbrakk>\\n      \\\\<Longrightarrow> Key servK \\\\<notin> analz (spies evs)\"'",
+        true,
+        [
+            "by (metis Confidentiality_Kas Confidentiality_Tgs)"
+        ]
+    ],
+    [
+        "'lemma dist_proj:\\n  shows \"dist ((x)\\\\<^sub>F i) ((y)\\\\<^sub>F i) \\\\<le> dist x y\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma wprepare_loop2: \"\\\\<lbrakk>rev b @ Oc\\\\<up>(mr) @ Bk # <a # lista> = Oc\\\\<up>(Suc m) @ Bk # Bk # <lm>;\\n                b \\\\<noteq> []; Oc # list = Oc\\\\<up>(mr) @ Bk # <(a::nat) # lista> @ Bk\\\\<up>(rn)\\\\<rbrakk>\\n       \\\\<Longrightarrow>  wprepare_loop_start_in_middle m lm (Oc # b, list)\"'",
+        true,
+        [
+            "apply(simp only: wprepare_loop_start_in_middle.simps )",
+            "apply(rule_tac x = rn in exI, auto)",
+            "apply(case_tac mr, auto)",
+            "done\n\n    \\<comment> \\<open>Correctness of result of @{text pa}\\<close>"
+        ]
+    ],
+    [
+        "'lemma mirror_revorder_rev: \"revorder (mirror t) = rev (revorder t)\"'",
+        true,
+        [
+            "by(induction t rule: mirror.induct) auto"
+        ]
+    ],
+    [
+        "'lemma closure_ball [simp]:\\n  fixes x :: \"\\'a::real_normed_vector\"\\n  assumes \"0 < e\"\\n  shows \"closure (ball x e) = cball x e\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma contour_integrable_continuous_linepath:\\n  assumes \"continuous_on (closed_segment a b) f\"\\n  shows \"f contour_integrable_on (linepath a b)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ereal_m1_less_0[simp]: \"-(1::ereal) < 0\"'",
+        true,
+        [
+            "by (simp add: zero_ereal_def one_ereal_def)"
+        ]
+    ],
+    [
+        "'lemma SUP_ereal_add:\\n  fixes f g :: \"nat \\\\<Rightarrow> ereal\"\\n  assumes inc: \"incseq f\" \"incseq g\"\\n    and pos: \"\\\\<And>i. f i \\\\<noteq> -\\\\<infinity>\" \"\\\\<And>i. g i \\\\<noteq> -\\\\<infinity>\"\\n  shows \"(SUP i. f i + g i) = Sup (f ` UNIV) + Sup (g ` UNIV)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ctx_subtype_s:\\n  fixes  s::s\\n  assumes \"\\\\<Theta> ; \\\\<Phi> ; \\\\<B> ; \\\\<Gamma>\\'@((x,b,c[z::=V_var x]\\\\<^sub>c\\\\<^sub>v)#\\\\<^sub>\\\\<Gamma>\\\\<Gamma>) ; \\\\<Delta> \\\\<turnstile> s \\\\<Leftarrow> \\\\<tau>\" and \\n    \"\\\\<Theta>; \\\\<B>; \\\\<Gamma> \\\\<turnstile> \\\\<lbrace> z\\' : b | c\\' \\\\<rbrace> \\\\<lesssim> \\\\<lbrace> z : b | c \\\\<rbrace>\" and \\n    \"atom x \\\\<sharp> (z,z\\',c,c\\')\"\\n  shows \"\\\\<Theta> ; \\\\<Phi> ; \\\\<B> ; \\\\<Gamma>\\'@(x,b,c\\'[z\\'::=V_var x]\\\\<^sub>c\\\\<^sub>v)#\\\\<^sub>\\\\<Gamma>\\\\<Gamma> ; \\\\<Delta> \\\\<turnstile> s \\\\<Leftarrow> \\\\<tau>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma relative_to_subset:\\n   \"S \\\\<subseteq> T \\\\<and> P S \\\\<Longrightarrow> (P relative_to T) S\"'",
+        true,
+        [
+            "by (force simp add: relative_to_def)"
+        ]
+    ],
+    [
+        "'lemma inorder_baliR:\\n  \"inorder(baliR l a r) = inorder l @ a # inorder r\"'",
+        true,
+        [
+            "by(cases \"(l,a,r)\" rule: baliR.cases)  (auto)"
+        ]
+    ],
+    [
+        "'lemma mat_to_cols_list_times_mat [simp]:\\n  assumes \"dim_col A = dim_row B\" and \"dim_col A > 0\"\\n  shows \"mat_to_cols_list (A * B) = plus_mult.matrix_mult (*) 0 (+) (mat_to_cols_list A) (mat_to_cols_list B)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma disc_compl_opposite_ocircline [simp]:\\n  shows \"disc_compl (opposite_ocircline H) = disc H\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma \"min (i::int) j + max i j = i + j\"'",
+        true,
+        [
+            "by force"
+        ]
+    ],
+    [
+        "'lemma leadsTo_wf_induct_lemma:\\n     \"[| wf r;      \\n         \\\\<forall>m. F \\\\<in> (A \\\\<inter> f-`{m}) leadsTo                      \\n                    ((A \\\\<inter> f-`(r\\\\<inverse> `` {m})) \\\\<union> B) |]  \\n      ==> F \\\\<in> (A \\\\<inter> f-`{m}) leadsTo B\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma exists_diff:\\n  fixes P :: \"\\'a set \\\\<Rightarrow> bool\"\\n  shows \"(\\\\<exists>S. P (- S)) \\\\<longleftrightarrow> (\\\\<exists>S. P S)\"\\n    (is \"?lhs \\\\<longleftrightarrow> ?rhs\")'",
+        true,
+        [
+            "proof(intro iffI iffI)",
+            "assume?rhs",
+            "show?lhs sorry",
+            "proof (rule exI[of _ \"-S\"])",
+            "show \"P (- (- S))\" sorry",
+            "by (simp add: \\<open>P S\\<close>)",
+            "qed\n\n\\<comment> \\<open>This weaker version was previously called @{text uc}\\<close>",
+            "qed iprover"
+        ]
+    ],
+    [
+        "'lemma The_on1_equality [elim?]: \\n  assumes \"\\\\<exists>!x. P x\" and \"a \\\\<in> U\" and \"P a\" \\n  shows \"(THE x on U. P x) = Some a\"'",
+        true,
+        [
+            "by (metis assms The_on_Some_equality)"
+        ]
+    ],
+    [
+        "'lemma foldr_append2 [simp]:\\n  \"foldr ((@) \\\\<circ> f) xs (ys @ zs) = foldr ((@) \\\\<circ> f) xs ys @ zs\"'",
+        true,
+        [
+            "by (induct xs) (simp_all)"
+        ]
+    ],
+    [
+        "'lemma polyfun_single:\\nassumes \"i\\\\<in>N\"\\nshows \"polyfun N (\\\\<lambda>x. x i)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma hypext_exp_e12 [simp]:\\n  \"(*h* exp) (x * e12) = 1 + e12 * x\"'",
+        true,
+        [
+            "by (simp add: e12_def hyperdual_eq_iff distrib_left mult.assoc)"
+        ]
+    ],
+    [
+        "'lemma (in complete_measure) vimage_null_part_sets:\\n  \"f \\\\<in> M \\\\<rightarrow>\\\\<^sub>M N \\\\<Longrightarrow> null_sets N \\\\<subseteq> null_sets (distr M N f) \\\\<Longrightarrow> A \\\\<in> completion N \\\\<Longrightarrow>\\n  f -` null_part N A \\\\<inter> space M \\\\<in> sets M\"'",
+        true,
+        [
+            "using vimage_null_part_null_sets[of f N A]",
+            "by (auto simp: null_sets_completion_iff2)"
+        ]
+    ],
+    [
+        "'lemma mbuf2t_take_induct[consumes 5, case_names base step]:\\n  assumes \"mbuf2t_take f z buf nts = (z\\', buf\\', nts\\')\"\\n    and \"wf_mbuf2 i ja jb P Q buf\"\\n    and \"list_all2 R [i..<j] nts\"\\n    and \"ja \\\\<le> j\" \"jb \\\\<le> j\"\\n    and \"U i z\"\\n    and \"\\\\<And>k x y t z. i \\\\<le> k \\\\<Longrightarrow> Suc k \\\\<le> ja \\\\<Longrightarrow> Suc k \\\\<le> jb \\\\<Longrightarrow>\\n      P k x \\\\<Longrightarrow> Q k y \\\\<Longrightarrow> R k t \\\\<Longrightarrow> U k z \\\\<Longrightarrow> U (Suc k) (f x y t z)\"\\n  shows \"U (min ja jb) z\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma star_of_power [simp]: \"star_of (x ^ n) = star_of x ^ n\"'",
+        true,
+        [
+            "by transfer auto"
+        ]
+    ],
+    [
+        "'lemma vdash_properties_6[no_atp]:\\n    \"\\\\<lbrakk>[\\\\<phi> in v]; [\\\\<phi> \\\\<^bold>\\\\<rightarrow> \\\\<psi> in v]\\\\<rbrakk> \\\\<Longrightarrow> [\\\\<psi> in v]\"'",
+        true,
+        [
+            "by (simp add: Semantics.T5)"
+        ]
+    ],
+    [
+        "'lemma one_reducible_lm_2: \"one_reducible_to_via (nat_to_ce_set n) univ_ce (\\\\<lambda> x. c_pair n x)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma interior_of_eq_empty:\\n   \"X interior_of S = {} \\\\<longleftrightarrow> (\\\\<forall>T. openin X T \\\\<and> T \\\\<subseteq> S \\\\<longrightarrow> T = {})\"'",
+        true,
+        [
+            "by (auto simp add: interior_of_def)"
+        ]
+    ],
+    [
+        "'lemma quat_inner_k_right [simp]: \"inner x \\\\<k> = Im3 x\"'",
+        true,
+        [
+            "by (simp add: inner_quat_def)"
+        ]
+    ],
+    [
+        "'lemma strong_operator_topology_topspace:\\n  \"topspace strong_operator_topology = UNIV\"'",
+        true,
+        [
+            "unfolding strong_operator_topology_def",
+            "by (simp add: topspace_pullback_topology)"
+        ]
+    ],
+    [
+        "'lemma nvars_SNOC[Presb_simps]: \"#\\\\<^sub>V (SNOC x \\\\<AA>) = #\\\\<^sub>V \\\\<AA>\"'",
+        true,
+        [
+            "by (transfer', force simp: Let_def)"
+        ]
+    ],
+    [
+        "'lemma enc_welldef:\\n  \"\\\\<lbrakk>x \\\\<in> enc (w, I); x \\\\<in> enc (w\\', I\\'); length I = length I\\'; wf_formula (length I) \\\\<phi>;\\n  wf_interp_for_formula (w, I) \\\\<phi> ;wf_interp_for_formula (w\\', I\\') \\\\<phi>\\\\<rbrakk> \\\\<Longrightarrow>\\n  (w, I) \\\\<Turnstile> \\\\<phi> \\\\<longleftrightarrow> (w\\', I\\') \\\\<Turnstile> \\\\<phi>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma hdomain_hunion [simp]: \"hdomain (f \\\\<squnion> g) = hdomain f \\\\<squnion> hdomain g\"'",
+        true,
+        [
+            "by (fastforce simp: hdomain_def)"
+        ]
+    ],
+    [
+        "\"lemma degree_sum_notin:\\n  \\\\<open>x' \\\\<notin> vars B \\\\<Longrightarrow> degree (A + B) x' = degree A x'\\\\<close>\"",
+        false,
+        []
+    ],
+    [
+        "'lemma refl_on_reflcl_Image:\\n  \"refl_on B A \\\\<Longrightarrow> C \\\\<subseteq> B \\\\<Longrightarrow> A^= `` C = A `` C\"'",
+        true,
+        [
+            "by (auto dest: refl_onD simp: refl_on_def)"
+        ]
+    ],
+    [
+        "'lemma restrict_indets_pp_zero [simp]: \"restrict_indets_pp 0 = 0\"'",
+        true,
+        [
+            "by (rule poly_mapping_eqI, simp add: lookup_restrict_indets_pp poly_mapping_eqI)"
+        ]
+    ],
+    [
+        "'lemma partition_on_alt: \"partition_on A P \\\\<longleftrightarrow> (\\\\<exists>r. equiv A r \\\\<and> P = A // r)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma tuple_ext:\\n    assumes \"\\\\<not> span f g\"\\n    shows \"\\\\<langle>f, g\\\\<rangle> = null\"'",
+        true,
+        [
+            "by (simp add: assms tuple_def)"
+        ]
+    ],
+    [
+        "'theorem F\\'set3_natural: \"F\\'set3 o F\\'map f1 f2 f3 = image f3 o F\\'set3\"'",
+        true,
+        [
+            "by (rule F.set_map0(1))"
+        ]
+    ],
+    [
+        "'lemma ldistinct_lappend:\\n  \"ldistinct (lappend xs ys) \\\\<longleftrightarrow> ldistinct xs \\\\<and> (lfinite xs \\\\<longrightarrow> ldistinct ys \\\\<and> lset xs \\\\<inter> lset ys = {})\"\\n  (is \"?lhs = ?rhs\")'",
+        false,
+        []
+    ],
+    [
+        "'lemma cos_pi [simp]: \"cos pi = -1\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma \\n  incoming_edges: \"incoming u \\\\<subseteq> E\" and\\n  outgoing_edges: \"outgoing u \\\\<subseteq> E\" and\\n  incoming\\'_edges: \"incoming\\' U \\\\<subseteq> E\" and\\n  outgoing\\'_edges: \"outgoing\\' U \\\\<subseteq> E\"'",
+        true,
+        [
+            "by (auto simp: incoming_def outgoing_def outgoing'_def incoming'_def outgoing'_def)"
+        ]
+    ],
+    [
+        "'lemma natpermute_finite: \"finite (natpermute n k)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma nGt_le_conv: \"comp x y \\\\<noteq> Gt \\\\<longleftrightarrow> le x y\"'",
+        true,
+        [
+            "unfolding le_of_comp_def",
+            "by (cases \"(comp x y)\", auto)"
+        ]
+    ],
+    [
+        "'lemma FAccRedsNull:\\n  \"P \\\\<turnstile> \\\\<langle>e,s,b\\\\<rangle> \\\\<rightarrow>* \\\\<langle>null,s\\',b\\'\\\\<rangle> \\\\<Longrightarrow> P \\\\<turnstile> \\\\<langle>e\\\\<bullet>F{D},s,b\\\\<rangle> \\\\<rightarrow>* \\\\<langle>THROW NullPointer,s\\',b\\'\\\\<rangle>\"'",
+        true,
+        [
+            "by(rule FAccReds[THEN rtrancl_into_rtrancl, OF _ RedFAccNull],simp)"
+        ]
+    ],
+    [
+        "'lemma lock_thread_okD\\':\\n  \"\\\\<lbrakk> lock_thread_ok ls ts; has_locks (ls $ l) t = Suc n \\\\<rbrakk> \\\\<Longrightarrow> \\\\<exists>xw. ts t = \\\\<lfloor>xw\\\\<rfloor>\"'",
+        true,
+        [
+            "unfolding lock_thread_ok_def",
+            "by(erule allE[where x=l]) auto"
+        ]
+    ],
+    [
+        "'lemma map_add_left_None:\\n  \"f k = None \\\\<Longrightarrow> (f ++ g) k = g k\"'",
+        true,
+        [
+            "by (simp add: fun_eq_iff map_add_def split: option.splits)"
+        ]
+    ],
+    [
+        "'lemma dghm_cn_cov_comp_ObjMap_vsv[dg_cn_cs_intros]: \\n  assumes \"\\\\<GG> : \\\\<BB> \\\\<^sub>D\\\\<^sub>G\\\\<mapsto>\\\\<mapsto>\\\\<^bsub>\\\\<alpha>\\\\<^esub> \\\\<CC>\" and \"\\\\<FF> : \\\\<AA> \\\\<mapsto>\\\\<mapsto>\\\\<^sub>D\\\\<^sub>G\\\\<^bsub>\\\\<alpha>\\\\<^esub> \\\\<BB>\"\\n  shows \"vsv ((\\\\<GG> \\\\<^sub>D\\\\<^sub>G\\\\<^sub>H\\\\<^sub>M\\\\<circ> \\\\<FF>)\\\\<lparr>ObjMap\\\\<rparr>)\"'",
+        true,
+        [
+            "using assms",
+            "unfolding dghm_cn_comp_components",
+            "by (auto intro!: vsv_vcomp)"
+        ]
+    ],
+    [
+        "'lemma ebind_refine\\':\\n  assumes \"mi \\\\<le>\\\\<Down>\\\\<^sub>E E R\\' m\"\\n  assumes \"\\\\<And>xi x. \\\\<lbrakk>(xi,x)\\\\<in>R\\'; inres mi (Inr xi); inres m (Inr x); nofail mi; nofail m\\\\<rbrakk> \\\\<Longrightarrow> fi xi \\\\<le>\\\\<Down>\\\\<^sub>E E R (f x)\"\\n  shows \"doE { xi \\\\<leftarrow> mi; fi xi } \\\\<le> \\\\<Down>\\\\<^sub>E E R (doE { x \\\\<leftarrow> m; f x })\"'",
+        true,
+        [
+            "using assms",
+            "by(simp add: pw_ele_iff refine_pw_simps) blast"
+        ]
+    ],
+    [
+        "'lemma vec_hom_inj_lim: assumes \"set\\\\<^sub>v v \\\\<subseteq> A\" \"set\\\\<^sub>v w \\\\<subseteq> A\"\\n  shows \"map_vec f v = map_vec f w \\\\<Longrightarrow> v = w\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma it_to_it_rev_linord_correct: \\n    assumes \"set_iterator_rev_linord (it::(\\'x::linorder,\\'x list) set_iterator) S\"\\n    shows \"set_iterator_rev_linord ((it_to_it it)::(\\'x,\\'\\\\<sigma>) set_iterator) S\"'",
+        true,
+        [
+            "using assms",
+            "unfolding set_iterator_rev_linord_def",
+            "by (fact it_to_it_genord_correct)"
+        ]
+    ],
+    [
+        "'lemma lm155: \\n  assumes \"runiq f\" \"X \\\\<subseteq> Domain f\" \\n  shows \"graph X (toFunction f) = (f||X)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma store_bound_over:\\n  assumes \"tag c = True\"\\n    and \"perm_store c = True\"\\n    and \"\\\\<And> cv. \\\\<lbrakk> v = Cap_v cv; tag cv \\\\<rbrakk> \\\\<Longrightarrow> perm_cap_store c \\\\<and> (perm_cap_store_local c \\\\<or> perm_global cv)\"\\n    and \"offset c + |memval_type v|\\\\<^sub>\\\\<tau> > base c + len c\"\\n  shows \"store h c v = Error (C2Err LengthViolation)\"'",
+        true,
+        [
+            "unfolding store_def",
+            "using assms",
+            "by (clarsimp split: ccval.split simp add: sizeof_def)"
+        ]
+    ],
+    [
+        "'lemma iTrigger_True_left[simp]: \"(True. t\\' \\\\<T> t I. Q t) = (I = {} \\\\<or> (\\\\<diamond> t1 I. \\\\<box> t2 (I \\\\<down>\\\\<ge> t1). Q t2))\"'",
+        true,
+        [
+            "by (unfold iTL_defs, auto)"
+        ]
+    ],
+    [
+        "'lemma cUNION_cUn: \"cUNION (cUn A B) f = cUn (cUNION A f) (cUNION B f)\"'",
+        true,
+        [
+            "by transfer fast"
+        ]
+    ],
+    [
+        "'lemma nabla_unfold_eq [simp]: \"|x\\\\<rangle> \\\\<nabla> x = \\\\<nabla> x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma to_draei_impl_refine[autoref_rules]:\\n      fixes S :: \"(\\'statei \\\\<times> \\'state) set\"\\n      assumes \"SIDE_PRECOND (finite (nodes A))\"\\n      assumes \"SIDE_GEN_ALGO (is_bounded_hashcode S seq bhc)\"\\n      assumes \"SIDE_GEN_ALGO (is_valid_def_hm_size TYPE(\\'statei) hms)\"\\n      assumes \"GEN_OP seq HOL.eq (S \\\\<rightarrow> S \\\\<rightarrow> bool_rel)\"\\n      assumes \"(Ai, A) \\\\<in> \\\\<langle>Id, S\\\\<rangle> drai_dra_rel\"\\n      shows \"(to_draei_impl seq bhc hms Ai,\\n        (OP to_draei ::: \\\\<langle>Id, S\\\\<rangle> drai_dra_rel \\\\<rightarrow>\\n        \\\\<langle>Id_on (alphabet A), rel Ai A seq bhc hms\\\\<rangle> draei_dra_rel) $ A) \\\\<in>\\n        \\\\<langle>Id_on (alphabet A), rel Ai A seq bhc hms\\\\<rangle> draei_dra_rel\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma set_of_sum_subset: \"set_of (sum f X) \\\\<subseteq> set_of (sum g X)\"\\n  if \"\\\\<And>x. x \\\\<in> X \\\\<Longrightarrow> set_of (f x) \\\\<subseteq> set_of (g x)\"\\n  for f :: \"_\\\\<Rightarrow>\\'a::linordered_ab_group_add interval\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma thin_Un: \"H \\\\<turnstile> A \\\\<Longrightarrow> H \\\\<union> H\\' \\\\<turnstile> A\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma create_element_is_weakly_dom_component_safe:\\n  assumes \"heap_is_wellformed h\" and \"type_wf h\" and \"known_ptrs h\"\\n  assumes \"h \\\\<turnstile> create_element document_ptr tag \\\\<rightarrow>\\\\<^sub>r result\"\\n  assumes \"h \\\\<turnstile> create_element document_ptr tag \\\\<rightarrow>\\\\<^sub>h h\\'\"\\n  shows \"is_weakly_dom_component_safe {cast document_ptr} {cast result} h h\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma compTpExpr_Exprs_LT_ST: \"\\n  \\\\<lbrakk>jmb = (pns, lvars, blk, res);\\n  wf_prog wf_java_mdecl G;\\n  wf_java_mdecl G C ((mn, pTs), rT, jmb);\\n  E = local_env G C (mn, pTs) pns lvars \\\\<rbrakk>\\n  \\\\<Longrightarrow>\\n  (\\\\<forall> ST LT T.\\n  E \\\\<turnstile> ex :: T \\\\<longrightarrow>\\n  is_inited_LT C pTs lvars LT \\\\<longrightarrow>\\n  sttp_of (compTpExpr jmb G ex (ST, LT)) = (T # ST, LT))\\n  \\\\<and>\\n  (\\\\<forall> ST LT Ts.\\n  E \\\\<turnstile> exs [::] Ts \\\\<longrightarrow>\\n  is_inited_LT C pTs lvars LT \\\\<longrightarrow>\\n  sttp_of (compTpExprs jmb G exs (ST, LT)) = ((rev Ts) @ ST, LT))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sqrt_rat_ceiling_code[code]: \"sqrt_rat_ceiling x = - (sqrt_rat_floor (-x))\"'",
+        true,
+        [
+            "unfolding sqrt_rat_ceiling_def sqrt_rat_floor_def",
+            "by code_simp"
+        ]
+    ],
+    [
+        "'lemma le_imp_add_int:\" i \\\\<le> (j::nat) \\\\<Longrightarrow> \\\\<exists>k. j = i + k\"'",
+        true,
+        [
+            "by (simp add:nat_le_iff_add)"
+        ]
+    ],
+    [
+        "'theorem pr_b_least: \"f \\\\<in> PrimRec2 \\\\<Longrightarrow> b_least f \\\\<in> PrimRec1\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma lm013: \\n  \"injections X Y = injections X Y\"'",
+        true,
+        [
+            "by (simp add: lm012)"
+        ]
+    ],
+    [
+        "'lemma comp_arr_dom:\\n    assumes \"arr f\" and \"dom f = a\"\\n    shows \"f \\\\<cdot> a = f\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sopen_sclose_eq_ssubst: \"\\\\<lbrakk> sa \\\\<noteq> pa; sa \\\\<notin> FV p; lc t \\\\<rbrakk> \\n  \\\\<Longrightarrow> {n \\\\<rightarrow> [s,p]} {n \\\\<leftarrow> [sa,pa]} t = [sa \\\\<rightarrow> s] [pa \\\\<rightarrow> p] t\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma bn_count_le:\\n \"bn_count ns \\\\<le> foldl (+) 0 ns\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma costBarrierDecreases\\':\\n  notes ss = subs_def2 nforms_def Let_def subsFAtom_def subsFConj_def subsFAll_def costBarrier_def atoms_def exp3Min expSum\\n  shows \"~SATAxiom (sequent \\n(a, (num,fm) # list)) --> iA ~= (num, fm) --> \\\\<not> proofTree (tree subs (a, (num, fm) # list)) --> fSucn : subs (a, (num, fm) # list) --> iA \\\\<in> set list --> costBarrier iA (fSucn) < costBarrier iA (a, (num, fm) # list)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma nth_slice: \"bit (slice n w :: \\'a::len word) m = (bit w (m + n) \\\\<and> m < LENGTH(\\'a))\"'",
+        true,
+        [
+            "apply (simp add: bit_slice_iff)",
+            "apply transfer",
+            "apply auto",
+            "done\n\n  \\<comment> \\<open>This weaker version was previously called @{text ucast_less_ucast}. We retain it to\n      support existing proofs.\\<close>"
+        ]
+    ],
+    [
+        "'lemma coeff_less_poly_subdegree:\\n  \"k < poly_subdegree p \\\\<Longrightarrow> coeff p k = 0\"'",
+        true,
+        [
+            "by (auto simp: poly_subdegree_def nth_default_def)"
+        ]
+    ],
+    [
+        "'lemma bij_betw_function_of:\\n  assumes \"bij_betw enum {0..<card A} A\"\\n  shows \"bij_betw (function_of A enum) {xs. set xs \\\\<subseteq> B \\\\<and> length xs = card A} (A \\\\<rightarrow>\\\\<^sub>E B)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma wp_under_le_trans:\\n  \"wp_under_wlp a \\\\<Longrightarrow> le_utrans (wp a) (wlp a)\"'",
+        true,
+        [
+            "by(auto intro:le_utransI simp:wp_eval)"
+        ]
+    ],
+    [
+        "'lemma tape_of_nl_append_one: \"lm \\\\<noteq> [] \\\\<Longrightarrow>  <lm @ [a]> = <lm> @ Bk # Oc\\\\<up>Suc a\"'",
+        true,
+        [
+            "proof(induct lm)",
+            "case Nil",
+            "thus?case sorry",
+            "by (auto)",
+            "qed (simp add: tape_of_nl_cons)"
+        ]
+    ],
+    [
+        "'lemma has_next_filter_generator:\\n  \"list.has_next (filter_generator g) s \\\\<longleftrightarrow>\\n  list.has_next g s \\\\<and> (let (x, s\\') = list.next g s in if P x then True else list.has_next (filter_generator g) s\\')\"'",
+        true,
+        [
+            "apply transfer",
+            "apply(simp add: split_beta)",
+            "subgoal for g s sorry",
+            "apply(subst filter_has_next.simps)",
+            "by(subst filter_has_next.simps)(auto)",
+            "done\n\n\\<comment> \\<open>This weaker version was previously called @{text ucast_less_ucast}. We retain it to\n      support existing proofs.\\<close>"
+        ]
+    ],
+    [
+        "'lemma  spectrum_smult:\\n  fixes A::\"complex Matrix.mat\"\\n  assumes \"hermitian A\"\\n  and \"A\\\\<in> carrier_mat n n\"\\n  and \"0 < n\"\\nshows \"spectrum (x \\\\<cdot>\\\\<^sub>m A) = {x * a|a. a\\\\<in> spectrum A}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma wf_atom_mono:\\n    assumes SS: \"tys \\\\<subseteq>\\\\<^sub>m tys\\'\"\\n    assumes WF: \"wf_atom tys a\"\\n    shows \"wf_atom tys\\' a\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sorted_nth_mono_less [forward]:\\n \"sorted xs \\\\<Longrightarrow> i < length xs \\\\<Longrightarrow> xs ! i < xs ! j \\\\<Longrightarrow> i < j\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma vD_addpreRT [simp]:\\n  fixes rt dip npre\\n  assumes \"dip \\\\<in> kD rt\"\\n  shows \"vD (the (addpreRT rt dip npre)) = vD rt\"'",
+        true,
+        [
+            "unfolding vD_def addpreRT_def",
+            "using assms [THEN kD_Some]",
+            "by force"
+        ]
+    ],
+    [
+        "'lemma sum_with_mem: \"sum_with pls z g A \\\\<in> S\" if \"g ` A \\\\<subseteq> S\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma fpxs_shift_0_left [simp]: \"fpxs_shift 0 f = f\"'",
+        true,
+        [
+            "by (intro fpxs_ext) simp"
+        ]
+    ],
+    [
+        "'lemma both_member_options_from_complete_tree_to_child:\\n  assumes \"deg \\\\<ge>1\" and  \"both_member_options (Node (Some (mi, ma)) deg treeList summary) x\" \\n  shows \"both_member_options (treeList ! ( high x (deg div 2))) (low x (deg div 2)) \\\\<or> x = mi \\\\<or> x = ma\"'",
+        true,
+        [
+            "using assms",
+            "by (smt (z3) Suc_1 Suc_leI add_leD1 both_member_options_def le_add_diff_inverse membermima.simps(4) naive_member.simps(3) plus_1_eq_Suc)"
+        ]
+    ],
+    [
+        "'lemma even_not_odd[elim]: \"Suc (2 * x) = 2 * y \\\\<Longrightarrow> RR\"'",
+        true,
+        [
+            "using n_not_Suc_n",
+            "by (cases x y rule: linorder_cases) simp_all"
+        ]
+    ],
+    [
+        "'lemma closest_supchamber_closest:\\n  \"chamber C \\\\<Longrightarrow> F\\\\<subseteq>C \\\\<Longrightarrow>\\n    chamber_distance (closest_supchamber F D) D \\\\<le> chamber_distance C D\"'",
+        true,
+        [
+            "using closest_supchamber_def",
+            "by    (fastforce intro: arg_min_nat_le)"
+        ]
+    ],
+    [
+        "'lemma piecewise_differentiable_cases:\\n  fixes c::real\\n  assumes \"f piecewise_differentiable_on {a..c}\"\\n          \"g piecewise_differentiable_on {c..b}\"\\n           \"a \\\\<le> c\" \"c \\\\<le> b\" \"f c = g c\"\\n  shows \"(\\\\<lambda>x. if x \\\\<le> c then f x else g x) piecewise_differentiable_on {a..b}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma guarantees_Join_Int: \\n    \"[| F \\\\<in> U guarantees V;  G \\\\<in> X guarantees Y; F ok G |]  \\n     ==> F\\\\<squnion>G \\\\<in> (U \\\\<inter> X) guarantees (V \\\\<inter> Y)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma affine_hull_3_imp_collinear: \"c \\\\<in> affine hull {a,b} \\\\<Longrightarrow> collinear {a,b,c}\"'",
+        true,
+        [
+            "unfolding collinear_affine_hull",
+            "by (blast intro: hull_inc)"
+        ]
+    ],
+    [
+        "'lemma HaddP_imp_OrdP: \"{HaddP x y z} \\\\<turnstile> OrdP y\"'",
+        false,
+        []
+    ],
+    [
+        "'theorem extends_to_equivalence_of_bicategories:\\n    shows \"equivalence_of_bicategories V\\\\<^sub>D H\\\\<^sub>D \\\\<a>\\\\<^sub>D \\\\<i>\\\\<^sub>D src\\\\<^sub>D trg\\\\<^sub>D V\\\\<^sub>C H\\\\<^sub>C \\\\<a>\\\\<^sub>C \\\\<i>\\\\<^sub>C src\\\\<^sub>C trg\\\\<^sub>C\\n             F \\\\<Phi> right_map right_cmp unit\\\\<^sub>0 unit\\\\<^sub>1 counit\\\\<^sub>0 counit\\\\<^sub>1\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma bin_rest_integer_code [code nbe]:\\n  \"bin_rest_integer i = i div 2\"'",
+        true,
+        [
+            "by transfer simp_all"
+        ]
+    ],
+    [
+        "'lemma (in interval) nonmeets1:\"\\\\<not> (u\\\\<parallel>r \\\\<and> r\\\\<parallel>u)\"'",
+        true,
+        [
+            "using nontrans1 meets_asym",
+            "by (metis transitive)"
+        ]
+    ],
+    [
+        "'lemma symrun_interp_left_idem:\\n  \\\\<open>\\\\<lbrakk>\\\\<lbrakk> \\\\<Gamma>\\\\<^sub>1 @ (\\\\<Gamma>\\\\<^sub>1 @ \\\\<Gamma>\\\\<^sub>2) \\\\<rbrakk>\\\\<rbrakk>\\\\<^sub>p\\\\<^sub>r\\\\<^sub>i\\\\<^sub>m = \\\\<lbrakk>\\\\<lbrakk> \\\\<Gamma>\\\\<^sub>1 @ \\\\<Gamma>\\\\<^sub>2 \\\\<rbrakk>\\\\<rbrakk>\\\\<^sub>p\\\\<^sub>r\\\\<^sub>i\\\\<^sub>m\\\\<close>'",
+        true,
+        [
+            "by (simp add: symrun_interp_expansion inf_commute inf_left_commute symrun_interp_expansion)"
+        ]
+    ],
+    [
+        "'lemma mcs_conjunction: \\n  assumes \\\\<open>consistent A V\\\\<close> and \\\\<open>maximal A V\\\\<close> \\n  shows \\\\<open>p \\\\<in> V \\\\<and> q \\\\<in> V \\\\<longrightarrow> (p \\\\<^bold>\\\\<and> q) \\\\<in> V\\\\<close>'",
+        false,
+        []
+    ],
+    [
+        "'lemma decide_step:\\n  assumes run: \"HORun UV_M rho HOs\"\\n      and decide: \"decide (rho (Suc r) p) \\\\<noteq> decide (rho r p)\" \\n  shows \"step r = 1\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma mat_mult_assoc_n:\\n  assumes wf1: \"mat n n m1\"\\n  and wf2: \"mat n n m2\"\\n  and wf3: \"mat n n m3\"\\n  shows \"mat_mult n (mat_mult n m1 m2) m3 = mat_mult n m1 (mat_mult n m2 m3)\"'",
+        true,
+        [
+            "using wf1 wf2 wf3",
+            "by (auto intro: mat_mult_assoc)"
+        ]
+    ],
+    [
+        "'lemma ext_suf_Cons:\\n  \"Suc i + \\\\<^bold>|u\\\\<^bold>| = \\\\<^bold>|w\\\\<^bold>| \\\\<Longrightarrow> u \\\\<le>s w \\\\<Longrightarrow> (w!i)#u \\\\<le>s (w!i)#w\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma changes_append_replicate_0: \"changes (xs @ replicate n 0) = changes xs\"'",
+        true,
+        [
+            "proof (induction xs)",
+            "case (Cons x xs)",
+            "thus?case sorry",
+            "apply (cases \"x=0\")",
+            "by (auto simp: changes_Cons)",
+            "qed (auto simp add: changes_replicate_0)"
+        ]
+    ],
+    [
+        "'lemma partial_s_method_via_h_framework_lists_completeness :\\n  fixes M1 :: \"(\\'a::linorder,\\'b::linorder,\\'c::linorder) fsm\"\\n  fixes M2 :: \"(\\'d,\\'b,\\'c) fsm\"\\n  assumes \"observable M1\"\\n  and     \"observable M2\"\\n  and     \"minimal M1\"\\n  and     \"minimal M2\"\\n  and     \"size_r M1 \\\\<le> m\"\\n  and     \"size M2 \\\\<le> m\"\\n  and     \"inputs M2 = inputs M1\"\\n  and     \"outputs M2 = outputs M1\"\\nshows \"(L M1 = L M2) \\\\<longleftrightarrow> list_all (passes_test_case M2 (initial M2)) (partial_s_method_via_h_framework_lists M1 m completeInputTraces useInputHeuristic)\"'",
+        true,
+        [
+            "using h_framework_dynamic_lists_completeness[OF assms]",
+            "unfolding partial_s_method_via_h_framework_lists_def h_framework_dynamic_lists_def",
+            "unfolding h_framework_dynamic_def[symmetric]",
+            "by (simp add: partial_s_method_via_h_framework_def)"
+        ]
+    ],
+    [
+        "'lemma plusplus_closed: assumes \"semilat (A, r, f)\" shows\\n  \"\\\\<And>y. \\\\<lbrakk> set x \\\\<subseteq> A; y \\\\<in> A\\\\<rbrakk> \\\\<Longrightarrow> x ++_f y \\\\<in> A\" (is \"PROP ?P\")'",
+        false,
+        []
+    ],
+    [
+        "'lemma local_flow_temp: \"a > 0 \\\\<Longrightarrow> local_flow (f a L) UNIV UNIV (\\\\<phi> a L)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma map_upds_apply_eq_Some:\\n  \"((m(xs[\\\\<mapsto>]ys)) x = Some y) =\\n  (let xs\\' = take (size ys) xs\\n   in if x \\\\<in> set xs\\' then ys ! last_index xs\\' x = y else m x = Some y)\"'",
+        true,
+        [
+            "by(simp add:fun_upds_apply Let_def split:if_split_asm)"
+        ]
+    ],
+    [
+        "'lemma iso_finfun_upd [code_unfold]:\\n  fixes A :: \"\\'a pred\\\\<^sub>f\"\\n  shows \"(($) A)(x := b) = ($) (A(x $:= b))\"'",
+        true,
+        [
+            "by(auto simp add: finfun_upd_apply)"
+        ]
+    ],
+    [
+        "'lemma\\n  fixes x :: \\'a and y :: \\'b and z :: \\'c\\n    and foo :: foo\\n    and bar :: bar\\n    and bazar :: bazar\\n  shows\\n    \"A x foo \\\\<Longrightarrow> P x foo\"\\n  and\\n    \"B1 y bar \\\\<Longrightarrow> Q1 y bar\"\\n    \"B2 y bar \\\\<Longrightarrow> Q2 y bar\"\\n  and\\n    \"C1 z bazar \\\\<Longrightarrow> R1 z bazar\"\\n    \"C2 z bazar \\\\<Longrightarrow> R2 z bazar\"\\n    \"C3 z bazar \\\\<Longrightarrow> R3 z bazar\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma l11_19:\\n  assumes \"Per A B P1\" and\\n    \"Per A B P2\" and\\n    \"A B OS P1 P2\"\\n  shows \"B Out P1 P2\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma locate_b_2_locate_a[simp]: \\n  \"\\\\<lbrakk>q > 0;  inv_locate_b (as, am) (q - Suc 0, aaa, Bk # xs) ires\\\\<rbrakk>\\n   \\\\<Longrightarrow>  inv_locate_a (as, am) (q, Bk # aaa, xs) ires\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma diff_substs_yield_diff_trms:\\n  assumes \"(subst (Var x) \\\\<sigma>) \\\\<noteq> (subst (Var x) \\\\<eta>)\"\\n  shows \"(x \\\\<in> vars_of t)\\n   \\\\<Longrightarrow> (subst t \\\\<sigma>) \\\\<noteq> (subst t \\\\<eta>)\"'",
+        true,
+        [
+            "using assms",
+            "by (induct t) (auto simp:subst_eq_def)"
+        ]
+    ],
+    [
+        "'lemma othersdontinterfere: \"distinct init \\\\<Longrightarrow> i < length qs \\\\<Longrightarrow> a\\\\<in>set init \\\\<Longrightarrow> b\\\\<in>set init\\n     \\\\<Longrightarrow> set qs \\\\<subseteq> set init \\\\<Longrightarrow> qs!i\\\\<notin>{a,b} \\\\<Longrightarrow> a < b in s_TS init h qs i \\\\<Longrightarrow> a < b in s_TS init h qs (Suc i)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma (in sym_digraph) exists_scc:\\n  assumes \"verts G \\\\<noteq> {}\" shows \"\\\\<exists>c. c \\\\<in> sccs\"'",
+        true,
+        [
+            "using assms",
+            "by (auto intro: induce_reachable_is_in_sccs)"
+        ]
+    ],
+    [
+        "'lemma cs_sym:\\n  assumes \"x \\\\<down>\\\\<^sup>* y\"\\n  shows \"y \\\\<down>\\\\<^sup>* x\"'",
+        true,
+        [
+            "using assms",
+            "unfolding cs_def",
+            "by (auto intro: rtrancl_into_rtrancl)"
+        ]
+    ],
+    [
+        "'lemma tauStepChainPar2:\\n  fixes \\\\<Psi>  :: \\'b\\n  and   \\\\<Psi>\\\\<^sub>P :: \\'b\\n  and   Q   :: \"(\\'a, \\'b, \\'c) psi\"\\n  and   Q\\'  :: \"(\\'a, \\'b, \\'c) psi\"\\n  and   P   :: \"(\\'a, \\'b, \\'c) psi\"\\n  and   A\\\\<^sub>P :: \"name list\"\\n\\n  assumes \"\\\\<Psi> \\\\<otimes> \\\\<Psi>\\\\<^sub>P \\\\<rhd> Q \\\\<Longrightarrow>\\\\<^sub>\\\\<tau> Q\\'\"\\n  and     \"extractFrame P = \\\\<langle>A\\\\<^sub>P, \\\\<Psi>\\\\<^sub>P\\\\<rangle>\"\\n  and     \"A\\\\<^sub>P \\\\<sharp>* \\\\<Psi>\"\\n  and     \"A\\\\<^sub>P \\\\<sharp>* Q\"\\n\\n  shows \"\\\\<Psi> \\\\<rhd> P \\\\<parallel> Q \\\\<Longrightarrow>\\\\<^sub>\\\\<tau> P \\\\<parallel> Q\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma exists_small_list_elem4[simp]: \\n  \"\\\\<lbrakk>m \\\\<noteq> n; p < length lm; lm ! p = (0::nat); m < p; n < p; x < lm ! m\\\\<rbrakk>\\n  \\\\<Longrightarrow> \\\\<exists>xa\\\\<le>lm ! m. lm[m := x, n := lm ! n + lm ! m - x,\\n                                   p := lm ! m - x] = \\n                  lm[m := xa, n := lm ! n + lm ! m - xa, \\n                                   p := lm ! m - xa]\"'",
+        true,
+        [
+            "by(rule_tac x = x in exI, simp add: list_update_swap)"
+        ]
+    ],
+    [
+        "'lemma timpl_closure_Ana_keys_no_Abs_eq_case:\\n  assumes t: \"t \\\\<in> timpl_closure s TI\"\\n    and s: \"\\\\<forall>t \\\\<in> set (fst (Ana s)). \\\\<forall>f \\\\<in> funs_term t. \\\\<not>is_Abs f\" (is \"?P s\")\\n  shows \"fst (Ana t) = fst (Ana s)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma all_nat_less [code_unfold]:\\n  \"(\\\\<forall>m\\\\<le>n::nat. P m) \\\\<longleftrightarrow> (\\\\<forall>m \\\\<in> {0..n}. P m)\"'",
+        true,
+        [
+            "by (auto intro: le_imp_less_or_eq)"
+        ]
+    ],
+    [
+        "'lemma DistinctNetsDenyAllow: \\n  \"DenyAllFromTo b c \\\\<in> set p \\\\<Longrightarrow> AllowPortFromTo a d po \\\\<in> set p\\\\<Longrightarrow> allNetsDistinct p \\\\<Longrightarrow>\\n  dom (Cp (DenyAllFromTo b c)) \\\\<inter> dom (Cp (AllowPortFromTo a d po)) \\\\<noteq> {}\\\\<Longrightarrow>\\n  b = a \\\\<and> c = d\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma inc_vec_of_bij_betw: \\n  assumes \"inj_on f (set Vs)\"\\n  assumes \"bl \\\\<subseteq> (set Vs)\"\\n  shows \"inc_vec_of Vs bl = inc_vec_of (map f Vs) (f ` bl)\"'",
+        false,
+        []
+    ],
+    [
+        "'theorem siso0_Atm[simp]:\\n\"siso0 (Atm atm) = compatAtm atm\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma if_eval_elim\\':\\n  \"\\\\<lbrakk> \\\\<langle>If e c\\\\<^sub>1 c\\\\<^sub>2, mds, mem\\\\<rangle> \\\\<leadsto> \\\\<langle>c\\', mds\\', mem\\'\\\\<rangle> \\\\<rbrakk> \\\\<Longrightarrow>\\n  ((c\\' = c\\\\<^sub>1 \\\\<and> ev\\\\<^sub>B mem e) \\\\<or> (c\\' = c\\\\<^sub>2 \\\\<and> \\\\<not> ev\\\\<^sub>B mem e)) \\\\<and> mds\\' = mds \\\\<and> mem\\' = mem\"'",
+        true,
+        [
+            "by (metis (lifting) if_elim if_eval_elim)"
+        ]
+    ],
+    [
+        "'lemma shift_lt [simp]: \\\\<open>n < m \\\\<Longrightarrow> (E\\\\<langle>n:x\\\\<rangle>) m = E (m-1)\\\\<close>'",
+        true,
+        [
+            "by (simp add: shift_def split: nat.split)"
+        ]
+    ],
+    [
+        "'lemma Disjoint_commute_I: \"H \\\\<turnstile> Disjoint t u \\\\<Longrightarrow> H \\\\<turnstile> Disjoint u t\"'",
+        true,
+        [
+            "by (metis Disjoint_commute Disjoint_I cut1)"
+        ]
+    ],
+    [
+        "'lemma fbrelation_vempty: \"fbrelation 0\"'",
+        true,
+        [
+            "by (intro fbrelationI) force"
+        ]
+    ],
+    [
+        "'lemma schroeder_2: \"y ; x \\\\<cdot> z = 0 \\\\<longleftrightarrow> y \\\\<cdot> z ; x\\\\<^sup>\\\\<smile> = 0\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma block_ex: assumes \"g u =\\\\<^sub>m h v\"  shows \"blockP (hd u)\"'",
+        true,
+        [
+            "using assms",
+            "unfolding blockP_def",
+            "by (simp add: pre_blockI)"
+        ]
+    ],
+    [
+        "'lemma rep_value_sym: \"\\\\<r> = \\\\<k>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma list_empty: \"list stack = [] \\\\<longleftrightarrow> is_empty stack\"'",
+        true,
+        [
+            "by(induction stack rule: is_empty_stack.induct)(auto)"
+        ]
+    ],
+    [
+        "'lemma singular_relboundary_minus:\\n   \"singular_relboundary p X S (-c) \\\\<longleftrightarrow> singular_relboundary p X S c\"'",
+        false,
+        []
+    ],
+    [
+        "'theorem time_closest_pair_rec_bigo:\\n  \"(\\\\<lambda>xs. time (closest_pair_rec_tm xs)) \\\\<in> O[length going_to at_top]((\\\\<lambda>n. n * ln n) o length)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma head_precedes:\\n  assumes \"y \\\\<in> set (x # xs)\"\\n  shows \"x \\\\<preceq> y in (x # xs)\"'",
+        true,
+        [
+            "using assms",
+            "by (auto simp add: precedes_def)"
+        ]
+    ],
+    [
+        "'lemma Q_diff_qf_SQ: \"Q - {qf} = SQ\"'",
+        true,
+        [
+            "using qf_not_in_SQ",
+            "by (auto simp add: NFA.Q_def)"
+        ]
+    ],
+    [
+        "'lemma countable_insert_eq [simp]: \"countable (insert x A) = countable A\"'",
+        true,
+        [
+            "unfolding insert_def",
+            "by (auto intro: countable_subset)"
+        ]
+    ],
+    [
+        "'lemma config\\'_snoc: \"config\\' A s (rs@[r]) = Step A (config\\' A s rs) r\"'",
+        true,
+        [
+            "by(induction rs arbitrary: s) simp_all"
+        ]
+    ],
+    [
+        "'lemma LEX_imp_not_LEX:\\n  assumes \"LEX P f g\"\\n    and [dest]: \"\\\\<And>x y z. P x y \\\\<Longrightarrow> P y z \\\\<Longrightarrow> P x z\"\\n    and [simp]: \"\\\\<And>x. \\\\<not> P x x\"\\n  shows \"\\\\<not> LEX P g f\"'",
+        true,
+        [
+            "using assms",
+            "unfolding LEX_def",
+            "by (metis linorder_neqE_nat)"
+        ]
+    ],
+    [
+        "'lemma all_edges_between_swap:\\n  \"all_edges_between X Y = (\\\\<lambda>(x,y). (y,x)) ` (all_edges_between Y X)\"'",
+        true,
+        [
+            "unfolding all_edges_between_def",
+            "by (auto simp: insert_commute)"
+        ]
+    ],
+    [
+        "'lemma t_find_closest_eq_time_find_closest_tm:\\n  \"t_find_closest p \\\\<delta> ps = time (find_closest_tm p \\\\<delta> ps)\"'",
+        true,
+        [
+            "by (induction p \\<delta> ps rule: t_find_closest.induct)\n     (auto simp: time_simps Let_def)"
+        ]
+    ],
+    [
+        "'lemma vD_addpreRT [simp]:\\n  fixes rt dip npre\\n  assumes \"dip \\\\<in> kD rt\"\\n  shows \"vD (the (addpreRT rt dip npre)) = vD rt\"'",
+        true,
+        [
+            "unfolding vD_def addpreRT_def",
+            "using assms [THEN kD_Some]",
+            "by force"
+        ]
+    ],
+    [
+        "'lemma Qp_smult_r_distr:\\n  assumes \"a \\\\<in> carrier Q\\\\<^sub>p\"\\n  assumes \"P \\\\<in> carrier (Q\\\\<^sub>p[\\\\<X>\\\\<^bsub>n\\\\<^esub>])\"\\n  assumes \"q \\\\<in> carrier (Q\\\\<^sub>p[\\\\<X>\\\\<^bsub>n\\\\<^esub>])\"\\n  shows \"a \\\\<odot>\\\\<^bsub>Q\\\\<^sub>p[\\\\<X>\\\\<^bsub>n\\\\<^esub>]\\\\<^esub> (P \\\\<oplus>\\\\<^bsub>Q\\\\<^sub>p[\\\\<X>\\\\<^bsub>n\\\\<^esub>]\\\\<^esub> q) = (a \\\\<odot>\\\\<^bsub>Q\\\\<^sub>p[\\\\<X>\\\\<^bsub>n\\\\<^esub>]\\\\<^esub> P)  \\\\<oplus>\\\\<^bsub> Q\\\\<^sub>p[\\\\<X>\\\\<^bsub>n\\\\<^esub>]\\\\<^esub> (a \\\\<odot>\\\\<^bsub>Q\\\\<^sub>p[\\\\<X>\\\\<^bsub>n\\\\<^esub>]\\\\<^esub> q)\"'",
+        true,
+        [
+            "using assms",
+            "unfolding coord_ring_def",
+            "by (metis Qp.Pring_smult_r_distr)"
+        ]
+    ],
+    [
+        "'lemma integral_empty:\\n  assumes \"space M = {}\"\\n  shows \"integral\\\\<^sup>L M f = 0\"'",
+        true,
+        [
+            "using assms",
+            "by (intro integral_eq_zero_AE) auto"
+        ]
+    ],
+    [
+        "'lemma (in Group) special_nsg_e:\"G \\\\<guillemotright> H \\\\<Longrightarrow> Gp G H \\\\<triangleright> {\\\\<one>}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma regular_dense_top:\\n  \"regular x \\\\<Longrightarrow> dense x \\\\<Longrightarrow> x = top\"'",
+        true,
+        [
+            "by (simp add: order.antisym top_le pp_increasing)"
+        ]
+    ],
+    [
+        "'lemma coord_partial_eval_pvar\\':\\n  assumes \"\\\\<one> \\\\<noteq> \\\\<zero>\"\\n  assumes \"as \\\\<in> carrier (R\\\\<^bsup>n\\\\<^esup>)\"\\n  assumes \"i \\\\<notin> S\"\\n  shows \"coord_partial_eval R S as (pvar R i) = (pvar R i)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma assumes wf: \"wf_J_prog P\"\\nshows red_preserves_defass:\\n  \"P \\\\<turnstile> \\\\<langle>e,(h,l,sh),b\\\\<rangle> \\\\<rightarrow> \\\\<langle>e\\',(h\\',l\\',sh\\'),b\\'\\\\<rangle> \\\\<Longrightarrow> \\\\<D> e \\\\<lfloor>dom l\\\\<rfloor> \\\\<Longrightarrow> \\\\<D> e\\' \\\\<lfloor>dom l\\'\\\\<rfloor>\"\\nand \"P \\\\<turnstile> \\\\<langle>es,(h,l,sh),b\\\\<rangle> [\\\\<rightarrow>] \\\\<langle>es\\',(h\\',l\\',sh\\'),b\\'\\\\<rangle> \\\\<Longrightarrow> \\\\<D>s es \\\\<lfloor>dom l\\\\<rfloor> \\\\<Longrightarrow> \\\\<D>s es\\' \\\\<lfloor>dom l\\'\\\\<rfloor>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma cutoff_branch_internal: \\n  assumes \"anybranch T red\"\\n  shows \"\\\\<exists>T\\'. anyinternal T\\' (\\\\<lambda>p. \\\\<not>red p) \\\\<and> anybranch T\\' (\\\\<lambda>p. red p)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma bisimCoinductAux[consumes 1]:\\n  fixes P :: \"ccs\"\\n  and   Q :: \"ccs\"\\n  and   X :: \"(ccs \\\\<times> ccs) set\"\\n\\n  assumes \"(P, Q) \\\\<in> X\"\\n  and     \"\\\\<And>P Q. (P, Q) \\\\<in> X \\\\<Longrightarrow> P \\\\<leadsto>[(X \\\\<union> bisim)] Q \\\\<and> (Q, P) \\\\<in> X\"\\n\\n  shows \"P \\\\<sim> Q\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ground_replacement:\\n  assumes \"replace_subterm t p v s\"\\n  assumes \"ground_term (subst t \\\\<sigma>)\"\\n  assumes \"ground_term (subst v \\\\<sigma>)\"\\n  shows \"ground_term (subst s \\\\<sigma>)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma EmptyMap_hierauto [simp]:\\n \"(D,{SA}, SAEvents SA, EmptyMap (States SA)) \\\\<in> hierauto\"'",
+        true,
+        [
+            "by (unfold hierauto_def HierAuto_def IsCompFun_def, auto)"
+        ]
+    ],
+    [
+        "'lemma CallHigh:\\n  \"({HighSec} \\\\<union> G)  \\\\<rhd> body : HighSec \\\\<Longrightarrow> G \\\\<rhd> Call : HighSec\"'",
+        true,
+        [
+            "by (rule VDMCall)"
+        ]
+    ],
+    [
+        "'lemma AxiomP_sf [iff]: \"Sigma_fm (AxiomP t)\"'",
+        true,
+        [
+            "by (auto simp: AxiomP_def)"
+        ]
+    ],
+    [
+        "'lemma oracle\\\\<^sub>n_apply [simp]:\\n  \"oracle\\\\<^sub>n \\\\<eta> s (i, x) = map_spmf (apsnd (fun_upd s i)) (oracle\\\\<^sub>1 \\\\<eta> (s i) x)\"'",
+        true,
+        [
+            "by(simp add: oracle\\<^sub>n_def map_spmf_bind_spmf)"
+        ]
+    ],
+    [
+        "'lemma span_redundant: \"x \\\\<in> span S \\\\<Longrightarrow> span (insert x S) = span S\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma(in ring) add_pow_closed :\\n  assumes \"b \\\\<in> carrier R\"\\n  shows \"([(m::nat)]\\\\<cdot>\\\\<^bsub>R\\\\<^esub>b) \\\\<in> carrier R\"'",
+        true,
+        [
+            "by (simp add: assms nat_pow_closed)"
+        ]
+    ],
+    [
+        "'lemma satisfiable_code:\\n  \"satisfiable cnf \\\\<longleftrightarrow> \\n  (if finite cnf \\\\<and> is_2sat cnf then \\n   let G = imp_graph cnf in \\\\<forall>x\\\\<in>vars_of_cnf cnf. \\\\<not> (reachable G (Pos x) (Neg x) \\\\<and> reachable G (Neg x) (Pos x))\\n   else Code.abort (STR \\'\\'Infinite or invalid 2CNF formula\\'\\') (\\\\<lambda>_. satisfiable cnf))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma dual_less_iff:\\n  \"x < y \\\\<longleftrightarrow> undual y < undual x\"'",
+        true,
+        [
+            "by transfer (simp add: less_le_not_le)"
+        ]
+    ],
+    [
+        "'lemma permutation_insert_column_step:\\n  assumes p: \"p permutes {0..<n}\" and \"j < n\"\\n  shows \"transpose j (Suc j) \\\\<circ> permutation_insert i (Suc j) p = permutation_insert i j p\"\\n    (is \"?l = ?r\")'",
+        true,
+        [
+            "proof (intro ext)",
+            "fix x",
+            "show \"(transpose j (Suc j) \\<circ> permutation_insert i (Suc j) p) x = permutation_insert i j p x\" sorry",
+            "unfolding permutation_insert_expand",
+            "by (auto simp: transpose_def split: if_split)",
+            "qed\n\n  \\<comment> \\<open>@{term \"(transpose j (Suc j) \\<circ> permutation_insert i (Suc j) p) x = permutation_insert i j p x\"}\\<close>"
+        ]
+    ],
+    [
+        "'lemma norm_vec_mult_le: \"\\\\<parallel>A *\\\\<^sub>V x\\\\<parallel> \\\\<le> (\\\\<parallel>A\\\\<parallel>) * (\\\\<parallel>x\\\\<parallel>)\"'",
+        true,
+        [
+            "unfolding norm_sq_mtx_def sq_mtx_vec_mult_def",
+            "by(simp add: norm_matrix_le_mult_op_norm)"
+        ]
+    ],
+    [
+        "'lemma gen_sqrt_upper_scaled:\\n  assumes \"0 \\\\<le> x\" \"0 < u\"\\n    shows \"sqrt x \\\\<le> sqrtu (x*u^2) n / u\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma decode_plan_length:\\n  assumes \"\\\\<pi> = \\\\<Phi>\\\\<inverse> \\\\<Pi> \\\\<nu> t\"\\n  shows \"length \\\\<pi> = t\"'",
+        true,
+        [
+            "using assms",
+            "by (auto simp: decode_plan_def)"
+        ]
+    ],
+    [
+        "'lemma jordan_nf_exists: assumes A: \"A \\\\<in> carrier_mat n n\"\\n  and linear: \"char_poly A = (\\\\<Prod> (a :: \\'a :: conjugatable_ordered_field) \\\\<leftarrow> as. [:- a, 1:])\"\\n  shows \"\\\\<exists>n_as. jordan_nf A n_as\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma per_root_same_prefix:\"w \\\\<le>p r\\\\<^sup>\\\\<omega> \\\\<Longrightarrow> w\\' \\\\<le>p r\\\\<^sup>\\\\<omega> \\\\<Longrightarrow>  w \\\\<bowtie> w\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma wf_darcs_sucs: \"\\\\<lbrakk>wf_darcs t; x \\\\<in> fset (sucs t)\\\\<rbrakk> \\\\<Longrightarrow> wf_darcs (Node r {|x|})\"'",
+        true,
+        [
+            "apply(induction t)",
+            "by (auto simp: wf_darcs_iff_darcs')"
+        ]
+    ],
+    [
+        "'lemma mono_gamma_f: \"f \\\\<sqsubseteq> g \\\\<Longrightarrow> \\\\<gamma>\\\\<^sub>f f \\\\<subseteq> \\\\<gamma>\\\\<^sub>f g\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma of_int_not_eq:\\n  \\\\<open>of_int (NOT k) = NOT (of_int k)\\\\<close>'",
+        true,
+        [
+            "by (simp add: bit_eq_iff bit_simps)"
+        ]
+    ],
+    [
+        "'lemma list_update_le_listI [rule_format]:\\n  \"set xs \\\\<subseteq> A \\\\<longrightarrow> set ys \\\\<subseteq> A \\\\<longrightarrow> xs [\\\\<sqsubseteq>\\\\<^sub>r] ys \\\\<longrightarrow> p < size xs \\\\<longrightarrow>  \\n   x \\\\<sqsubseteq>\\\\<^sub>r ys!p \\\\<longrightarrow> semilat(A,r,f) \\\\<longrightarrow> x\\\\<in>A \\\\<longrightarrow> \\n   xs[p := x \\\\<squnion>\\\\<^sub>f xs!p] [\\\\<sqsubseteq>\\\\<^sub>r] ys\"'",
+        true,
+        [
+            "apply (unfold Listn.le_def lesub_def semilat_def)",
+            "apply (simp add: list_all2_conv_all_nth nth_list_update)",
+            "done\n\n  \\<comment> \\<open>Correctness of result of @{term x}\\<close>"
+        ]
+    ],
+    [
+        "'lemma irbd_rbd_inv2_inv: \"(bd\\\\<^sub>\\\\<R> \\\\<circ> bd\\\\<^sup>-\\\\<^sub>\\\\<R>) \\\\<phi> = \\\\<phi> \\\\<Longrightarrow> Sup_pres \\\\<phi>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma (in completely_multiplicative_function) dirichlet_prod_self:\\n  \"dirichlet_prod f f n = f n * of_nat (divisor_count n)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma suffix_imp_subseq [intro]: \"suffix xs ys \\\\<Longrightarrow> subseq xs ys\"'",
+        true,
+        [
+            "by (auto elim: suffixE)"
+        ]
+    ],
+    [
+        "'lemma polyfun_diff_alt: (*COMPLEX_SUB_POLYFUN_ALT in HOL Light*)\\n  fixes x :: \"\\'a::idom\"\\n  assumes \"1 \\\\<le> n\"\\n  shows \"(\\\\<Sum>i\\\\<le>n. a i * x^i) - (\\\\<Sum>i\\\\<le>n. a i * y^i) =\\n    (x - y) * ((\\\\<Sum>j<n. \\\\<Sum>k<n-j. a(j + k + 1) * y^k * x^j))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma no_matching_Goto_take: \"no_matching_Goto \\\\<gamma> p rs \\\\<Longrightarrow> no_matching_Goto \\\\<gamma> p  (take n rs)\"'",
+        true,
+        [
+            "proof(induction rs arbitrary:n)",
+            "case (Cons r rs)",
+            "thus?case sorry",
+            "using no_matching_Goto_append",
+            "by (metis append_take_drop_id)",
+            "qed clarsimp"
+        ]
+    ],
+    [
+        "'lemma dist_triangle_half_l: \"dist x1 y < e / 2 \\\\<Longrightarrow> dist x2 y < e / 2 \\\\<Longrightarrow> dist x1 x2 < e\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma subst_cls_list_append[simp]: \"(Cs @ Ds) \\\\<cdot>cl \\\\<sigma> = Cs \\\\<cdot>cl \\\\<sigma> @ Ds \\\\<cdot>cl \\\\<sigma>\"'",
+        true,
+        [
+            "by (auto simp add: subst_cls_list_def)"
+        ]
+    ],
+    [
+        "'lemma setmonotone_implies_chain_funpower:\\n  assumes setmonotone: \"setmonotone f\"\\n  shows \"chain (\\\\<lambda> n. funpower f n I)\"'",
+        true,
+        [
+            "using setmonotone",
+            "by (simp add: setmonotone_def chain_def)"
+        ]
+    ],
+    [
+        "'lemma many_strongly_connected_iff_4:\\n  \"many_strongly_connected x \\\\<longleftrightarrow> x \\\\<le> x\\\\<^sup>T\\\\<^sup>+\"'",
+        true,
+        [
+            "by (metis conv_invol many_strongly_connected_iff_2)"
+        ]
+    ],
+    [
+        "'lemma sgn2_eq_1_sub_arg: \"sgn2 = (\\\\<lambda> x. 1 - x)\"'",
+        true,
+        [
+            "unfolding sgn2_def",
+            "by (rule ext, case_tac x, simp_all)"
+        ]
+    ],
+    [
+        "'lemma map_of_eq_None_iff:\\n  \"(None = map_of xys x) = (x \\\\<notin> fst ` (set xys))\"'",
+        true,
+        [
+            "by(induct xys) simp_all"
+        ]
+    ],
+    [
+        "'lemma replace_coeff_add:\\nassumes \"f 0 = 0\"\\nassumes \"\\\\<And>a b. f (a+b) = f a + f b\"\\nshows \"replace_coeff f (p1 + p2) = replace_coeff f p1 + replace_coeff f p2\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma Ord_pred [simp]: \"Ord \\\\<beta> \\\\<Longrightarrow> \\\\<Squnion> (insert \\\\<beta> (elts \\\\<beta>)) = \\\\<beta>\"'",
+        true,
+        [
+            "by (auto simp: Ord_def Transset_def)"
+        ]
+    ],
+    [
+        "'lemma unit_vectors_is_genset [simp]:\\n  \"module.gen_set cpx_rng (module_cpx_vec n) (unit_vectors n)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma RedT_preserves_ts_inv_ok:\\n  \"\\\\<lbrakk> s -\\\\<triangleright>ttas\\\\<rightarrow>* s\\'; ts_inv_ok (thr s) I \\\\<rbrakk>\\n  \\\\<Longrightarrow> ts_inv_ok (thr s\\') (upd_invs I Q (concat (map (thr_a \\\\<circ> snd) ttas)))\"'",
+        true,
+        [
+            "proof(induction rule: RedT_induct)",
+            "case refl",
+            "then",
+            "show?case sorry",
+            "by (simp add: ts_inv_okI)",
+            "next",
+            "case (step S TAS S')",
+            "thus?case sorry",
+            "apply simp",
+            "apply(erule (1) redT_preserves_ts_inv_ok)",
+            "done\n\n\\<comment> \\<open>FIXME very ugly\\<close>",
+            "qed\n    \\<comment> \\<open>Hence, the result is trivial\\<close>"
+        ]
+    ],
+    [
+        "'lemma mset_subseteq_add_iff2:\\n  \"i \\\\<le> (j::nat) \\\\<Longrightarrow> (repeat_mset i u + m \\\\<subseteq># repeat_mset j u + n) = (m \\\\<subseteq># repeat_mset (j-i) u + n)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma Taylor_cos:\\n  \"norm(cos z - (\\\\<Sum>k\\\\<le>n. complex_of_real (cos_coeff k) * z ^ k))\\n   \\\\<le> exp\\\\<bar>Im z\\\\<bar> * (norm z) ^ Suc n / (fact n)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma steps_redexes_Catch\\':\\n  assumes steps: \"\\\\<Gamma>\\\\<turnstile> (r, s) \\\\<rightarrow>\\\\<^sup>+ (r\\', s\\')\"\\n  shows \"\\\\<And>c. Catch r c\\\\<^sub>2 \\\\<in> redexes c\\n             \\\\<Longrightarrow> \\\\<exists>c\\'. \\\\<Gamma>\\\\<turnstile>(c,s) \\\\<rightarrow>\\\\<^sup>+ (c\\',s\\') \\\\<and> Catch r\\' c\\\\<^sub>2 \\\\<in> redexes c\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma cat_prod_CId_vdomain[cat_cs_simps]: \\n  \"\\\\<D>\\\\<^sub>\\\\<circ> ((\\\\<Prod>\\\\<^sub>Ci\\\\<in>\\\\<^sub>\\\\<circ>I. \\\\<AA> i)\\\\<lparr>CId\\\\<rparr>) = (\\\\<Prod>\\\\<^sub>Ci\\\\<in>\\\\<^sub>\\\\<circ>I. \\\\<AA> i)\\\\<lparr>Obj\\\\<rparr>\"'",
+        true,
+        [
+            "by (simp add: cat_prod_components)"
+        ]
+    ],
+    [
+        "'lemma soundness_and_entailment :\\n  assumes \"Sound Rule\"\\n  assumes \"Rule P1 P2 C\"\\n  assumes \"P1 \\\\<in> S\"\\n  assumes \"P2 \\\\<in> S\"\\n  shows \"entails S C\"'",
+        true,
+        [
+            "proof-",
+            "show?thesis sorry",
+            "unfolding entails_def",
+            "using assms",
+            "by(simp add:Sound_def)",
+            "qed\n\n\\<comment> \\<open>Correctness of result of @{text pa_upd_rule}\\<close>"
+        ]
+    ],
+    [
+        "'lemma finfun_default_update_const:\\n  \"finfun_default (f(a $:= b)) = finfun_default f\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma add_data_cache_low_equal: \\nassumes a1: \"low_equal s1 s2 \\\\<and>\\nt1 = add_data_cache s1 address w bm \\\\<and>\\nt2 = add_data_cache s2 address w bm\"\\nshows \"low_equal t1 t2\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma upd_cols_upd_col_swap: \"i \\\\<notin> I \\\\<Longrightarrow> upd_cols (upd_col M i x) I f = upd_col (upd_cols M I f) i x\"'",
+        true,
+        [
+            "by (transfer, auto simp: fun_eq_iff)"
+        ]
+    ],
+    [
+        "'lemma set_takeWhileD: \"x \\\\<in> set (takeWhile P xs) \\\\<Longrightarrow> x \\\\<in> set xs \\\\<and> P x\"'",
+        true,
+        [
+            "by (induct xs) (auto)"
+        ]
+    ],
+    [
+        "'lemma pm_of_idx_pm_of_pm:\\n  assumes \"keys f \\\\<subseteq> set xs\"\\n  shows \"pm_of_idx_pm xs (idx_pm_of_pm xs f) = f\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma preallocated_dom [simp]: \\n  \"\\\\<lbrakk> preallocated h; C \\\\<in> sys_xcpts \\\\<rbrakk> \\\\<Longrightarrow> addr_of_sys_xcpt C \\\\<in> dom h\"'",
+        true,
+        [
+            "by (unfold preallocated_def) auto"
+        ]
+    ],
+    [
+        "'theorem theorem_3_10_Erdos_Straus:\\n  fixes a::\"nat \\\\<Rightarrow> int\"\\n  assumes a_pos:\"\\\\<forall> n. a n >0\" and \"mono a\"\\n    and nth_1:\"(\\\\<lambda>n. nth_prime n / (a n)^2) \\\\<longlonglongrightarrow> 0\"\\n    and nth_2:\"liminf (\\\\<lambda>n. a n / nth_prime n) = 0\"\\n  shows \"(\\\\<Sum>n. (nth_prime n / (\\\\<Prod>i \\\\<le> n. a i))) \\\\<notin> \\\\<rat>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma extend_set_INT_distrib: \"extend_set h (\\\\<Inter>(B ` A)) = (\\\\<Inter>x \\\\<in> A. extend_set h (B x))\"'",
+        true,
+        [
+            "by (fastforce simp: extend_set_def)"
+        ]
+    ],
+    [
+        "'lemma (in Corps) val_field_1_neq_0:\"valuation K v \\\\<Longrightarrow> 1\\\\<^sub>r \\\\<noteq> \\\\<zero>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma bind_returns_heap_E2 [elim]:\\n  assumes \"h \\\\<turnstile> f \\\\<bind> g \\\\<rightarrow>\\\\<^sub>h h\\'\" and \"pure f h\"\\n  obtains x where \"h \\\\<turnstile> f \\\\<rightarrow>\\\\<^sub>r x\" and \"h \\\\<turnstile> g x \\\\<rightarrow>\\\\<^sub>h h\\'\"'",
+        true,
+        [
+            "using assms pure_returns_heap_eq bind_returns_heap_E",
+            "by (metis (full_types) pure_def)"
+        ]
+    ],
+    [
+        "'lemma lens_plus_right_unit: \"X +\\\\<^sub>L 0\\\\<^sub>L \\\\<approx>\\\\<^sub>L X\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma fresh_None:\\n  shows \"a \\\\<sharp> None\"'",
+        true,
+        [
+            "by(simp add: fresh_def supp_None)"
+        ]
+    ],
+    [
+        "'lemma (in encoding) indRelST_symm:\\n  fixes SRel :: \"(\\'procS \\\\<times> \\'procS) set\"\\n    and TRel :: \"(\\'procT \\\\<times> \\'procT) set\"\\n  assumes symmS: \"sym SRel\"\\n      and symmT: \"sym TRel\"\\n  shows \"sym (indRelST SRel TRel)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma funas_ctxt_ctxt_inv_const_ctxt_ind [simp]:\\n  \"funas_ctxt C \\\\<subseteq> \\\\<F> \\\\<Longrightarrow> inv_const_ctxt \\\\<F> v C = C\"'",
+        true,
+        [
+            "proof (induct C)",
+            "case (More f ss C ts)",
+            "then",
+            "show?case sorry",
+            "using More",
+            "apply auto",
+            "subgoal sorry",
+            "apply (rule nth_equalityI)",
+            "subgoal sorry",
+            "by (auto intro!: arg_cong[of _ _ length])",
+            "by (auto simp: UN_subset_iff)",
+            "subgoal sorry",
+            "apply (rule nth_equalityI)",
+            "subgoal sorry",
+            "by (simp add: length_concat o_def)",
+            "subgoal sorry",
+            "by (auto simp: UN_subset_iff)",
+            "done\n\n  \\<comment> \\<open>Correctness of result of @{text pa_upd}\\<close>",
+            "done\n\n  \\<comment> \\<open>Correctness of result of @{text pa_upd}\\<close>",
+            "qed (auto simp: image_constant_conv)"
+        ]
+    ],
+    [
+        "'lemma wf_measure_tm_erase_right_then_dblBk_left_erp: \"wf measure_tm_erase_right_then_dblBk_left_erp\"'",
+        true,
+        [
+            "by(auto simp: measure_tm_erase_right_then_dblBk_left_erp_def)"
+        ]
+    ],
+    [
+        "'lemma close_noneq_nonempty:\"List.member A x \\\\<Longrightarrow> x \\\\<noteq> a \\\\<Longrightarrow> close A a \\\\<noteq> []\"'",
+        true,
+        [
+            "by (induction A, auto simp add: member_rec)"
+        ]
+    ],
+    [
+        "'lemma F_mndet1 : \"F(mndet {} P) = {(s, X). s = []}\"'",
+        true,
+        [
+            "unfolding mndet_def",
+            "by(simp add: FAILURES_def F_STOP)"
+        ]
+    ],
+    [
+        "'lemma mon_env_cil: \\n  \"w\\\\<in>w1\\\\<otimes>\\\\<^bsub>\\\\<alpha>\\\\<^esub>w2 \\\\<Longrightarrow> mon_env fg w = mon_env fg w1 \\\\<union> mon_env fg w2\"'",
+        true,
+        [
+            "by (induct rule: cil_set_induct_fix\\<alpha>) (auto simp add: mon_ww_unconc)"
+        ]
+    ],
+    [
+        "'lemma strong_completeness\\\\<^sub>K\\\\<^sub>4: \\\\<open>G \\\\<TTurnstile>\\\\<^sub>K\\\\<^sub>4 p \\\\<Longrightarrow> G \\\\<turnstile>\\\\<^sub>K\\\\<^sub>4 p\\\\<close>'",
+        false,
+        []
+    ],
+    [
+        "'lemma zipRT_homomorphism: \"Done\\\\<cdot>f \\\\<diamondop> Done\\\\<cdot>x = Done\\\\<cdot>(f\\\\<cdot>x)\"'",
+        true,
+        [
+            "by (simp add: fmap_fmap eta_cfun)"
+        ]
+    ],
+    [
+        "'lemma non_Package_instance_method_inheritance_cases:\\n  assumes old_inheritable: \"G\\\\<turnstile>Method old inheritable_in (pid C)\" and\\n              accmodi_old: \"accmodi old \\\\<noteq> Package\" and \\n          instance_method: \"\\\\<not> is_static old\" and\\n                   subcls: \"G\\\\<turnstile>C \\\\<prec>\\\\<^sub>C declclass old\" and\\n             old_declared: \"G\\\\<turnstile>Method old declared_in (declclass old)\" and\\n                       wf: \"wf_prog G\"\\n  obtains (Inheritance) \"G\\\\<turnstile>Method old member_of C\"\\n    | (Overriding) new where \"G\\\\<turnstile> new overrides\\\\<^sub>S old\" and \"G\\\\<turnstile>Method new member_of C\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma extend_subset: \\\\<open>S \\\\<subseteq> extend S f n\\\\<close>'",
+        true,
+        [
+            "by (induct n) (auto simp: Let_def)"
+        ]
+    ],
+    [
+        "'lemma vwb_lens_wb [simp]: \"vwb_lens x \\\\<Longrightarrow> wb_lens x\"'",
+        true,
+        [
+            "by (simp_all add: vwb_lens_def)"
+        ]
+    ],
+    [
+        "'lemma map_upds_apply_eq_Some:\\n  \"((m(xs[\\\\<mapsto>]ys)) x = Some y) =\\n  (let xs\\' = take (size ys) xs\\n   in if x \\\\<in> set xs\\' then ys ! last_index xs\\' x = y else m x = Some y)\"'",
+        true,
+        [
+            "by(simp add:fun_upds_apply Let_def split:if_split_asm)"
+        ]
+    ],
+    [
+        "'lemma remdups_adj_set[simp]: \"set (remdups_adj xs) = set xs\"'",
+        true,
+        [
+            "by (induct xs rule: remdups_adj.induct; simp)"
+        ]
+    ],
+    [
+        "'lemma gen_empty_cp_substs_Exists:\\n  \"gen x Q {} \\\\<Longrightarrow> length xs = length ys \\\\<Longrightarrow> cp (Exists y Q[xs \\\\<^bold>\\\\<rightarrow>\\\\<^sup>* ys]) = Bool False\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma compose_map2: \"S1 \\\\<bullet> map_dds f g S2 = map_dds id g (map_dds id f S1 \\\\<bullet> S2)\"\\n  for S1 :: \"(\\'a, \\'b) dds\" and S2 :: \"(\\'b, \\'c) dds\"'",
+        true,
+        [
+            "proof (coinduction arbitrary: S1 S2)",
+            "case (Eq_dds S1 S2)",
+            "show?case sorry",
+            "by(auto simp add: rel_fun_def split: prod.splits)",
+            "qed\n\n\\<comment> \\<open>This weaker version was previously called @{text rel_funD}\\<close>"
+        ]
+    ],
+    [
+        "'lemma fset_of_list_sort: \"fset_of_list l = fset_of_list (sort l)\"'",
+        true,
+        [
+            "including fset.lifting",
+            "by transfer fastforce"
+        ]
+    ],
+    [
+        "'lemma l_suc: \"n > 1 \\\\<Longrightarrow> \\\\<not> n \\\\<le> Suc 0\"'",
+        true,
+        [
+            "by (cases \"n = Suc 0\", auto)"
+        ]
+    ],
+    [
+        "'lemma NegPos_map_append: \"NegPos_map C (as @ bs) = NegPos_map C as @ NegPos_map C bs\"'",
+        true,
+        [
+            "apply (induction as)",
+            "apply simp_all",
+            "subgoal for a as sorry",
+            "by(case_tac \"a\", simp_all)",
+            "done\n\n\\<comment> \\<open>FIXME very ugly\\<close>"
+        ]
+    ],
+    [
+        "'lemma numneg_nz : \"nozerocoeff a \\\\<Longrightarrow> nozerocoeff (numneg a)\"'",
+        true,
+        [
+            "unfolding numneg_def",
+            "by (simp add: nummul_nz)"
+        ]
+    ],
+    [
+        "'lemma a_export\\' [simp]: \"ad (ad x \\\\<cdot> y) = d x + ad y\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma \\\\<psi>_\\\\<phi>:\\n    assumes \"D.ide y\" and \"\\\\<guillemotleft>f : F y \\\\<rightarrow>\\\\<^sub>C x\\\\<guillemotright>\"\\n    shows \"\\\\<psi> x (\\\\<phi> y f) = f\"'",
+        true,
+        [
+            "using assms \\<psi>_invertible \\<phi>_\\<psi>",
+            "by (metis C.ide_cod C.ide_dom C.in_homE \\<psi>_in_hom)"
+        ]
+    ],
+    [
+        "'lemma \\\\<psi>_\\\\<phi>:\\n    assumes \"D.ide y\" and \"\\\\<guillemotleft>f : F y \\\\<rightarrow>\\\\<^sub>C x\\\\<guillemotright>\"\\n    shows \"\\\\<psi> x (\\\\<phi> y f) = f\"'",
+        true,
+        [
+            "using assms \\<psi>_invertible \\<phi>_\\<psi>",
+            "by (metis C.ide_cod C.ide_dom C.in_homE \\<psi>_in_hom)"
+        ]
+    ],
+    [
+        "'lemma mu_below_nu:\\n  \"has_least_fixpoint f \\\\<Longrightarrow> has_greatest_fixpoint f \\\\<Longrightarrow> \\\\<mu> f \\\\<le> \\\\<nu> f\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma bounded_linear_linepath\\':\\n  assumes \"bounded_linear f\"\\n  shows   \"f \\\\<circ> linepath a b = linepath (f a) (f b)\"'",
+        true,
+        [
+            "proof (rule ext)",
+            "fix x",
+            "show \"(f \\<circ> linepath a b) x = linepath (f a) (f b) x\" sorry",
+            "using assms",
+            "unfolding linepath_def",
+            "by (simp add: linear_simps)",
+            "qed\n\n\\<comment> \\<open>\\<^const>\\<open>x\\<close>\\<close>"
+        ]
+    ],
+    [
+        "'lemma Abs_eq_iff2:\\n  shows \"[bs]set. x = [bs\\']set. y \\\\<longleftrightarrow> (\\\\<exists>p. (bs, x) \\\\<approx>set ((=)) supp p (bs\\', y) \\\\<and> supp p \\\\<subseteq> bs \\\\<union> bs\\')\"\\n  and   \"[bs]res. x = [bs\\']res. y \\\\<longleftrightarrow> (\\\\<exists>p. (bs, x) \\\\<approx>res ((=)) supp p (bs\\', y) \\\\<and> supp p \\\\<subseteq> bs \\\\<union> bs\\')\"\\n  and   \"[cs]lst. x = [cs\\']lst. y \\\\<longleftrightarrow> (\\\\<exists>p. (cs, x) \\\\<approx>lst ((=)) supp p (cs\\', y) \\\\<and> supp p \\\\<subseteq> set cs \\\\<union> set cs\\')\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma xor_self_inv\\': \"xor xs xs = {||}\"'",
+        true,
+        [
+            "by (fastforce simp: xor_def)"
+        ]
+    ],
+    [
+        "'lemma ncols_diagonal_to_Smith[simp]: \"ncols (diagonal_to_Smith A bezout) = ncols A\"'",
+        true,
+        [
+            "by (unfold ncols_def, auto)"
+        ]
+    ],
+    [
+        "'lemma groupWIs_same_fw_not: \"A \\\\<in> set (groupWIs c rs) \\\\<Longrightarrow> B \\\\<in> set (groupWIs c rs) \\\\<Longrightarrow> \\n                            A \\\\<noteq> B \\\\<Longrightarrow>\\n                             \\\\<forall>aw \\\\<in> set (map wordinterval_to_set A).\\n                             \\\\<forall>bw \\\\<in> set (map wordinterval_to_set B).\\n                             \\\\<forall>a \\\\<in> aw. \\\\<forall>b \\\\<in> bw. \\\\<not> same_fw_behaviour_one a b c rs\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma formulaFalseIffContainsFalseClause: \\n  fixes formula :: Formula and valuation :: Valuation\\n  shows \"formulaFalse formula valuation = (\\\\<exists> clause. clause el formula \\\\<and> clauseFalse clause valuation)\"'",
+        true,
+        [
+            "by (induct formula) (auto simp add: formulaFalse_def)"
+        ]
+    ],
+    [
+        "'lemma pentagon:\\n    assumes \"ide a\" and \"ide b\" and \"ide c\" and \"ide d\"\\n    shows \"((a \\\\<otimes> \\\\<a>[b, c, d]) \\\\<cdot> \\\\<a>[a, b \\\\<otimes> c, d]) \\\\<cdot> (\\\\<a>[a, b, c] \\\\<otimes> d) = \\\\<a>[a, b, c \\\\<otimes> d] \\\\<cdot> \\\\<a>[a \\\\<otimes> b, c, d]\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma Exp_Enc: \"Exp X Y \\\\<noteq> Enc  X\\' Y\\'\"'",
+        true,
+        [
+            "by (transfer, auto)"
+        ]
+    ],
+    [
+        "'lemma (in encoding_wrt_barbs) indRelRSTPO_impl_SRel_and_TRel_weakly_reflect_barbs:\\n  fixes SRel :: \"(\\'procS \\\\<times> \\'procS) set\"\\n    and TRel :: \"(\\'procT \\\\<times> \\'procT) set\"\\n  assumes reflection: \"rel_weakly_reflects_barbs (indRelRSTPO SRel TRel) (STCalWB SWB TWB)\"\\n  shows \"rel_weakly_reflects_barbs SRel SWB\"\\n    and \"rel_weakly_reflects_barbs TRel TWB\"'",
+        true,
+        [
+            "proof -",
+            "have \"rel_weakly_reflects_barbs SRel SWB \\<and> rel_weakly_reflects_barbs TRel TWB\" sorry",
+            "proof (rule conjI)",
+            "show \"rel_weakly_reflects_barbs SRel SWB\" sorry",
+            "using reflection rel_with_source_impl_SRel_weakly_reflects_barbs[where\n                        Rel=\"indRelRSTPO SRel TRel\" and SRel=\"SRel\"]",
+            "by (simp add: indRelRSTPO.source[where SRel=\"SRel\" and TRel=\"TRel\"])",
+            "show \"rel_weakly_reflects_barbs TRel TWB\" sorry",
+            "using reflection rel_with_target_impl_TRel_weakly_reflects_barbs[where\n                        Rel=\"indRelRSTPO SRel TRel\" and TRel=\"TRel\"]",
+            "by (simp add: indRelRSTPO.target[where SRel=\"SRel\" and TRel=\"TRel\"])",
+            "qed\n\n\\<comment> \\<open>This weaker version was previously called @{text INV}\\<close>",
+            "thus \"rel_weakly_reflects_barbs SRel SWB\" and \"rel_weakly_reflects_barbs TRel TWB\" sorry",
+            "by simp_all+",
+            "qed\n\n\\<comment> \\<open>Relation to Mojmir Acceptance\\<close>"
+        ]
+    ],
+    [
+        "'lemma \\\\<K>_altdef: \"\\\\<K> = {V^\\\\<two> | V. V \\\\<subseteq> [m] \\\\<and> card V = k}\" \\n  (is \"_ = ?R\")'",
+        false,
+        []
+    ],
+    [
+        "'lemma hd_in_set: \"length xs \\\\<noteq> 0 \\\\<Longrightarrow> hd xs \\\\<in> set xs\"'",
+        true,
+        [
+            "by (cases xs) (auto simp: hd_conv_nth)"
+        ]
+    ],
+    [
+        "'lemma upto_enum_step_shift_red:\\n  \"\\\\<lbrakk> is_aligned p sz; sz < LENGTH(\\'a); us \\\\<le> sz \\\\<rbrakk>\\n     \\\\<Longrightarrow> [p :: \\'a :: len word, p + 2 ^ us .e. p + 2 ^ sz - 1]\\n          = map (\\\\<lambda>x. p + of_nat x * 2 ^ us) [0 ..< 2 ^ (sz - us)]\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma (in is_cat_pullback) is_cat_pullback_axioms\\'[cat_lim_cs_intros]:\\n  assumes \"\\\\<alpha>\\' = \\\\<alpha>\"\\n    and \"\\\\<aa>\\' = \\\\<aa>\"\\n    and \"\\\\<gg>\\' = \\\\<gg>\"\\n    and \"\\\\<oo>\\' = \\\\<oo>\"\\n    and \"\\\\<ff>\\' = \\\\<ff>\"\\n    and \"\\\\<bb>\\' = \\\\<bb>\"\\n    and \"\\\\<CC>\\' = \\\\<CC>\"\\n    and \"X\\' = X\"\\n  shows \"x : X\\' <\\\\<^sub>C\\\\<^sub>F\\\\<^sub>.\\\\<^sub>p\\\\<^sub>b \\\\<aa>\\'\\\\<rightarrow>\\\\<gg>\\'\\\\<rightarrow>\\\\<oo>\\'\\\\<leftarrow>\\\\<ff>\\'\\\\<leftarrow>\\\\<bb>\\' \\\\<mapsto>\\\\<mapsto>\\\\<^sub>C\\\\<^bsub>\\\\<alpha>\\'\\\\<^esub> \\\\<CC>\\'\"'",
+        true,
+        [
+            "unfolding assms",
+            "by (intro is_cat_pullback_axioms)"
+        ]
+    ],
+    [
+        "'lemma is_aligned_shiftr:\\n  \"is_aligned w (n + m) \\\\<Longrightarrow> is_aligned (w >> m) n\"'",
+        true,
+        [
+            "apply (simp add: is_aligned_nth)",
+            "by (simp add: bit_simps)"
+        ]
+    ],
+    [
+        "'lemma rhs_step_bind_SPEC:\\n  assumes \"\\\\<Phi> x\\'\"\\n  assumes \"m \\\\<le> \\\\<Down>R (f\\' x\\')\"\\n  shows \"m \\\\<le> \\\\<Down>R (SPEC \\\\<Phi> \\\\<bind> f\\')\"'",
+        true,
+        [
+            "using assms",
+            "by (simp only: pw_le_iff refine_pw_simps) blast"
+        ]
+    ],
+    [
+        "'lemma LIMSEQ_const_mult:\\n    assumes \"f \\\\<longlonglongrightarrow> a\"\\n    shows \"(\\\\<lambda>x. c * f x) \\\\<longlonglongrightarrow> c * a\"'",
+        true,
+        [
+            "by (simp add: tendsto_const tendsto_mult assms)"
+        ]
+    ],
+    [
+        "'lemma The_on_None:\\n  assumes \"\\\\<not>(\\\\<exists>!x. x \\\\<in> U \\\\<and> P x)\"\\n  shows \"(THE x on U. P x) = None\"'",
+        true,
+        [
+            "using assms",
+            "by (auto intro!: the_equality simp: The_on_def)"
+        ]
+    ],
+    [
+        "'lemma in_succE:\\n  assumes \"a \\\\<in>\\\\<^sub>\\\\<circ> succ n\" and \"\\\\<And>a. a \\\\<in>\\\\<^sub>\\\\<circ> n \\\\<Longrightarrow> P a\" and \"P n\"\\n  shows \"P a\"'",
+        true,
+        [
+            "using assms",
+            "by (auto intro: step)"
+        ]
+    ],
+    [
+        "'lemma trapped_backward_iff_rev_trapped_forward:\\n  \"trapped_backward x K  \\\\<longleftrightarrow> rev.trapped_forward x K\"'",
+        true,
+        [
+            "unfolding trapped_backward_def rev.trapped_forward_def trapped_backward_def",
+            "apply (auto)",
+            "subgoal sorry",
+            "by (auto simp: rev_existence_ivl_eq0 rev_eq_flow)",
+            "subgoal sorry",
+            "unfolding rev_existence_ivl_eq0 rev_eq_flow",
+            "by (auto intro!: image_eqI)",
+            "done\n\n  \\<comment> \\<open>Correctness of result of @{text pa_upd}\\<close>"
+        ]
+    ],
+    [
+        "'lemma mkAutoEC_implements: \"implements mkAutoEC\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma older_seniors_tower\\':\\n  assumes \"y \\\\<in> older_seniors x n\"\\n  assumes \"older_seniors x n = older_seniors x (Suc n)\"\\n  shows \"older_seniors y n = older_seniors y (Suc n)\"\\n  (is \"?lhs = ?rhs\")'",
+        false,
+        []
+    ],
+    [
+        "'lemma joinable_implies_con:\\n    assumes \"joinable t u\"\\n    shows \"t \\\\<frown> u\"'",
+        true,
+        [
+            "using assms joinable_def",
+            "by fastforce"
+        ]
+    ],
+    [
+        "'lemma starfun_add: \"\\\\<And>x. ( *f* f) x + ( *f* g) x = ( *f* (\\\\<lambda>x. f x + g x)) x\"'",
+        true,
+        [
+            "by transfer simp"
+        ]
+    ],
+    [
+        "'lemma neg_wtn_meas_sums:\\n  assumes \"E \\\\<in> sets M\"\\n    and \"\\\\<bar>\\\\<mu> E\\\\<bar> < \\\\<infinity>\"\\n  shows \"(\\\\<lambda>i. - (\\\\<mu> (neg_wtn E i))) sums \\n  suminf (\\\\<lambda>i. - real_of_ereal (\\\\<mu> (neg_wtn E i)))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma swap_nz [simp]: \"swap n m p = 0\\\\<^sub>p \\\\<longleftrightarrow> p = 0\\\\<^sub>p\"'",
+        true,
+        [
+            "by (cases p) simp_all"
+        ]
+    ],
+    [
+        "'lemma HFail_maxBalInp:\\n  assumes act: \"HFail s s\\' q\"\\n    and asm1: \"b \\\\<in> (UN p. Ballot p)\"\\n    and asm3: \"maxBalInp s b v\"\\n  shows \"maxBalInp s\\' b v\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma AKcryptSK_Notes [simp]:\\n   \"AKcryptSK authK servK (Notes A X # evs) =\\n      AKcryptSK authK servK evs\"'",
+        true,
+        [
+            "by (simp_all add: AKcryptSK_def)"
+        ]
+    ],
+    [
+        "'lemma nth_prime_nonzero[simp]:\"nth_prime n \\\\<noteq> 0\"'",
+        true,
+        [
+            "by (auto simp: prime_gt_0_nat prime_nth_prime)"
+        ]
+    ],
+    [
+        "'lemma weakCongSimI[case_names cTau]:\\n  fixes \\\\<Psi>   :: \\'b\\n  and   P   :: \"(\\'a, \\'b, \\'c) psi\"\\n  and   Rel :: \"(\\'b \\\\<times> (\\'a, \\'b, \\'c) psi \\\\<times> (\\'a, \\'b, \\'c) psi) set\"\\n  and   Q   :: \"(\\'a, \\'b, \\'c) psi\"\\n  and   C   :: \"\\'d::fs_name\"\\n\\n  assumes rTau:  \"\\\\<And>Q\\'. \\\\<Psi> \\\\<rhd> Q \\\\<longmapsto>\\\\<tau> \\\\<prec> Q\\' \\\\<Longrightarrow> \\\\<exists>P\\'. \\\\<Psi> \\\\<rhd> P \\\\<Longrightarrow>\\\\<^sub>\\\\<tau> P\\' \\\\<and> (\\\\<Psi>, P\\', Q\\') \\\\<in> Rel\"\\n\\n  shows \"\\\\<Psi> \\\\<rhd> P \\\\<leadsto>\\\\<guillemotleft>Rel\\\\<guillemotright> Q\"'",
+        true,
+        [
+            "by(auto simp add: weakCongSimulation_def intro: rTau)"
+        ]
+    ],
+    [
+        "'lemma write0_read_nonsync:\\n    \"\\\\<lbrakk>d \\\\<in> C; \\\\<And>y. c y \\\\<notin> C\\\\<rbrakk> \\\\<Longrightarrow> ((d \\\\<rightarrow> P)\\\\<lbrakk>C\\\\<rbrakk>(c `?` x \\\\<rightarrow> Q x)) = (c `?` x \\\\<rightarrow> ((d \\\\<rightarrow> P)\\\\<lbrakk>C\\\\<rbrakk>Q x))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma discounted_cong:\\n  assumes \"\\\\<forall>n w. X n w = Y n w\"\\n  shows \"\\\\<forall> n w. discounted_value r X n w = discounted_value r Y n w\"'",
+        true,
+        [
+            "by (simp add:discounted_value_def assms)"
+        ]
+    ],
+    [
+        "'lemma update_get: \"update f (get g) = get (update f \\\\<circ> g \\\\<circ> f)\"'",
+        true,
+        [
+            "using get_get",
+            "unfolding update_def o_def",
+            "by (simp add: put_get)"
+        ]
+    ],
+    [
+        "'lemma lex_nlex_pdevs: \"lex (pdevs_apply (nlex_pdevs x) i) 0\"'",
+        true,
+        [
+            "by (auto simp: pdevs_apply_nlex_pdevs)"
+        ]
+    ],
+    [
+        "'lemma seqp_broadcastTE [elim]:\\n  \"\\\\<lbrakk>((\\\\<xi>, {l}broadcast(s\\\\<^sub>m\\\\<^sub>s\\\\<^sub>g). p), a, (\\\\<xi>\\', q)) \\\\<in> seqp_sos \\\\<Gamma>;\\n    \\\\<lbrakk>a = broadcast (s\\\\<^sub>m\\\\<^sub>s\\\\<^sub>g \\\\<xi>); \\\\<xi>\\' = \\\\<xi>; q = p\\\\<rbrakk> \\\\<Longrightarrow> P\\\\<rbrakk> \\\\<Longrightarrow> P\"'",
+        true,
+        [
+            "by (ind_cases \"((\\<xi>, {l}broadcast(s\\<^sub>m\\<^sub>s\\<^sub>g). p), a,\\<xi>',q) \\<in> seqp_sos \\<Gamma>\") simp"
+        ]
+    ],
+    [
+        "'lemma HD[import_const HD : hd]:\\n  \"hd ((h::\\'A) # t) = h\"'",
+        true,
+        [
+            "by fastforce"
+        ]
+    ],
+    [
+        "'lemma cblinfun_compose_id_left[simp]:\\n  shows \"id_cblinfun o\\\\<^sub>C\\\\<^sub>L U  = U\"'",
+        true,
+        [
+            "by (simp add: cblinfun_eqI)"
+        ]
+    ],
+    [
+        "'lemma compose_empty [simp]: \"compose xs [] = []\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma foo3D: \\n  \"wellformed_policy1 p \\\\<Longrightarrow> p=DenyAll#ps \\\\<Longrightarrow> applied_rule_rev Cp x p = Some DenyAll \\\\<Longrightarrow> r\\\\<in>set ps \\\\<Longrightarrow> \\n   x \\\\<notin> dom (Cp r)\"'",
+        true,
+        [
+            "by (rule_tac a = \"[]\" in foo3a, simp_all)"
+        ]
+    ],
+    [
+        "'lemma stateful_strand_step_subst_comp:\\n  assumes \"range_vars \\\\<delta> \\\\<inter> set (bvars\\\\<^sub>s\\\\<^sub>s\\\\<^sub>t\\\\<^sub>p x) = {}\"\\n  shows \"x \\\\<cdot>\\\\<^sub>s\\\\<^sub>s\\\\<^sub>t\\\\<^sub>p \\\\<delta> \\\\<circ>\\\\<^sub>s \\\\<theta> = (x \\\\<cdot>\\\\<^sub>s\\\\<^sub>s\\\\<^sub>t\\\\<^sub>p \\\\<delta>) \\\\<cdot>\\\\<^sub>s\\\\<^sub>s\\\\<^sub>t\\\\<^sub>p \\\\<theta>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma lemma2_2_false:\\n  fixes x :: var\\n  assumes \"\\\\<And>\\\\<Gamma> e eP eV \\\\<tau> eP\\' eV\\'. \\\\<lbrakk> \\\\<Gamma> \\\\<turnstile> e, eP, eV : \\\\<tau>; \\\\<Gamma> \\\\<turnstile> e, eP\\', eV\\' : \\\\<tau> \\\\<rbrakk> \\\\<Longrightarrow> eP = eP\\' \\\\<and> eV = eV\\'\"\\n  shows False'",
+        false,
+        []
+    ],
+    [
+        "'lemma ctxt_at_pos_hole_pos [simp]: \"ctxt_at_pos C\\\\<langle>s\\\\<rangle> (hole_pos C) = C\"'",
+        true,
+        [
+            "by (induct C) (auto simp: in_set_zip)"
+        ]
+    ],
+    [
+        "'lemma get_host_wf_is_l_get_host_wf [instances]: \"l_get_host_wf heap_is_wellformed known_ptr\\nknown_ptrs type_wf get_host\"'",
+        true,
+        [
+            "by(auto simp add: l_get_host_wf_def l_get_host_wf_axioms_def instances)[1]"
+        ]
+    ],
+    [
+        "'lemma offset_poly_single: \"offset_poly [:a:] h = [:a:]\"'",
+        true,
+        [
+            "by (cases \"a = 0\") (simp_all add: offset_poly_def)"
+        ]
+    ],
+    [
+        "'lemma map_poly_id\\' [simp]: \"map_poly (\\\\<lambda>x. x) p = p\"'",
+        true,
+        [
+            "by (rule poly_eqI, simp add: coeff_map_poly)"
+        ]
+    ],
+    [
+        "'lemma subset_of:\\n  assumes \"F \\\\<in> {f \\\\<in> A \\\\<rightarrow>\\\\<^sub>E B. inj_on f A} // domain_permutation A B\"\\n  shows \"subset_of A F \\\\<subseteq> B\" and \"card (subset_of A F) = card A\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma real_root_mult_exp: \"root (m * n) x = root m (root n x)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma convergent_prod_const_iff [simp]:\\n  fixes c :: \"\\'a :: {real_normed_field}\"\\n  shows \"convergent_prod (\\\\<lambda>_. c) \\\\<longleftrightarrow> c = 1\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma mset_ran_insert: \"\\\\<lbrakk>finite r; i\\\\<notin>r\\\\<rbrakk> \\\\<Longrightarrow> mset_ran a (insert i r) = add_mset (a i) (mset_ran a r)\"'",
+        true,
+        [
+            "by (auto simp add: mset_ran_def)"
+        ]
+    ],
+    [
+        "'lemma irred_idom_nz:\\n    assumes x0: \"(x::\\'a) \\\\<noteq> 0\"\\n    shows \"irred x \\\\<longleftrightarrow> irreducible x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma pow_non_prim: \"k \\\\<noteq> 1 \\\\<Longrightarrow> \\\\<not> primitive (w\\\\<^sup>@k)\"'",
+        true,
+        [
+            "using prim_exp_one",
+            "by (cases \"k = 1\") auto"
+        ]
+    ],
+    [
+        "'lemma defNode_differ_aux:\\nassumes \"\\\\<phi>\\\\<^sub>s \\\\<in> reachable g \\\\<phi>\" \"\\\\<phi> \\\\<in> allVars g\" \"s \\\\<in> allVars g\" \"\\\\<phi>\\\\<^sub>s \\\\<noteq> s\" \"var g \\\\<phi> = var g s\"\\nshows \"defNode g \\\\<phi>\\\\<^sub>s \\\\<noteq> defNode g s\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma has_arg_max_is_arg_max: \"has_arg_max f X \\\\<Longrightarrow> is_arg_max f (\\\\<lambda>x. x \\\\<in> X) (arg_max f (\\\\<lambda>x. x \\\\<in> X))\"'",
+        true,
+        [
+            "unfolding has_arg_max_def arg_max_def",
+            "by (metis (mono_tags, lifting) someI_ex)"
+        ]
+    ],
+    [
+        "'lemma list_update_le_listI [rule_format]:\\n  \"set xs \\\\<subseteq> A \\\\<longrightarrow> set ys \\\\<subseteq> A \\\\<longrightarrow> xs [\\\\<sqsubseteq>\\\\<^sub>r] ys \\\\<longrightarrow> p < size xs \\\\<longrightarrow>  \\n   x \\\\<sqsubseteq>\\\\<^sub>r ys!p \\\\<longrightarrow> semilat(A,r,f) \\\\<longrightarrow> x\\\\<in>A \\\\<longrightarrow> \\n   xs[p := x \\\\<squnion>\\\\<^sub>f xs!p] [\\\\<sqsubseteq>\\\\<^sub>r] ys\"'",
+        true,
+        [
+            "apply (unfold Listn.le_def lesub_def semilat_def)",
+            "apply (simp add: list_all2_conv_all_nth nth_list_update)",
+            "done\n\n  \\<comment> \\<open>Correctness of result of @{term x}\\<close>"
+        ]
+    ],
+    [
+        "'lemma splitAt_simpE[simp]: \"snd (splitAt ram (ram # b)) = b\"'",
+        true,
+        [
+            "by (auto dest: splitAt_ram simp add: splitAt_def)"
+        ]
+    ],
+    [
+        "'lemma bool_to_ternary_simp3: \"eval_ternary_Not (bool_to_ternary X) = TernaryTrue \\\\<longleftrightarrow> \\\\<not> X\"'",
+        true,
+        [
+            "by auto"
+        ]
+    ],
+    [
+        "'lemma lconsts_freshen: \"lconsts (freshen a f) = freshenLC a ` lconsts f\"'",
+        true,
+        [
+            "unfolding freshen_def",
+            "by (simp add: lconsts_renameLCs)"
+        ]
+    ],
+    [
+        "'lemma ltl_step_select:\\n  \"ltl_step drinks (Some 0) <> (STR \\'\\'select\\'\\', [i]) = (Some 1, [], <1 $:= Some i, 2 $:= Some (Num 0)>)\"'",
+        true,
+        [
+            "proof -",
+            "show?thesis sorry",
+            "apply (simp add: ltl_step_none)",
+            "apply (simp add: possible_steps_0 select_def)",
+            "by (simp add: apply_updates_def numeral_2_eq_2)",
+            "qed\n\n\\<comment> \\<open>TODO unwrap smt.\\<close>"
+        ]
+    ],
+    [
+        "'lemma angles:\\n  \"angle b1 a1 c1 = angle b2 a2 c2\" \"angle a1 b1 c1 = angle a2 b2 c2\" \"angle a1 c1 b1 = angle a2 c2 b2\"\\n  \"angle c1 a1 b1 = angle b2 a2 c2\" \"angle c1 b1 a1 = angle a2 b2 c2\" \"angle b1 c1 a1 = angle a2 c2 b2\"\\n  \"angle b1 a1 c1 = angle c2 a2 b2\" \"angle a1 b1 c1 = angle c2 b2 a2\" \"angle a1 c1 b1 = angle b2 c2 a2\"\\n  \"angle c1 a1 b1 = angle c2 a2 b2\" \"angle c1 b1 a1 = angle c2 b2 a2\" \"angle b1 c1 a1 = angle b2 c2 a2\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma init_obj_pred_conv: \"set_of_pred (init_obj_pred P C) = Collect (init_obj\\' P C)\"'",
+        true,
+        [
+            "by (auto simp: init_obj_pred_def set_of_pred_def)"
+        ]
+    ],
+    [
+        "'lemma bin_last_def:\\n  \"(odd :: int \\\\<Rightarrow> bool) w \\\\<longleftrightarrow> w mod 2 = 1\"'",
+        true,
+        [
+            "by (cases \"w mod 2 = 1\") auto"
+        ]
+    ],
+    [
+        "'lemma next_plane0_len_filter_eq:\\nassumes \"g\\' \\\\<in> set (next_plane0\\\\<^bsub>p\\\\<^esub> g)\" \"inv g\" \"v \\\\<in> \\\\<V> g\" \"finalVertex g v\"\\nshows \"|filter P (facesAt g\\' v)| = |filter P (facesAt g v)|\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma SeqFormP_Eq:\\n  assumes \"atom s \\\\<sharp> (k,x,y)\" \"atom k \\\\<sharp> (x,y)\"\\n  shows \"{TermP x, TermP y} \\\\<turnstile> Ex k (Ex s (SeqFormP (Var s) (Var k) (Q_Eq x y)))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma unfoldr_append_generator:\\n  \"list.unfoldr (append_generator g1 g2) (append_init s1 s2) =\\n   list.unfoldr g1 s1 @ list.unfoldr g2 s2\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma not_dest: \"(\\\\<not> P) x \\\\<Longrightarrow> \\\\<not> P x\"'",
+        true,
+        [
+            "by (simp add: utp_defs)"
+        ]
+    ],
+    [
+        "'lemma HUN_iff [simp]: \"b \\\\<^bold>\\\\<in> (\\\\<Squnion>x\\\\<^bold>\\\\<in>A. B(x)) \\\\<longleftrightarrow> (\\\\<exists>x\\\\<^bold>\\\\<in>A. b \\\\<^bold>\\\\<in> B(x))\"'",
+        true,
+        [
+            "by (auto simp: HBall_def)"
+        ]
+    ],
+    [
+        "'lemma \"eupdate (E.INT 8 (-150))\\n      = E.INT 8 106\"'",
+        true,
+        [
+            "by(auto simp:eupdate.simps)"
+        ]
+    ],
+    [
+        "'lemma \"transform_optimize_dnf_strict (unfold_ruleset_OUTPUT eduroam_fw_INPUT_default_policy (map_of_string_ipv4 eduroam_fw)) =\\n        unfold_ruleset_OUTPUT eduroam_fw_INPUT_default_policy (map_of_string_ipv4 eduroam_fw)\"'",
+        true,
+        [
+            "by eval  \\<comment> \\<open>by eval\\<close>"
+        ]
+    ],
+    [
+        "'lemma project_enc: \"map \\\\<pi> (enc (w, x # I)) = enc (w, I)\"'",
+        true,
+        [
+            "by (auto simp add: \\<pi>_def)"
+        ]
+    ],
+    [
+        "'lemma a_comp_simp [simp]: \"(ad x \\\\<oplus> ad y) \\\\<cdot> d x = ad y \\\\<cdot> d x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sublist_exists_append:\\n  \"\\\\<exists>a\\\\<in>set ((x # xs) @ [b]). sublist ys a \\\\<Longrightarrow> \\\\<exists>a\\\\<in>set(xs @ [x@b]). sublist ys a\"'",
+        true,
+        [
+            "by (auto simp: sublist_append)"
+        ]
+    ],
+    [
+        "'lemma PiE_eq_iff_not_empty:\\n  assumes ne: \"\\\\<And>i. i \\\\<in> I \\\\<Longrightarrow> F i \\\\<noteq> {}\" \"\\\\<And>i. i \\\\<in> I \\\\<Longrightarrow> F\\' i \\\\<noteq> {}\"\\n  shows \"Pi\\\\<^sub>E I F = Pi\\\\<^sub>E I F\\' \\\\<longleftrightarrow> (\\\\<forall>i\\\\<in>I. F i = F\\' i)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma eval_real: \"eval (c :: real) x = c\"'",
+        true,
+        [
+            "by (simp add: gt_ex)"
+        ]
+    ],
+    [
+        "'lemma wfzf_is_Elem_of: \"wfzf is_Elem_of\"'",
+        true,
+        [
+            "proof -",
+            "have \"wfzf (is_Elem_of)\" sorry",
+            "proof -",
+            "have \"wfzf is_Elem_of\" sorry",
+            "unfolding wfzf_def",
+            "proof",
+            "show \"regular is_Elem_of\" sorry",
+            "using Regularity",
+            "by (auto simp add: regular_def is_Elem_of_def Regularity)",
+            "qed (fact set_like_Elem)",
+            "thus?thesis sorry",
+            "by (unfold wfzf_def)",
+            "qed\n\n\\<comment> \\<open>Correctness of result of @{text pa}\\<close>",
+            "thus?thesis sorry",
+            "by (unfold wfzf_def)",
+            "qed\n\n\\<comment> \\<open>Correctness of result of @{text pa}\\<close>"
+        ]
+    ],
+    [
+        "'lemma chart_eucl_simps[simp]:\\n  \"domain chart_eucl = UNIV\"\\n  \"codomain chart_eucl = UNIV\"\\n  \"apply_chart chart_eucl = (\\\\<lambda>x. x)\"\\n  \"inv_chart chart_eucl = (\\\\<lambda>x. x)\"'",
+        true,
+        [
+            "by (transfer, force simp:)+"
+        ]
+    ],
+    [
+        "'lemma nth_w2p_scast:\\n  \"(bit (scast ((2::\\'a::len signed word) ^ n) :: \\'a word) m)\\n         \\\\<longleftrightarrow> (bit (((2::\\'a::len  word) ^ n) :: \\'a word) m)\"'",
+        true,
+        [
+            "by transfer auto"
+        ]
+    ],
+    [
+        "'lemma phi0: \"Phi 0 = 0\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma smalls_seq: \"\\\\<lbrakk>small_steps \\\\<pi> (c,s) (Some (c\\',s\\'))\\\\<rbrakk> \\\\<Longrightarrow> small_steps \\\\<pi> (c;;cx,s) (Some (c\\';;cx,s\\'))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma sub_args: \"s \\\\<in> set (args t) \\\\<Longrightarrow> sub s t\"'",
+        true,
+        [
+            "by (induct t) (auto intro: sub.intros)"
+        ]
+    ],
+    [
+        "'lemma r_e2ls_prim: \"prim_recfn 1 r_e2ls\"'",
+        true,
+        [
+            "unfolding r_e2ls_def",
+            "by (simp add: r_e2frame_prim)"
+        ]
+    ],
+    [
+        "'lemma cIsInvar_pref_Conflict_isRevNth: \"cIsInvar pref_Conflict_isRevNth\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma \"((a::nat) - (b - (c - (d - e)))) = (a - (b - (c - (d - e))))\"'",
+        true,
+        [
+            "by metis"
+        ]
+    ],
+    [
+        "'lemma poly_higher_pderiv_aux3:\\n  fixes c :: \"\\'a :: {idom,semiring_char_0}\"\\n  assumes \"k \\\\<ge> n\"\\n  shows   \"\\\\<exists>q. poly ((pderiv ^^ k) ([:-c, 1:] ^ n * p)) c = fact n * poly q c\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ANDiD[rule_format,simp]: \\n  \"allNetsDistinct p \\\\<longrightarrow>  allNetsDistinct (insertDeny p)\"'",
+        true,
+        [
+            "apply (induct p)",
+            "apply (simp_all add: allNetsDistinct_def)",
+            "subgoal for a p sorry",
+            "by (case_tac a, simp_all)",
+            "done\n\n  \\<comment> \\<open>FIXME silly splitting of quantified pairs\\<close>"
+        ]
+    ],
+    [
+        "'lemma enum_word8_eq:\\n  \\\\<open>enum = [0 :: 8 word, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,\\n                            20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,\\n                            37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,\\n                            54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70,\\n                            71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87,\\n                            88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103,\\n                            104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117,\\n                            118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131,\\n                            132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145,\\n                            146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159,\\n                            160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173,\\n                            174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187,\\n                            188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201,\\n                            202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215,\\n                            216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229,\\n                            230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243,\\n                            244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255]\\\\<close> (is \\\\<open>?lhs = ?rhs\\\\<close>)'",
+        true,
+        [
+            "proof -",
+            "show?thesis sorry",
+            "by eval",
+            "qed\n\n\\<comment> \\<open>1 subgoals\\<close>"
+        ]
+    ],
+    [
+        "'lemma (in is_cat_pullback) cat_pb_unique:\\n  assumes \"x\\' : X\\' <\\\\<^sub>C\\\\<^sub>F\\\\<^sub>.\\\\<^sub>p\\\\<^sub>b \\\\<aa>\\\\<rightarrow>\\\\<gg>\\\\<rightarrow>\\\\<oo>\\\\<leftarrow>\\\\<ff>\\\\<leftarrow>\\\\<bb> \\\\<mapsto>\\\\<mapsto>\\\\<^sub>C\\\\<^bsub>\\\\<alpha>\\\\<^esub> \\\\<CC>\"\\n  shows \"\\\\<exists>!f\\'. f\\' : X\\' \\\\<mapsto>\\\\<^bsub>\\\\<CC>\\\\<^esub> X \\\\<and> x\\' = x \\\\<bullet>\\\\<^sub>N\\\\<^sub>T\\\\<^sub>C\\\\<^sub>F ntcf_const \\\\<rightarrow>\\\\<bullet>\\\\<leftarrow>\\\\<^sub>C \\\\<CC> f\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma bell10_is_entangled2 [simp]:\\n  \"entangled2 |\\\\<beta>\\\\<^sub>1\\\\<^sub>0\\\\<rangle>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma OUT_cap_Right: \"d_OUT cap (Right y) = pmf q y\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma payload_parts_singleton [simp, dest]:\\n  \"\\\\<lbrakk> X \\\\<in> parts {Y}; Y \\\\<in> payload \\\\<rbrakk> \\\\<Longrightarrow> X \\\\<in> payload\"'",
+        true,
+        [
+            "by (auto simp add: msg_defs dest: parts_monotone)"
+        ]
+    ],
+    [
+        "'lemma list_order_append:\\n  assumes \"insert_ops (pre @ suf)\"\\n    and \"list_order pre x y\"\\n  shows \"list_order (pre @ suf) x y\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma not_strict_SD_iff:\\n  assumes \"p \\\\<in> lotteries_on carrier\" \"q \\\\<in> lotteries_on carrier\"\\n  shows   \"\\\\<not>(p \\\\<prec>[SD(le)] q) \\\\<longleftrightarrow>\\n             (\\\\<exists>u. is_vnm_utility u \\\\<and> measure_pmf.expectation q u \\\\<le> measure_pmf.expectation p u)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma group_isomorphisms_sym: \"group_isomorphisms G H f g \\\\<Longrightarrow> group_isomorphisms H G g f\"'",
+        true,
+        [
+            "by (simp add: group_isomorphisms_def hom_def)"
+        ]
+    ],
+    [
+        "'theorem infinite_image [intro]:\\n\"infinite A \\\\<Longrightarrow> inj_on f A \\\\<Longrightarrow> infinite (f ` A)\"'",
+        true,
+        [
+            "by (metis finite_imageD inj_onI)"
+        ]
+    ],
+    [
+        "'lemma snd_splitAt_rev:\\n \"distinct xs \\\\<Longrightarrow> x \\\\<in> set xs \\\\<Longrightarrow>\\n  snd(splitAt x (rev xs)) = rev(fst(splitAt x xs))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma big_stepD:\\nassumes big: \"\\\\<sigma>\\' \\\\<in> big P \\\\<sigma>\" and nend: \"\\\\<sigma> \\\\<notin> endset\"\\nshows \"\\\\<exists>\\\\<sigma>1. \\\\<sigma>1 \\\\<in> small P \\\\<sigma> \\\\<and> \\\\<sigma>\\' \\\\<in> big P \\\\<sigma>1\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma S_transform_tau_transition_iff: \"P \\\\<Rightarrow>\\\\<^sub>S P\\' \\\\<longleftrightarrow> P \\\\<Rightarrow> P\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma preservation_leq:\\n  assumes \"\\\\<Theta>; \\\\<Phi>; \\\\<Delta> \\\\<turnstile> \\\\<langle> \\\\<delta> , AS_let x (AE_op LEq (V_lit (L_num n1)) (V_lit (L_num n2))) s\\' \\\\<rangle> \\\\<Leftarrow> \\\\<tau>\"        \\n  shows \"\\\\<Theta>; \\\\<Phi>; \\\\<Delta>  \\\\<turnstile> \\\\<langle> \\\\<delta> , AS_let x (AE_val (V_lit (((if (n1 \\\\<le> n2) then L_true else L_false))))) s\\' \\\\<rangle> \\\\<Leftarrow> \\\\<tau>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma val_by_adj_map:\\n    assumes \"is_adj_map am\"\\n    shows \"f.val = (\\\\<Sum>v\\\\<in>set (am s). c (s,v) - cf (s,v))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma less_convert1:\"\\\\<lbrakk> a = c; a < b \\\\<rbrakk> \\\\<Longrightarrow> c < b\"'",
+        true,
+        [
+            "by (simp add: less_le)"
+        ]
+    ],
+    [
+        "'lemma primmultgreater2: fixes p::nat shows \"\\\\<lbrakk>prime p; prime q; p \\\\<noteq> q\\\\<rbrakk> \\\\<Longrightarrow>  2 < p*q\"'",
+        true,
+        [
+            "using prime_gt_1_nat[of p] prime_gt_1_nat[of q]",
+            "by (cases p; cases q) auto"
+        ]
+    ],
+    [
+        "'lemma end_correct:\\n  \"n > 0 \\\\<Longrightarrow> \\\\<lbrace>inv_end1 n\\\\<rbrace> tm_copy_end_new \\\\<lbrace>inv_end0 n\\\\<rbrace>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma markedElementsToNonMemberAreAllMarkedElements:\\n  assumes \"e \\\\<notin> set (elements M)\"\\n  shows \"markedElementsTo e M = markedElements M\"'",
+        true,
+        [
+            "using assms",
+            "by (induct M) (auto split: if_split_asm simp add: markedElementsTo_def)"
+        ]
+    ],
+    [
+        "'lemma usubst_lookup_upd [usubst]:\\n  assumes \"weak_lens x\"\\n  shows \"\\\\<langle>\\\\<sigma>(x \\\\<mapsto>\\\\<^sub>s v)\\\\<rangle>\\\\<^sub>s x = v\"'",
+        true,
+        [
+            "using assms",
+            "by (simp add: subst_upd_uvar_def, transfer, auto simp add: id_def)"
+        ]
+    ],
+    [
+        "'lemma execn_to_execn_sequence_flatten:\\n  assumes exec: \"\\\\<Gamma>\\\\<turnstile>\\\\<langle>c,s\\\\<rangle> =n\\\\<Rightarrow> t\"\\n  shows \"\\\\<Gamma>\\\\<turnstile>\\\\<langle>sequence Seq (flatten c),s\\\\<rangle> =n\\\\<Rightarrow> t\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma has_subprob_density_distr_Snd:\\n  fixes t1 t2 f\\n  defines \"N \\\\<equiv> stock_measure (PRODUCT t1 t2)\"\\n  defines \"N\\' \\\\<equiv> stock_measure t2\"\\n  defines \"snd\\' \\\\<equiv> op_sem Snd\"\\n  defines \"f\\' \\\\<equiv> \\\\<lambda>y. \\\\<integral>\\\\<^sup>+x. f <|x,y|> \\\\<partial>stock_measure t1\"\\n  assumes dens: \"has_subprob_density M N f\"\\n  shows \"has_subprob_density (distr M N\\' snd\\') N\\' f\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma Eq_Eats_I:\\n  \"H \\\\<turnstile> All i (Var i IN z IFF Var i IN t OR Var i EQ u) \\\\<Longrightarrow> atom i \\\\<sharp> (z,t,u) \\\\<Longrightarrow> H \\\\<turnstile> z EQ Eats t u\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma reachableI2[intro]:\\n  \"x \\\\<in> mut_m.mut_ghost_honorary_root m s \\\\<Longrightarrow> mut_m.reachable m x s\"'",
+        true,
+        [
+            "by (fastforce simp: mut_m.reachable_def)"
+        ]
+    ],
+    [
+        "'lemma (in vfsequence) vfsequence_vdomain: \"\\\\<D>\\\\<^sub>\\\\<circ> xs = vcard xs\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma A_Issues_B:\\n     \"\\\\<lbrakk> Says A B \\\\<lbrace>Ticket, Crypt K \\\\<lbrace>Agent A, Number Ta\\\\<rbrace>\\\\<rbrace>\\n           \\\\<in> set evs;\\n         Key K \\\\<notin> analz (spies evs);\\n         A \\\\<notin> bad;  B \\\\<notin> bad;  evs \\\\<in> bankerberos \\\\<rbrakk>\\n   \\\\<Longrightarrow> A Issues B with (Crypt K \\\\<lbrace>Agent A, Number Ta\\\\<rbrace>) on evs\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma I_intP_Fext_not_intT[simp]:\\nassumes \"polC p = Fext\" and \"\\\\<not> list_all2 intT (parOf p) al\"\\nshows \"\\\\<not> I_intP p al\"'",
+        true,
+        [
+            "using assms",
+            "by (simp add: I_intP_def)"
+        ]
+    ],
+    [
+        "'lemma gf_iso: \"isotone \\\\<X> \\\\<X> (\\\\<pi>\\\\<^sub>* \\\\<circ> \\\\<pi>\\\\<^sup>*)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma nxt_nontotal_hyp:\\n  assumes \"nxt b \\\\<up>\" and \"s b \\\\<down>= i\"\\n  shows \"\\\\<exists>x. \\\\<phi> i x \\\\<up>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma token_fails_alt_def_2:\\n  \"token_fails x \\\\<longleftrightarrow> \\\\<not>token_succeeds x \\\\<and> \\\\<not>token_squats x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma shows_prec_xmldoc_append [show_law_simps]:\\n  \"shows_prec d (x::xmldoc) (r @ s) = shows_prec d x r @ s\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma elim_eq: \"\\\\<sigma> \\\\<doteq> \\\\<theta> \\\\<Longrightarrow> elim \\\\<sigma> x = elim \\\\<theta> x\"'",
+        true,
+        [
+            "unfolding elim_def",
+            "by (simp add: subst_eq_def)"
+        ]
+    ],
+    [
+        "'lemma of_nat_hmset: \"of_nat n = HMSet (replicate_mset n 0)\"'",
+        true,
+        [
+            "unfolding of_nat_def",
+            "by (induct n) (auto simp: one_hmultiset_def plus_hmultiset_def)"
+        ]
+    ],
+    [
+        "'lemma vars_store:\\n \"\\\\<lbrakk>0 \\\\<le> i; i < size P; P !! i = STORE x\\\\<rbrakk> \\\\<Longrightarrow> x \\\\<in> set (vars P)\"'",
+        true,
+        [
+            "proof (induction P arbitrary: i)",
+            "case (Cons P)",
+            "thus?case sorry",
+            "proof (cases i)",
+            "case (nonneg n)",
+            "thus?thesis sorry",
+            "using Cons",
+            "apply simp",
+            "apply(simp split: if_splits)",
+            "by force",
+            "qed (auto simp: Suc_le_eq)",
+            "qed (auto simp: in_set_conv_nth)"
+        ]
+    ],
+    [
+        "'lemma (in ultrafilter) max_filter:\\n  assumes G: \"G \\\\<noteq> bot\"\\n    and sub: \"G \\\\<le> F\"\\n  shows \"F = G\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma \"test (do {\\n  tmp0 \\\\<leftarrow> slots_document . getElementById(\\'\\'test_slot_not_in_shadow_2\\'\\');\\n  n \\\\<leftarrow> createTestTree(tmp0);\\n  tmp1 \\\\<leftarrow> n . \\'\\'test_slot_not_in_shadow_2\\'\\';\\n  removeWhiteSpaceOnlyTextNodes(tmp1);\\n  tmp2 \\\\<leftarrow> n . \\'\\'c1\\'\\';\\n  tmp3 \\\\<leftarrow> tmp2 . assignedSlot;\\n  assert_equals(tmp3, None);\\n  tmp4 \\\\<leftarrow> n . \\'\\'c2\\'\\';\\n  tmp5 \\\\<leftarrow> tmp4 . assignedSlot;\\n  assert_equals(tmp5, None);\\n  tmp6 \\\\<leftarrow> n . \\'\\'c3_1\\'\\';\\n  tmp7 \\\\<leftarrow> tmp6 . assignedSlot;\\n  assert_equals(tmp7, None);\\n  tmp8 \\\\<leftarrow> n . \\'\\'c3_2\\'\\';\\n  tmp9 \\\\<leftarrow> tmp8 . assignedSlot;\\n  assert_equals(tmp9, None);\\n  tmp10 \\\\<leftarrow> n . \\'\\'s1\\'\\';\\n  tmp11 \\\\<leftarrow> tmp10 . assignedNodes();\\n  assert_array_equals(tmp11, []);\\n  tmp12 \\\\<leftarrow> n . \\'\\'s2\\'\\';\\n  tmp13 \\\\<leftarrow> tmp12 . assignedNodes();\\n  assert_array_equals(tmp13, []);\\n  tmp14 \\\\<leftarrow> n . \\'\\'s3\\'\\';\\n  tmp15 \\\\<leftarrow> tmp14 . assignedNodes();\\n  assert_array_equals(tmp15, []);\\n  tmp16 \\\\<leftarrow> n . \\'\\'s1\\'\\';\\n  tmp17 \\\\<leftarrow> tmp16 . assignedNodes(True);\\n  assert_array_equals(tmp17, []);\\n  tmp18 \\\\<leftarrow> n . \\'\\'s2\\'\\';\\n  tmp19 \\\\<leftarrow> tmp18 . assignedNodes(True);\\n  assert_array_equals(tmp19, []);\\n  tmp20 \\\\<leftarrow> n . \\'\\'s3\\'\\';\\n  tmp21 \\\\<leftarrow> tmp20 . assignedNodes(True);\\n  assert_array_equals(tmp21, [])\\n}) slots_heap\"'",
+        true,
+        [
+            "by eval\n    \\<comment> \\<open>2.5 seconds on a 1.6GHz machine\\<close>"
+        ]
+    ],
+    [
+        "'lemma (in Group) cmp_rfn3:\"\\\\<lbrakk>0 < r; 0 < s; compseries G r f; compseries G s g\\\\<rbrakk>\\n \\\\<Longrightarrow> cmp_rfn G r f s g 0 = carrier G \\\\<and> cmp_rfn G r f s g (s * r) = {\\\\<one>}\"'",
+        true,
+        [
+            "apply (frule cmp_rfn1 [of \"r\" \"s\" \"f\" \"g\"], assumption+)",
+            "apply (simp add:cmp_rfn_def)",
+            "done\n\n\\<comment> \\<open>This weaker version was previously called @{text ucast_less_ucast}. We retain it to\n      support existing proofs.\\<close>"
+        ]
+    ],
+    [
+        "'lemma frechet_derivative_transform_within_open:\\n  \"frechet_derivative f (at x) = frechet_derivative g (at x)\"\\n  if \"f differentiable at x\" \"open X\" \"x \\\\<in> X\" \"\\\\<And>x. x \\\\<in> X \\\\<Longrightarrow> f x = g x\"'",
+        true,
+        [
+            "using that",
+            "apply (auto simp: frechet_derivative_def)",
+            "by (metis (mono_tags, lifting) has_derivative_transform_within_open that)"
+        ]
+    ],
+    [
+        "'lemma finite_imp_FoldSet:\\n  \"finite A \\\\<Longrightarrow> \\\\<exists> x. FoldSet h z A x\"'",
+        true,
+        [
+            "by (induct set:finite) auto"
+        ]
+    ],
+    [
+        "'lemma lesub_list_impl_same_size [simp]: \"xs [\\\\<sqsubseteq>\\\\<^bsub>r\\\\<^esub>] ys \\\\<Longrightarrow> size ys = size xs\"'",
+        true,
+        [
+            "apply (unfold lesub_def Listn.le_def)",
+            "by (simp add: list_all2_lengthD)"
+        ]
+    ],
+    [
+        "'lemma map_update_parametric [transfer_rule]:\\n  assumes [transfer_rule]: \"bi_unique A\"\\n  shows \"(A ===> rel_option B ===> (A ===> rel_option B) ===> (A ===> rel_option B)) map_update map_update\"'",
+        true,
+        [
+            "unfolding map_update_def",
+            "by (transfer_prover)"
+        ]
+    ],
+    [
+        "'theorem HInit_HInv1: \"HInit s \\\\<longrightarrow> HInv1 s\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma set_disjoint_single [rewrite]: \"{x} \\\\<inter> B = {} \\\\<longleftrightarrow> x \\\\<notin> B\"'",
+        true,
+        [
+            "by (auto simp: disjoint_iff)"
+        ]
+    ],
+    [
+        "'lemma steps_appendD2:\\n  \"steps ys\" if \"steps (xs @ ys)\" \"ys \\\\<noteq> []\"'",
+        true,
+        [
+            "using that",
+            "by (induction xs) (auto elim: steps.cases)"
+        ]
+    ],
+    [
+        "'lemma xfer_reachable_aux2: \\n      assumes \"C.reachable cs\"\\n      obtains as where \"R as cs\" \"A.reachable as\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma Spy_analz_shrK [simp]:\\n     \"evs \\\\<in> ns_shared \\\\<Longrightarrow> (Key (shrK A) \\\\<in> analz (spies evs)) = (A \\\\<in> bad)\"'",
+        true,
+        [
+            "by force"
+        ]
+    ],
+    [
+        "'lemma resid_ide:\\n    assumes \"ide a\" and \"coinitial a t\"\\n    shows (* [simp]: *) \"t \\\\\\\\ a = t\" and \"a \\\\\\\\ t = trg t\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma (in flowgraph) trss_mon_w_no_ctx: \\n  \"((s,c),w,(s\\',c\\'))\\\\<in>trcl (trss fg) \\\\<Longrightarrow> mon_w fg w \\\\<inter> mon_c fg c = {}\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma suminf_bound_add:\\n  fixes f :: \"nat \\\\<Rightarrow> ereal\"\\n  assumes \"\\\\<forall>N. (\\\\<Sum>n<N. f n) + y \\\\<le> x\"\\n    and pos: \"\\\\<And>n. 0 \\\\<le> f n\"\\n    and \"y \\\\<noteq> -\\\\<infinity>\"\\n  shows \"suminf f + y \\\\<le> x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma (in inj_semiring_hom) map_vector_inj: \"(map_vector hom v = map_vector hom w) = (v = w)\"'",
+        true,
+        [
+            "by (auto simp: map_vector_def vec_eq_iff)"
+        ]
+    ],
+    [
+        "'lemma osum_cong:\\n  assumes \"t =o u\" and \"r =o s\"\\n  shows \"t +o r =o u +o s\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma wf_secondRecursiveCalls:\\n  assumes \"card V \\\\<ge> 2\"\\n  assumes \"rwf_query n V Q Qn\"\\n  assumes \"(I, J) = getIJ Q Qn V\"\\n  assumes \"Qns \\\\<subseteq> Qn\"\\n  assumes \"Q_J_neg = filterQuery J Qns\"\\n  assumes \"Q_J_pos = filterQuery J Q\"\\n  shows \"rwf_query n J (newQuery J Q_J_pos t) (newQuery J Q_J_neg t)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma i_Exec_Comp_Stream_Acc_Output__eq_Msg_iEx_iAll_cut_greater_conv: \"\\n  \\\\<lbrakk> 0 < k; m \\\\<noteq> \\\\<NoMsg>; s = (output_fun \\\\<circ> i_Exec_Comp_Stream trans_fun (input \\\\<odot>\\\\<^sub>i k) c) \\\\<rbrakk> \\\\<Longrightarrow>\\n  ((i_Exec_Comp_Stream_Acc_Output k output_fun trans_fun input c) t = m) =\\n  (\\\\<diamond> t1 [t * k\\\\<dots>,k - Suc 0]. (s t1 = m \\\\<and>\\n    (\\\\<box> t2 [t * k\\\\<dots>,k - Suc 0] \\\\<down>> t1 . s t2 = \\\\<NoMsg>)))\"'",
+        true,
+        [
+            "by (simp add: i_Exec_Comp_Stream_Acc_Output_def i_shrink_eq_Msg_iEx_iAll_cut_greater_conv)"
+        ]
+    ],
+    [
+        "'lemma ShiftP_Mem1:\\n  \"{ShiftP f k del g, HPair a b IN f, HaddP del a a\\', a IN k} \\\\<turnstile> HPair a\\' b IN g\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma set_mtf2[simp]: \"set(mtf2 n x xs) = set xs\"'",
+        true,
+        [
+            "by(induct xs)(simp_all add: mtf2_def)"
+        ]
+    ],
+    [
+        "'lemma foldr_append [simp]:\\n  \"foldr\\\\<cdot>f\\\\<cdot>a\\\\<cdot>(xs ++ ys) = foldr\\\\<cdot>f\\\\<cdot>(foldr\\\\<cdot>f\\\\<cdot>a\\\\<cdot>ys)\\\\<cdot>xs\"'",
+        true,
+        [
+            "by (induct xs arbitrary: a) simp_all"
+        ]
+    ],
+    [
+        "'lemma \"terminal_chain rs \\\\<Longrightarrow> \\\\<Gamma>,\\\\<gamma>,p\\\\<turnstile>\\\\<^sub>g \\\\<langle>rs, Undecided\\\\<rangle> \\\\<Rightarrow> t \\\\<Longrightarrow> \\\\<exists>X. t = Decision X\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma FORKs\\\\<^sub>n\\\\<^sub>o\\\\<^sub>r\\\\<^sub>m_unfold:\\n\"0 < n \\\\<Longrightarrow> length fs = Suc n \\\\<Longrightarrow>\\n                              FORKs\\\\<^sub>n\\\\<^sub>o\\\\<^sub>r\\\\<^sub>m (Suc n) fs = (FORKs\\\\<^sub>n\\\\<^sub>o\\\\<^sub>r\\\\<^sub>m n (butlast fs)|||(FORK\\\\<^sub>n\\\\<^sub>o\\\\<^sub>r\\\\<^sub>m n (fs!n)))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma PO_a0i_a0n_inv1_niagree [iff]: \"reach a0i \\\\<subseteq> a0n_inv1_niagree\"'",
+        true,
+        [
+            "by (rule subset_trans, rule, rule)"
+        ]
+    ],
+    [
+        "'lemma \"[| Key K \\\\<notin> used []; Key K\\' \\\\<notin> used [];  \\n          Key K\\'\\' \\\\<notin> used []; K \\\\<noteq> K\\'; K\\' \\\\<noteq> K\\'\\'; K \\\\<noteq> K\\'\\';\\n          Nonce NA \\\\<notin> used []; Nonce NB \\\\<notin> used []; Nonce NC \\\\<notin> used []; \\n          NA < NB; NB < NC |]\\n       ==> \\\\<exists>K. \\\\<exists>NA. \\\\<exists>evs \\\\<in> recur.\\n             Says B A \\\\<lbrace>Crypt (shrK A) \\\\<lbrace>Key K, Agent B, Nonce NA\\\\<rbrace>,\\n                        END\\\\<rbrace>  \\\\<in> set evs\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma boundOutputChainEq\\':\\n  fixes xvec :: \"name list\"\\n  and   M    :: \"\\'a::fs_name\"\\n  and   P    :: \"(\\'a, \\'b::fs_name, \\'c::fs_name) psi\"\\n  and   yvec :: \"name list\"\\n  and   N    :: \\'a\\n  and   Q    :: \"(\\'a::fs_name, \\'b::fs_name, \\'c::fs_name) psi\"\\n\\n  assumes \"\\\\<lparr>\\\\<nu>*xvec\\\\<rparr>M \\\\<prec>\\' P = \\\\<lparr>\\\\<nu>*yvec\\\\<rparr>N \\\\<prec>\\' Q\"\\n  and     \"xvec \\\\<sharp>* yvec\"\\n\\n  shows \"\\\\<exists>p. (set p) \\\\<subseteq> (set xvec) \\\\<times> set (yvec) \\\\<and> distinctPerm p \\\\<and>  M = p \\\\<bullet> N \\\\<and>  P = p \\\\<bullet> Q \\\\<and> xvec \\\\<sharp>* N \\\\<and> xvec \\\\<sharp>* Q \\\\<and> yvec \\\\<sharp>* M \\\\<and> yvec \\\\<sharp>* P\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma rebase_eq_0[simp]:\\n  shows \"(@(x :: \\'a mod_ring) :: \\'b mod_ring) = 0 \\\\<longleftrightarrow> x = 0\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma clauseFalseInPrefixToLastAssertedLiteral:\\n  assumes \\n  \"isLastAssertedLiteral l (oppositeLiteralList c) (elements M)\" and\\n  \"clauseFalse c (elements M)\" and \\n  \"uniq (elements M)\"\\n  shows \"clauseFalse c (elements (prefixToLevel (elementLevel l M) M))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma emeasure_point_measure_finite:\\n  \"finite A \\\\<Longrightarrow> X \\\\<subseteq> A \\\\<Longrightarrow> emeasure (point_measure A f) X = (\\\\<Sum>a\\\\<in>X. f a)\"'",
+        true,
+        [
+            "unfolding point_measure_def",
+            "apply (simp add: emeasure_density)",
+            "apply (subst nn_integral_count_space_finite)",
+            "by (auto simp add: indicator_def intro!: sum.cong)"
+        ]
+    ],
+    [
+        "'lemma fimage_vempty[simp]: \"0 `\\\\<^sub>\\\\<bullet> A = 0\"'",
+        true,
+        [
+            "by force"
+        ]
+    ],
+    [
+        "'lemma MATCH1_singleton_Var [intro]:\\n  \"\\\\<sigma> x = None \\\\<Longrightarrow> MATCH1 ({#(Var x, t)#}, \\\\<sigma>) ({#}, \\\\<sigma> (x \\\\<mapsto> t))\"\\n  \"\\\\<sigma> x = Some t \\\\<Longrightarrow> MATCH1 ({#(Var x, t)#}, \\\\<sigma>) ({#}, \\\\<sigma> (x \\\\<mapsto> t))\"'",
+        true,
+        [
+            "by (auto simp add: MATCH1.simps)"
+        ]
+    ],
+    [
+        "'lemma map_compr_simple:\\n  \"[x \\\\<mapsto> F x y | x y. (x, y) \\\\<in>\\\\<^sub>m f] = (\\\\<lambda> x. do { y \\\\<leftarrow> f(x); Some(F x y) })\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma powr_nat_bounds_transfer_abs [eventuallized]:\\n  \"\\\\<forall>x. powr_nat (abs (f x)) (g x) \\\\<le> u x \\\\<longrightarrow> powr_nat (f x) (g x) \\\\<ge> -u x\"\\n  \"\\\\<forall>x. powr_nat (abs (f x)) (g x) \\\\<le> u x \\\\<longrightarrow> powr_nat (f x) (g x) \\\\<le> u x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma matches_add_match_MatchNot_simp:\\n      assumes m: \"matches \\\\<gamma> m p\"\\n      shows \"\\\\<Gamma>,\\\\<gamma>,p\\\\<turnstile>\\\\<^sub>g \\\\<langle>add_match (MatchNot m) rs, s\\\\<rangle> \\\\<Rightarrow> t \\\\<longleftrightarrow> \\\\<Gamma>,\\\\<gamma>,p\\\\<turnstile>\\\\<^sub>g \\\\<langle>[], s\\\\<rangle> \\\\<Rightarrow> t\" (is \"?l s \\\\<longleftrightarrow> ?r s\")'",
+        false,
+        []
+    ],
+    [
+        "'lemma sat_fv_cong: \"(\\\\<And>n. n \\\\<in> fv \\\\<phi> \\\\<Longrightarrow> \\\\<sigma> n = \\\\<sigma>\\' n) \\\\<Longrightarrow>\\n  sat \\\\<phi> I \\\\<sigma> \\\\<longleftrightarrow> sat \\\\<phi> I \\\\<sigma>\\'\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma compl_le_compl_iff [simp]: \"\\\\<^bold>- x \\\\<sqsubseteq> \\\\<^bold>- y \\\\<longleftrightarrow> y \\\\<sqsubseteq> x\" if \"x \\\\<in> carrier L\" \"y \\\\<in> carrier L\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ex_k_mod:\\n  assumes coprime: \"coprime (e :: nat) ((P-1)*(Q-1))\" \\n    and \"P \\\\<noteq> Q\"\\n    and \"prime P\"\\n    and \"prime Q\"\\n    and \"d \\\\<noteq> 0\"\\n    and \" [e*d = 1] (mod (P-1))\"\\n  shows \"\\\\<exists> k. e*d = 1 + k*(P-1)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma prefix_imp_sublist [simp, intro]: \"prefix xs ys \\\\<Longrightarrow> sublist xs ys\"'",
+        true,
+        [
+            "by (auto elim: prefixE)"
+        ]
+    ],
+    [
+        "'lemma iexec_shift [simp]: \\n  \"((n+i\\',s\\',stk\\') = iexec x (n+i,s,stk)) = ((i\\',s\\',stk\\') = iexec x (i,s,stk))\"'",
+        true,
+        [
+            "by (auto simp: iexec.simps split: instr.split)"
+        ]
+    ],
+    [
+        "'lemma up_int_preservation:\\n  \"dbm_int M n \\\\<Longrightarrow> dbm_int (up M) n\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma normif_alist_code [code, code_unfold]:\\n  \"normif (AList_Mapping.Mapping xs) t = normif_alist xs t\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma seq_filter_empty [simp]: \"xs \\\\<restriction>\\\\<^sub>l {} = []\"'",
+        true,
+        [
+            "by (simp add: seq_filter_def length_0_conv)"
+        ]
+    ],
+    [
+        "'lemma vpeq_s_nt:\\n  assumes prec_t: \"precondition (next_state t execs2) (next_action t execs2)\"\\n  assumes not_ifp_curr_u: \"\\\\<not> ifp^** (current t) u\"\\n  assumes vpeq_s_t: \"\\\\<forall> v . ifp^** v u \\\\<longrightarrow> vpeq v s t\"\\n  shows \"(\\\\<forall> v . ifp^** v u \\\\<longrightarrow> vpeq v s (step (next_state t execs2) (next_action t execs2)))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma (in CRR_market) geom_proc_integrable:\\n  assumes \"N = bernoulli_stream q\"\\nand \"0 \\\\<le> q\"\\nand \"q \\\\<le> 1\"\\nshows \"integrable N (geom_proc n)\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma range_mapping_relax:\\n  \"range_mapping i j P \\\\<Longrightarrow> i\\' \\\\<le> i \\\\<Longrightarrow> j\\' \\\\<ge> j \\\\<Longrightarrow> range_mapping i\\' j\\' P\"'",
+        true,
+        [
+            "by (auto simp: pred_mapping_alt dom_def)"
+        ]
+    ],
+    [
+        "'lemma \\\\<tau>exec_movesI:\\n  \"\\\\<lbrakk> exec_moves ci P t es h (stk, loc, pc, xcp) \\\\<epsilon> h s\\'; \\\\<tau>moves2 P h stk es pc xcp \\\\<rbrakk> \\n  \\\\<Longrightarrow> \\\\<tau>exec_moves ci P t es h (stk, loc, pc, xcp) s\\'\"'",
+        true,
+        [
+            "by(auto simp add: \\<tau>exec_moves_def split: if_split_asm)"
+        ]
+    ],
+    [
+        "'lemma cat_cone_cf_par_2_eps_NTMap_app:\\n  assumes \"\\\\<epsilon> :\\n    E <\\\\<^sub>C\\\\<^sub>F\\\\<^sub>.\\\\<^sub>c\\\\<^sub>o\\\\<^sub>n\\\\<^sub>e \\\\<up>\\\\<up>\\\\<rightarrow>\\\\<up>\\\\<up>\\\\<^sub>C\\\\<^sub>F \\\\<CC> \\\\<aa>\\\\<^sub>P\\\\<^sub>L\\\\<^sub>2 \\\\<bb>\\\\<^sub>P\\\\<^sub>L\\\\<^sub>2 \\\\<gg>\\\\<^sub>P\\\\<^sub>L \\\\<ff>\\\\<^sub>P\\\\<^sub>L \\\\<aa> \\\\<bb> \\\\<gg> \\\\<ff> : \\\\<up>\\\\<up>\\\\<^sub>C \\\\<aa>\\\\<^sub>P\\\\<^sub>L\\\\<^sub>2 \\\\<bb>\\\\<^sub>P\\\\<^sub>L\\\\<^sub>2 \\\\<gg>\\\\<^sub>P\\\\<^sub>L \\\\<ff>\\\\<^sub>P\\\\<^sub>L \\\\<mapsto>\\\\<mapsto>\\\\<^sub>C\\\\<^bsub>\\\\<alpha>\\\\<^esub> \\\\<CC>\"\\n    and \"\\\\<gg> : \\\\<aa> \\\\<mapsto>\\\\<^bsub>\\\\<CC>\\\\<^esub> \\\\<bb>\" \\n    and \"\\\\<ff> : \\\\<aa> \\\\<mapsto>\\\\<^bsub>\\\\<CC>\\\\<^esub> \\\\<bb>\"\\n  shows \\n    \"\\\\<epsilon>\\\\<lparr>NTMap\\\\<rparr>\\\\<lparr>\\\\<bb>\\\\<^sub>P\\\\<^sub>L\\\\<^sub>2\\\\<rparr> = \\\\<gg> \\\\<circ>\\\\<^sub>A\\\\<^bsub>\\\\<CC>\\\\<^esub> \\\\<epsilon>\\\\<lparr>NTMap\\\\<rparr>\\\\<lparr>\\\\<aa>\\\\<^sub>P\\\\<^sub>L\\\\<^sub>2\\\\<rparr>\" \\n    \"\\\\<epsilon>\\\\<lparr>NTMap\\\\<rparr>\\\\<lparr>\\\\<bb>\\\\<^sub>P\\\\<^sub>L\\\\<^sub>2\\\\<rparr> = \\\\<ff> \\\\<circ>\\\\<^sub>A\\\\<^bsub>\\\\<CC>\\\\<^esub> \\\\<epsilon>\\\\<lparr>NTMap\\\\<rparr>\\\\<lparr>\\\\<aa>\\\\<^sub>P\\\\<^sub>L\\\\<^sub>2\\\\<rparr>\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma HARootStates_Range_ChiPlus2 [simp]:\\n  \"\\\\<lbrakk> S \\\\<in> States (HARoot A) \\\\<rbrakk> \\\\<Longrightarrow> (x,S) \\\\<notin> (ChiPlus A)\"'",
+        true,
+        [
+            "apply (unfold ChiPlus_def, safe)",
+            "apply (unfold ChiRel_def)",
+            "apply (erule tranclE)",
+            "by auto"
+        ]
+    ],
+    [
+        "'lemma \"[(\\\\<^bold>\\\\<lambda>y. (p \\\\<^bold>\\\\<or> q)) \\\\<^bold>= (\\\\<^bold>\\\\<lambda>y. (q \\\\<^bold>\\\\<or> p)) in v]\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma ss_fm_imp_Sigma_fm [intro]: \"ss_fm A \\\\<Longrightarrow> Sigma_fm A\"'",
+        true,
+        [
+            "by (auto simp: Sigma_fm_def)"
+        ]
+    ],
+    [
+        "'lemma exp_eq_0_iff[simp]: \"eexp x = 0 \\\\<longleftrightarrow> x = -\\\\<infinity>\"'",
+        true,
+        [
+            "by(cases x) auto"
+        ]
+    ],
+    [
+        "'lemma doesnt_read_or_modify_doesnt_modify:\\n  \"doesnt_read_or_modify c x \\\\<Longrightarrow> doesnt_modify c x\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma cast\\\\<^sub>o\\\\<^sub>b\\\\<^sub>j\\\\<^sub>e\\\\<^sub>c\\\\<^sub>t\\\\<^sub>_\\\\<^sub>p\\\\<^sub>t\\\\<^sub>r\\\\<^sub>2\\\\<^sub>n\\\\<^sub>o\\\\<^sub>d\\\\<^sub>e\\\\<^sub>_\\\\<^sub>p\\\\<^sub>t\\\\<^sub>r_ext_none [simp]: \\n  \"cast\\\\<^sub>o\\\\<^sub>b\\\\<^sub>j\\\\<^sub>e\\\\<^sub>c\\\\<^sub>t\\\\<^sub>_\\\\<^sub>p\\\\<^sub>t\\\\<^sub>r\\\\<^sub>2\\\\<^sub>n\\\\<^sub>o\\\\<^sub>d\\\\<^sub>e\\\\<^sub>_\\\\<^sub>p\\\\<^sub>t\\\\<^sub>r (object_ptr.Ext (Inr (Inr (Inr object_ext_ptr)))) = None\"'",
+        true,
+        [
+            "by(simp add: cast\\<^sub>o\\<^sub>b\\<^sub>j\\<^sub>e\\<^sub>c\\<^sub>t\\<^sub>_\\<^sub>p\\<^sub>t\\<^sub>r\\<^sub>2\\<^sub>n\\<^sub>o\\<^sub>d\\<^sub>e\\<^sub>_\\<^sub>p\\<^sub>t\\<^sub>r_def Let_def)"
+        ]
+    ],
+    [
+        "'lemma zero_cvec_z1_zero_iff:\\n  assumes \"(z1, z2) \\\\<noteq> vec_zero\"\\n  shows \"(z1, z2) \\\\<approx>\\\\<^sub>v 0\\\\<^sub>v \\\\<longleftrightarrow> z1 = 0\"'",
+        true,
+        [
+            "using assms",
+            "by (intro iffI, auto)"
+        ]
+    ],
+    [
+        "'lemma bl_or_aux_bin:\\n  \"map2 (\\\\<or>) (bin_to_bl_aux n v bs) (bin_to_bl_aux n w cs) =\\n    bin_to_bl_aux n (v OR w) (map2 (\\\\<or>) bs cs)\"'",
+        true,
+        [
+            "by (induct n arbitrary: v w bs cs, simp_all)"
+        ]
+    ],
+    [
+        "'lemma JHS_Tr1_2:\"\\\\<lbrakk>Group G; 0 < r; 0 < s; compseries G r f; compseries G s g;\\n k < r - Suc 0\\\\<rbrakk> \\\\<Longrightarrow> ((Gp G (f (Suc k) \\\\<diamondop>\\\\<^bsub>G\\\\<^esub> (f k \\\\<inter> g (s - Suc 0)))) / \\n                               (f (Suc (Suc k)) \\\\<diamondop>\\\\<^bsub>G\\\\<^esub> (f (Suc k) \\\\<inter> g 0))) \\\\<cong>\\n               ((Gp G (g s \\\\<diamondop>\\\\<^bsub>G\\\\<^esub> (g (s - Suc 0) \\\\<inter> f k))) /\\n                          (g s \\\\<diamondop>\\\\<^bsub>G\\\\<^esub> (g (s - Suc 0) \\\\<inter> f (Suc k))))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma SeqHaddP_fresh_iff [simp]: \"a \\\\<sharp> SeqHaddP s j k y \\\\<longleftrightarrow> a \\\\<sharp> s \\\\<and> a \\\\<sharp> j \\\\<and> a \\\\<sharp> k \\\\<and> a \\\\<sharp> y\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma odiff_less_iff: \"z \\\\<unlhd> x \\\\<Longrightarrow> odiff x z < y \\\\<longleftrightarrow> x < z + y\"'",
+        true,
+        [
+            "by (auto simp: odiff_def vle_def vle_def)"
+        ]
+    ],
+    [
+        "'lemma map_gpv_conv_map_gpv\\': \"map_gpv f g = map_gpv\\' f g id\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma overlaps_universe: \"O x u\"'",
+        true,
+        [
+            "using universe_character",
+            "by (rule part_implies_overlap)"
+        ]
+    ],
+    [
+        "'lemma OclOr5[simp]: \"(null or true) = true\"'",
+        true,
+        [
+            "by(rule ext,simp add: OclOr_def null_def invalid_def defined_def bot_option_def)"
+        ]
+    ],
+    [
+        "'lemma rem_implicit_pres_ops_astG[simp]: \"ast_problem.astG (rem_implicit_pres_ops prob) =\\n           ast_problem.astG prob\"'",
+        true,
+        [
+            "by(cases prob)(auto simp add: ast_problem.astG_def ast_problem.astG_def)"
+        ]
+    ],
+    [
+        "'lemma blinfun_apply_Pair_minus2: \"blinfun_apply f (0, a - b) = blinfun_apply f (0, a) - blinfun_apply f (0, b)\"'",
+        true,
+        [
+            "unfolding blinfun.bilinear_simps[symmetric]",
+            "by transfer (auto simp: blinfun.bilinear_simps)"
+        ]
+    ],
+    [
+        "'lemma is_arg_max_GS_rec_step_act:\\n  assumes \"d \\\\<in>D\\\\<^sub>D\" \"is_arg_max (\\\\<lambda>a. GS_rec_step (d\\'(s := a)) v $ s) (\\\\<lambda>a. a \\\\<in>A s) a\" \\n  shows \"is_arg_max (\\\\<lambda>d. GS_rec_step d v $ s) (\\\\<lambda>d. d \\\\<in>D\\\\<^sub>D) (d(s := a))\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma freess_cons[simp]: \"freess (x # xs) = frees x |\\\\<union>| freess xs\"'",
+        true,
+        [
+            "by (auto simp: freess_def fmember.rep_eq)"
+        ]
+    ],
+    [
+        "'lemma sinh_plus_cosh: \"sinh x + cosh x = exp x\"'",
+        true,
+        [
+            "unfolding cosh_def sinh_def",
+            "by (simp add: scaleR_add_right[symmetric])"
+        ]
+    ],
+    [
+        "'lemma LcmI:\\n  assumes \"\\\\<And>a. a \\\\<in> A \\\\<Longrightarrow> a dvd b\"\\n    and \"\\\\<And>c. (\\\\<And>a. a \\\\<in> A \\\\<Longrightarrow> a dvd c) \\\\<Longrightarrow> b dvd c\"\\n    and \"normalize b = b\"\\n  shows \"b = Lcm A\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma lift0: \"(liftPoly i j 0) = 0\"'",
+        true,
+        [
+            "unfolding liftPoly_def monomials_liftPoly",
+            "apply (simp)",
+            "apply transfer'",
+            "by (simp add: higherPoly\\<^sub>0.rep_eq poly_mapping_eqI)"
+        ]
+    ],
+    [
+        "'theorem Plus_ZeroR[simp]: \"Plus r Zero = r\"'",
+        true,
+        [
+            "by (coinduction arbitrary: r) auto"
+        ]
+    ],
+    [
+        "'lemma pdevs_val_add_pdevs[simp]:\\n  fixes x y::\"\\'a::euclidean_space\"\\n  shows \"pdevs_val e (add_pdevs X Y) = pdevs_val e X + pdevs_val e Y\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma floor_add2[simp]: \"x \\\\<in> \\\\<int> \\\\<or> y \\\\<in> \\\\<int> \\\\<Longrightarrow> \\\\<lfloor>x + y\\\\<rfloor> = \\\\<lfloor>x\\\\<rfloor> + \\\\<lfloor>y\\\\<rfloor>\"'",
+        true,
+        [
+            "using floor_add[of x y]",
+            "unfolding Ints_def",
+            "by (auto split: if_splits simp: frac_lt_1)"
+        ]
+    ],
+    [
+        "'lemma iexec_offset_aux:\\n \"(i :: int) + 1 - j = i - j + 1 \\\\<and> i + j - k + 1 = i - k + j + 1\"'",
+        true,
+        [
+            "by algebra"
+        ]
+    ],
+    [
+        "'theorem \"\\\\<forall>(x::int). 2 dvd x \\\\<longleftrightarrow> (\\\\<forall>(y::int). x \\\\<noteq> 2*y + 1)\"'",
+        true,
+        [
+            "by arith"
+        ]
+    ],
+    [
+        "'lemma RFail_least [simp]: \"ord_gpv Fail f\"'",
+        true,
+        [
+            "by(coinduction rule: ord_gpv_coinduct) simp"
+        ]
+    ],
+    [
+        "'lemma eventually_le_abs_nonpos:\\n  \"eventually (\\\\<lambda>x. u x \\\\<le> 0) at_top \\\\<Longrightarrow> eventually (\\\\<lambda>x. f x \\\\<le> u x) at_top \\\\<Longrightarrow>\\n     eventually (\\\\<lambda>x::real. -u x \\\\<le> (\\\\<bar>f x\\\\<bar> :: real)) at_top\"'",
+        true,
+        [
+            "by (elim eventually_mono) (auto intro!: abs_ge_self)"
+        ]
+    ],
+    [
+        "'lemma shortest_path_walk_length: \"shortest_path u v = n \\\\<Longrightarrow> p \\\\<in> connecting_paths u v \\\\<Longrightarrow> walk_length p \\\\<ge> n\"'",
+        false,
+        []
+    ],
+    [
+        "'lemma fstar_unfoldl [simp]: \\n  fixes f :: \"\\'a::complete_lattice \\\\<Rightarrow> \\'a\"\\n  shows \"Inf_pres f \\\\<Longrightarrow> id \\\\<sqinter> (f \\\\<circ> fstar f) = fstar f\"'",
+        true,
+        [
+            "by (transfer, simp add: fun_eq_iff)"
+        ]
+    ],
+    [
+        "'lemma freshInp_empInp[simp]:\\n\"freshInp xs x empInp\"'",
+        true,
+        [
+            "by(auto simp: freshInp_def liftAll_def lift_def)"
+        ]
+    ],
+    [
+        "'lemma sword64_integer_eq:\\n  \"sword64_of_integer (integer_of_sword64 w) = w\"'",
+        true,
+        [
+            "unfolding sword64_of_integer_def integer_of_sword64_def sword64_of_integer_def",
+            "by (simp add: sword_integer_eq)"
+        ]
+    ],
+    [
+        "'lemma cut_less_cut_ge_ident: \"t2 \\\\<le> t1 \\\\<Longrightarrow> I \\\\<down>< t1 \\\\<union> I \\\\<down>\\\\<ge> t2 = I\"'",
+        true,
+        [
+            "by (fastforce simp: cut_less_def)"
+        ]
+    ]
+]

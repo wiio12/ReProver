@@ -22,6 +22,7 @@ def _get_theorems(
     full_name: str,
     name_filter: str,
     num_theorems: int,
+    begin_num: int,
 ) -> List[Theorem]:
     theorems = _isa_get_theorems_from_files(
             data_path,
@@ -30,6 +31,7 @@ def _get_theorems(
             full_name,
             name_filter,
             num_theorems,
+            begin_num,
     )
     return theorems
 
@@ -40,6 +42,7 @@ def _isa_get_theorems_from_files(
     full_name: Optional[str],
     name_filter: Optional[str],
     num_theorems: Optional[int],
+    begin_num: Optional[int],
 ) -> List[Theorem]:
     data = json.load(open(os.path.join(data_path, f"{split}.json")))
     theorems = []
@@ -64,6 +67,9 @@ def _isa_get_theorems_from_files(
     )
     if num_theorems is not None:
         theorems = theorems[:num_theorems]
+    
+    if begin_num is not None:
+        theorems = theorems[begin_num:]
 
     logger.info(f"{len(theorems)} theorems loaded from {data_path}")
 
@@ -80,6 +86,7 @@ def evaluate(
     full_name: Optional[str] = None,
     name_filter: Optional[str] = None,
     num_theorems: Optional[int] = None,
+    begin_num: Optional[int] = None,
     ckpt_path: Optional[str] = None,
     indexed_corpus_path: Optional[str] = None,
     tactic: Optional[str] = None,
@@ -93,7 +100,7 @@ def evaluate(
     set_logger(verbose)
 
     theorems = _get_theorems(
-        formal_system, data_path, split, file_path, full_name, name_filter, num_theorems
+        formal_system, data_path, split, file_path, full_name, name_filter, num_theorems, begin_num
     )
    
     repo = {
@@ -175,6 +182,7 @@ def main() -> None:
     parser.add_argument("--full-name", type=str)
     parser.add_argument("--name-filter", type=str)
     parser.add_argument("--num-theorems", type=int)
+    parser.add_argument("--begin-num", type=int)
     parser.add_argument(
         "--ckpt_path",
         type=str,
@@ -229,6 +237,7 @@ def main() -> None:
         args.full_name,
         args.name_filter,
         args.num_theorems,
+        args.begin_num,
         args.ckpt_path,
         args.indexed_corpus_path,
         args.tactic,
