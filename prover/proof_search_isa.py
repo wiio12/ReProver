@@ -54,12 +54,14 @@ class BestFirstSearchProver:
         tac_gen,  # A given tactic generator.
         timeout: int,
         num_sampled_tactics: int,
+        history_size: int,
         debug: bool,
     ) -> None:
         self.rank = rank
         self.tac_gen = tac_gen
         self.timeout = timeout
         self.num_sampled_tactics = num_sampled_tactics
+        self.history_size = history_size
         self.debug = debug
 
         self.num_expansions = 0
@@ -83,8 +85,12 @@ class BestFirstSearchProver:
         self.num_expansions = 0
 
         try:
+            init_port = os.environ.get("CUDA_VISIBLE_DEVICES", "0")
+            init_port = int(init_port.split(",")[0])
+            init_port = 8005 + init_port
+            logger.info(f"Port using: {init_port}, init_port {init_port}, rank {self.rank}, {os.environ.get('CUDA_VISIBLE_DEVICES', 'NONE')}")
             with IsaDojo(
-                port=8015+int(self.rank),
+                port=init_port,
                 jar_path=repo["jar_path"],
                 isa_path=repo["isa_path"],
                 working_directory=str(thm.working_directory),
@@ -167,6 +173,21 @@ class BestFirstSearchProver:
             if self.root.status == Status.PROVED:
                 logger.info("Found a proof!")
                 break
+    
+    def _get_single_history(self, node):
+        history = []
+        current_node = node
+        while len(current_node.in_edges) > 0:
+            edge = current_node.in_edges[0]
+            history.append(edge.tactic)
+            current_node = edge.src
+        history.append(self.root.state.from_tactic)
+        history =  list(reversed(history))
+        expanded_history = [history[0]]
+        for his in history[1:]:
+            his = his.split("\n")
+            expanded_history.extend(his)
+        return expanded_history
 
     def _step(self):
         """
@@ -187,7 +208,7 @@ class BestFirstSearchProver:
 
         if isinstance(search_node.state, TacticState):
             ts = search_node.state.pp
-            from_tactic = search_node.state.from_tactic
+            from_tactic =  "\n".join(self._get_single_history(search_node)[-self.history_size:])
         else:
             # ts = search_node.state.unsolved_tactic_state
             assert False, "Why this will happen?"
@@ -332,6 +353,8 @@ class CpuProver(BestFirstSearchProver):
         module: Optional[str],
         timeout: int,
         num_sampled_tactics: int,
+        use_samping: bool,
+        history_size: int,
         debug: bool,
     ) -> None:
         if ckpt_path is None:
@@ -346,13 +369,14 @@ class CpuProver(BestFirstSearchProver):
         #         tac_gen.retriever.reindex_corpus(batch_size=32)
         else:
             tac_gen = DecoderOnlyTacticGenerator(
-                model_name_or_path=ckpt_path, device=torch.device("cpu")
+                model_name_or_path=ckpt_path, use_sampling=use_samping, device=torch.device("cpu")
             )
         super().__init__(
             rank,
             tac_gen,
             timeout,
             num_sampled_tactics,
+            history_size,
             debug,
         )
 
@@ -370,6 +394,8 @@ class GpuProver(BestFirstSearchProver):
         module: Optional[str],
         timeout: int,
         num_sampled_tactics: int,
+        use_sampling: bool,
+        history_size: int,
         debug: bool,
     ) -> None:
         if ckpt_path is None:
@@ -384,13 +410,14 @@ class GpuProver(BestFirstSearchProver):
         #         tac_gen.retriever.reindex_corpus(batch_size=32)
         else:
             tac_gen = DecoderOnlyTacticGenerator(
-                model_name_or_path=ckpt_path, device=torch.device("cuda")
+                model_name_or_path=ckpt_path, use_sampling=use_sampling, device=torch.device("cuda")
             )
         super().__init__(
             rank,
             tac_gen,
             timeout,
             num_sampled_tactics,
+            history_size,
             debug,
         )
 
@@ -412,6 +439,8 @@ class DistributedProver:
         with_gpus: bool,
         timeout: int,
         num_sampled_tactics: int,
+        use_sampling: bool,
+        history_size: int,
         debug: Optional[bool] = False,
     ) -> None:
         if ckpt_path is None:
@@ -432,10 +461,10 @@ class DistributedProver:
                 #     assert indexed_corpus_path is not None
                 #     tac_gen.retriever.load_corpus(indexed_corpus_path)
                 tac_gen = DecoderOnlyTacticGenerator(
-                    model_name_or_path=ckpt_path, device=device,
+                    model_name_or_path=ckpt_path, use_sampling=use_sampling, device=device,
                 )
             self.prover = BestFirstSearchProver(
-                0, tac_gen, timeout, num_sampled_tactics, debug
+                0, tac_gen, timeout, num_sampled_tactics, history_size, debug
             )
             return
 
@@ -451,6 +480,8 @@ class DistributedProver:
                     module,
                     timeout=timeout,
                     num_sampled_tactics=num_sampled_tactics,
+                    use_sampling=use_sampling,
+                    history_size=history_size,
                     debug=debug,
                 )
                 for rank in range(num_cpus)
@@ -466,6 +497,8 @@ class DistributedProver:
                     module,
                     timeout=timeout,
                     num_sampled_tactics=num_sampled_tactics,
+                    use_sampling=use_sampling,
+                    history_size=history_size,
                     debug=debug,
                 )
                 for rank in range(num_cpus)

@@ -86,12 +86,16 @@ class DecoderOnlyTacticGenerator(TacticGenerator):
         max_inp_seq_len: int = 840,
         max_oup_seq_len: int = 256,
         length_penalty: float = 0.0,
+        use_sampling: bool = False,
+        temperature: float = 1.0,
         device: str = "cpu",
     ):
         self.model_name_or_path = model_name_or_path
         self.max_inp_seq_len = max_inp_seq_len
         self.max_oup_seq_len = max_oup_seq_len
         self.length_penalty = length_penalty
+        self.use_sampling = use_sampling
+        self.temperature = temperature
         self.device = device
 
         # we haven't train retrieval augmented generator yet
@@ -142,20 +146,47 @@ class DecoderOnlyTacticGenerator(TacticGenerator):
         state_ids = tokenized_state.input_ids.to(self.device)
         state_mask = tokenized_state.attention_mask.to(self.device)
 
+        raw_scores = None
         # Generate tactic candidates using beam search.
-        output = self.generator.generate(
-            input_ids=state_ids,
-            attention_mask=state_mask,
-            max_length=self.max_inp_seq_len + self.max_oup_seq_len,
-            num_beams=num_samples,
-            length_penalty=self.length_penalty,
-            do_sample=False,
-            num_return_sequences=num_samples,
-            early_stopping=False,
-            output_scores=True,
-            return_dict_in_generate=True,
-            pad_token_id=self.tokenizer.eos_token_id,
-        )
+        if self.use_sampling is False:
+            output = self.generator.generate(
+                input_ids=state_ids,
+                attention_mask=state_mask,
+                max_length=self.max_inp_seq_len + self.max_oup_seq_len,
+                num_beams=num_samples,
+                length_penalty=self.length_penalty,
+                do_sample=False,
+                num_return_sequences=num_samples,
+                early_stopping=False,
+                output_scores=True,
+                return_dict_in_generate=True,
+                pad_token_id=self.tokenizer.eos_token_id,
+            )
+        else:
+            output = self.generator.generate(
+                input_ids=state_ids,
+                attention_mask=state_mask,
+                max_length=self.max_inp_seq_len + self.max_oup_seq_len,
+                do_sample=True,
+                temperature=self.temperature,
+                num_return_sequences=num_samples,
+                early_stopping=False,
+                output_scores=True,
+                return_dict_in_generate=True,
+                pad_token_id=self.tokenizer.eos_token_id,
+            )
+            gen_sequences = output.sequences[:, state_ids.size(1):]
+            # logits to probs
+            probs = torch.stack(output.scores, dim=1).softmax(-1)
+            # now we need to collect the probability of the generated token
+            # we need to add a dummy dim in the end to make gather work
+            gen_probs = torch.gather(probs, 2, gen_sequences[:, :, None]).squeeze(-1)
+            # calculate non eos token mask, we exclude the token probabilities for eos tokens.
+            non_eos_token_mask = gen_sequences != self.tokenizer.eos_token_id
+            log_probs = (gen_probs.log().nan_to_num(0) * non_eos_token_mask).sum(-1)
+            # Add small random Gaussian noise to prevent priority queue errors
+            log_probs += 0.00001 * torch.randn_like(log_probs)
+            raw_scores = log_probs.tolist()
 
         # Return the output.
         raw_output_text = self.tokenizer.batch_decode(
@@ -172,7 +203,7 @@ class DecoderOnlyTacticGenerator(TacticGenerator):
                 tactic_outputs.append("by auto")
         raw_output_text = tactic_outputs
 
-        raw_scores = output.sequences_scores.tolist()
+        raw_scores = output.sequences_scores.tolist() if raw_scores is None else raw_scores
         tactics_with_scores = []
 
         for i in range(len(state)):
@@ -185,7 +216,11 @@ class DecoderOnlyTacticGenerator(TacticGenerator):
                     output_text.append(t)
                     output_score.append(raw_scores[j])
 
-            tactics_with_scores.append(list(zip_strict(output_text, output_score)))
+            tactics_with_scores.append(sorted(
+                list(zip_strict(output_text, output_score)),
+                key=lambda x:x[1],
+                reverse=True)
+            )
 
         return tactics_with_scores
 

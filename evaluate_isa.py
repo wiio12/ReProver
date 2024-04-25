@@ -7,7 +7,9 @@ import pickle
 import hashlib
 import argparse
 from loguru import logger
+import re
 from typing import List, Tuple, Optional
+from pathlib import Path
 
 from common import set_logger
 from multilevel_isabelle.src.main.python.pisa_client import Theorem
@@ -23,6 +25,7 @@ def _get_theorems(
     name_filter: str,
     num_theorems: int,
     begin_num: int,
+    runed_logs: List[str],
 ) -> List[Theorem]:
     theorems = _isa_get_theorems_from_files(
             data_path,
@@ -32,6 +35,7 @@ def _get_theorems(
             name_filter,
             num_theorems,
             begin_num,
+            runed_logs,
     )
     return theorems
 
@@ -43,9 +47,30 @@ def _isa_get_theorems_from_files(
     name_filter: Optional[str],
     num_theorems: Optional[int],
     begin_num: Optional[int],
+    runed_logs: List[str],
 ) -> List[Theorem]:
     data = json.load(open(os.path.join(data_path, f"{split}.json")))
     theorems = []
+
+    finished_theorem = []
+    if runed_logs is not None:
+        assert begin_num is None, "runed_logs and begin_num cannot be used together."
+        for log in runed_logs:
+            logger.info(f"Processing the runed log: {log}")
+            f = open(log, "r")
+            for line in f:
+                if "SearchResult" not in line:
+                    continue
+                pattern = r"Theorem\(file_path=PosixPath\('(.*?)'\), full_name=[\'\"](.*?)[\'|\"], count=(\d+)"
+                match = re.search(pattern, line)
+                assert match
+                finished_theorem.append(Theorem(
+                    file_path=Path(match.group(1)), 
+                    full_name=match.group(2).encode().decode('unicode_escape'), 
+                    count=int(match.group(3)))
+                )
+            f.close()
+    logger.info(f"There are {len(finished_theorem)} theorem finished proving")
 
     for elem in data:
         if file_path is not None and elem["file_path"] != file_path:
@@ -56,8 +81,10 @@ def _isa_get_theorems_from_files(
             elem["full_name"].encode()
         ).hexdigest().startswith(name_filter):
             continue
-        new_file_path = elem["file_path"].replace("/data2/wanghaiming/Isabelle2022", "/hpc2hdd/home/zyang398/Isabelle2022").replace("/data2/wanghaiming/afp-2022-12-06", "/hpc2hdd/home/zyang398/afp-2022-12-06")
-        theorems.append(Theorem(file_path=new_file_path, full_name=elem["full_name"], count=elem["count"]))
+        new_file_path = elem["file_path"].replace("/data2/wanghaiming/Isabelle2022", "/hpc2hdd/home/zyang398/Isabelle2022").replace("/data2/wanghaiming/afp-2022-12-06", "/hpc2hdd/home/zyang398/afp-2022-12-06").replace("/data2/wanghaiming/project/pisa_data/miniF2F", "/hpc2hdd/home/zyang398/miniF2F")
+        new_theorem = Theorem(file_path=new_file_path, full_name=elem["full_name"], count=elem["count"])
+        if new_theorem not in finished_theorem:
+            theorems.append(new_theorem)
 
     theorems = sorted(
         theorems,
@@ -87,11 +114,14 @@ def evaluate(
     name_filter: Optional[str] = None,
     num_theorems: Optional[int] = None,
     begin_num: Optional[int] = None,
+    runed_logs: Optional[List[str]] = None,
     ckpt_path: Optional[str] = None,
     indexed_corpus_path: Optional[str] = None,
     tactic: Optional[str] = None,
     module: Optional[str] = None,
     num_sampled_tactics: int = 64,
+    use_sampling: bool = False,
+    history_size: int = 1,
     timeout: int = 600,
     num_cpus: int = 1,
     with_gpus: bool = False,
@@ -100,7 +130,7 @@ def evaluate(
     set_logger(verbose)
 
     theorems = _get_theorems(
-        formal_system, data_path, split, file_path, full_name, name_filter, num_theorems, begin_num
+        formal_system, data_path, split, file_path, full_name, name_filter, num_theorems, begin_num, runed_logs,
     )
    
     repo = {
@@ -118,6 +148,8 @@ def evaluate(
         with_gpus=with_gpus,
         timeout=timeout,
         num_sampled_tactics=num_sampled_tactics,
+        use_sampling=use_sampling,
+        history_size=history_size,
         debug=verbose,
     )
     results = prover.search_unordered(repo, theorems)
@@ -183,6 +215,7 @@ def main() -> None:
     parser.add_argument("--name-filter", type=str)
     parser.add_argument("--num-theorems", type=int)
     parser.add_argument("--begin-num", type=int)
+    parser.add_argument("--runed-logs", nargs="+")
     parser.add_argument(
         "--ckpt_path",
         type=str,
@@ -199,8 +232,17 @@ def main() -> None:
     parser.add_argument(
         "--num-sampled-tactics",
         type=int,
-        default=8,
+        default=32,
         help="Number of tactics to sample at each node during proof search.",
+    )
+    parser.add_argument(
+        "--use-sampling",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--history-size",
+        type=int,
+        default=1
     )
     parser.add_argument(
         "--timeout",
@@ -238,11 +280,14 @@ def main() -> None:
         args.name_filter,
         args.num_theorems,
         args.begin_num,
+        args.runed_logs,
         args.ckpt_path,
         args.indexed_corpus_path,
         args.tactic,
         args.module,
         args.num_sampled_tactics,
+        args.use_sampling,
+        args.history_size,
         args.timeout,
         args.num_cpus,
         args.with_gpus,

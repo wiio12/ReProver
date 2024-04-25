@@ -43,8 +43,9 @@ def get_name_state_and_proof(lines):
         state = "proof=[" in line
         if state is True:
             proof = eval(line[line.index("proof=[")+len("proof="): line.index(", actor_time")])
+            proof = "\n".join(proof)
         else:
-            proof = []
+            proof = ""
         results.append([name, state, proof])
     return results
 
@@ -52,14 +53,18 @@ def have_sorry(lines):
     return any(["sorry" in l for l in lines])
 
 gptf_lines = []
-with open("test_gptf2.log") as f:
+with open("tmp.log") as f:
     for line in f:
         if "SearchResult" in line:
             gptf_lines.append(line)
-gptf_lines = gptf_lines[:591]
+# gptf_lines = gptf_lines[:591]
 
+import numpy as np
+gl = get_name_state_and_proof(gptf_lines)
+print(gl[np.argmax([len(line[2]) for line in gl])][2])
+exit(0)
 mult_lines = []
-with open("test_mul6.log") as f:
+with open("tmp.log") as f:
     for line in f:
         if "SearchResult" in line:
             mult_lines.append(line)
