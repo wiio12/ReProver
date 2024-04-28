@@ -353,7 +353,7 @@ class CpuProver(BestFirstSearchProver):
         module: Optional[str],
         timeout: int,
         num_sampled_tactics: int,
-        use_samping: bool,
+        use_sampling: bool,
         history_size: int,
         debug: bool,
     ) -> None:
@@ -369,7 +369,7 @@ class CpuProver(BestFirstSearchProver):
         #         tac_gen.retriever.reindex_corpus(batch_size=32)
         else:
             tac_gen = DecoderOnlyTacticGenerator(
-                model_name_or_path=ckpt_path, use_sampling=use_samping, device=torch.device("cpu")
+                model_name_or_path=ckpt_path, use_sampling=use_sampling, device=torch.device("cpu")
             )
         super().__init__(
             rank,

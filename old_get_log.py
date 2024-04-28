@@ -3,6 +3,19 @@ import re
 from pathlib import Path
 from multilevel_isabelle.src.main.python.pisa_client import Theorem
 
+def get_name_state_and_proof(lines):
+    results = []
+    for line in lines:
+        name = line[line.index("full_name=") + len("full_name="): line.index(", count=")]
+        state = "proof=[" in line
+        if state is True:
+            proof = eval(line[line.index("proof=[")+len("proof="): line.index(", actor_time")])
+            proof = "\n".join(proof)
+        else:
+            proof = ""
+        results.append([name, state, proof])
+    return results
+
 def cal(lines):
     cnt = 0
     for line in lines:
@@ -10,7 +23,7 @@ def cal(lines):
             cnt += 1
     total_score = float(cnt) / len(lines)
 
-    with open("val_detailed_split.json", "r") as f:
+    with open("test_detailed_split.json", "r") as f:
         data = json.load(f)
     normal_theorem, multi_theorem = data
     normal_theorem = [Theorem(file_path=thm["file_path"].replace("/data2/wanghaiming/Isabelle2022", "/hpc2hdd/home/zyang398/Isabelle2022").replace("/data2/wanghaiming/afp-2022-12-06", "/hpc2hdd/home/zyang398/afp-2022-12-06"), full_name=thm["full_name"], count=thm["count"]) for thm in normal_theorem]
@@ -36,19 +49,20 @@ def cal(lines):
             if "proof=[" in line:
                 multi_cnt += 1
         else:
-            raise Exception
-    
-    return total_score, normal_cnt/float(normal_total), multi_cnt/float(multi_total)
+            continue
+    normal_score = normal_cnt/float(normal_total) if normal_total != 0 else 0
+    multi_score = multi_cnt/float(multi_total) if multi_total != 0 else 0
+    return total_score, normal_score, multi_score
 
 
 all_lines = []
-with open("test_gptf2.log", "r") as f:
+with open("gptf-c3w3s1_1.log", "r") as f:
     for line in f:
         if "SearchResult" in line:
             all_lines.append(line)
 
 compare_lines = []
-with open("tmp.log", "r") as f:
+with open("gptf-baseline-testset_1.log", "r") as f:
     for line in f:
         if "SearchResult" in line:
             compare_lines.append(line)

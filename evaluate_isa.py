@@ -14,6 +14,8 @@ from pathlib import Path
 from common import set_logger
 from multilevel_isabelle.src.main.python.pisa_client import Theorem
 from prover.proof_search_isa import Status, DistributedProver
+from prover.proof_search_isa_multilevel import Status as MultilevelStatus
+from prover.proof_search_isa_multilevel import DistributedProver as MultilevelDistributedProver
 
 
 def _get_theorems(
@@ -75,7 +77,7 @@ def _isa_get_theorems_from_files(
     for elem in data:
         if file_path is not None and elem["file_path"] != file_path:
             continue
-        if full_name is not None and elem["full_name"] != full_name:
+        if full_name is not None and not elem["full_name"].startswith(full_name):
             continue
         if name_filter is not None and not hashlib.md5(
             elem["full_name"].encode()
@@ -103,7 +105,7 @@ def _isa_get_theorems_from_files(
     return theorems
 
 def evaluate(
-    formal_system: str, 
+    method: str, 
     data_path: str,
     jar_path: str,
     isabelle_path: str,
@@ -130,7 +132,7 @@ def evaluate(
     set_logger(verbose)
 
     theorems = _get_theorems(
-        formal_system, data_path, split, file_path, full_name, name_filter, num_theorems, begin_num, runed_logs,
+        "isabelle", data_path, split, file_path, full_name, name_filter, num_theorems, begin_num, runed_logs,
     )
    
     repo = {
@@ -139,19 +141,34 @@ def evaluate(
     }
 
     # Search for proofs using multiple concurrent provers.
-    prover = DistributedProver(
-        ckpt_path,
-        indexed_corpus_path,
-        tactic,
-        module,
-        num_cpus,
-        with_gpus=with_gpus,
-        timeout=timeout,
-        num_sampled_tactics=num_sampled_tactics,
-        use_sampling=use_sampling,
-        history_size=history_size,
-        debug=verbose,
-    )
+    if method == "gptf":
+        prover = DistributedProver(
+            ckpt_path,
+            indexed_corpus_path,
+            tactic,
+            module,
+            num_cpus,
+            with_gpus=with_gpus,
+            timeout=timeout,
+            num_sampled_tactics=num_sampled_tactics,
+            use_sampling=use_sampling,
+            history_size=history_size,
+            debug=verbose,
+        )
+    elif method == "multilevel":
+        prover = MultilevelDistributedProver(
+            ckpt_path,
+            indexed_corpus_path,
+            tactic,
+            module,
+            num_cpus,
+            with_gpus=with_gpus,
+            timeout=timeout,
+            num_sampled_tactics=num_sampled_tactics,
+            use_sampling=use_sampling,
+            history_size=history_size,
+            debug=verbose,
+        )
     results = prover.search_unordered(repo, theorems)
 
     # Calculate the result statistics.
@@ -159,7 +176,7 @@ def evaluate(
     for r in results:
         if r is None:
             num_discarded += 1
-        elif r.status == Status.PROVED:
+        elif r.status == Status.PROVED or r.status == MultilevelStatus.PROVED:
             num_proved += 1
         else:
             num_failed += 1
@@ -188,10 +205,10 @@ def main() -> None:
         description="Script for evaluating the prover on theorems extracted by LeanDojo."
     )
     parser.add_argument(
-        "--formal_system",
+        "--method",
         type=str,
-        choices=["lean", "isabelle"],
-        default="lean",
+        choices=["gptf", "multilevel"],
+        default="gptf",
         help="The formal system to use for evaluation.",
     )
     parser.add_argument(
@@ -211,7 +228,7 @@ def main() -> None:
     )
     # `file_path`, `full_name`, `name_filter`, and `num_theorems` can be used to filter theorems.
     parser.add_argument("--file-path", type=str)
-    parser.add_argument("--full-name", type=str)
+    parser.add_argument("--full-name", type=str, )#default="theorem induction_nfactltnexpnm1ngt3")
     parser.add_argument("--name-filter", type=str)
     parser.add_argument("--num-theorems", type=int)
     parser.add_argument("--begin-num", type=int)
@@ -269,7 +286,7 @@ def main() -> None:
     args.with_gpus = True
 
     pass_1 = evaluate(
-        args.formal_system,
+        args.method,
         args.data_path,
         args.jar_path,
         args.isabelle_path,
