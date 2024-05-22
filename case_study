@@ -1,0 +1,48 @@
+lemma(in UP_cring) n_mult_closed:
+  assumes "f \<in> carrier P"
+  shows "n_mult f \<in> carrier P"
+proof(rule UP_car_memI[of "deg R f"])
+    show "\<And>n. deg R f < n \<Longrightarrow> n_mult f n = \<zero>"
+        unfolding n_mult_def
+        using assms
+        unfolding P_def
+        by (simp add: UP_car_memE(2))
+    show "\<And>n. n_mult f n \<in> carrier R"
+        using assms
+        unfolding n_mult_def
+        by (simp add: assms cfs_closed)
+qed
+
+
+
+lemma(in UP_cring) n_mult_closed:
+  assumes "f \<in> carrier P"
+  shows "n_mult f \<in> carrier P"
+proof(rule UP_car_memI[of "deg R f"])
+    show "\<And>n. deg R f < n \<Longrightarrow> n_mult f n = \<zero>"  x
+
+
+0:
+'lemma(in UP_cring) n_mult_closed:\n  assumes "f \\<in> carrier P"\n  shows "n_mult f \\<in> carrier P"'
+
+proof(rule UP_car_memI[of "deg R f"])
+fix n
+assume A: "deg R f < n"
+show "n_mult f n = \\<zero>"
+unfolding n_mult_def
+using assms
+
+
+
+fix::nat
+
+
+0:
+'lemma(in UP_cring) n_mult_closed:\n  assumes "f \\<in> carrier P"\n  shows "n_mult f \\<in> carrier P"'
+
+proof(rule UP_car_memI[of "deg R f"])
+  fix n
+  show "deg R f < n \\<Longrightarrow> n_mult f n = \\<zero>"
+  proof-'
+    assume A: "deg R f < n"'
+    show?thesis

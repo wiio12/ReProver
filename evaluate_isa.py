@@ -10,13 +10,23 @@ from loguru import logger
 import re
 from typing import List, Tuple, Optional
 from pathlib import Path
-
-from common import set_logger
+import sys
 from multilevel_isabelle.src.main.python.pisa_client import Theorem
 from prover.proof_search_isa import Status, DistributedProver
 from prover.proof_search_isa_multilevel import Status as MultilevelStatus
 from prover.proof_search_isa_multilevel import DistributedProver as MultilevelDistributedProver
 
+def set_logger(verbose: bool) -> None:
+    """
+    Set the logging level of loguru.
+    The effect of this function is global, and it should
+    be called only once in the main function
+    """
+    logger.remove()
+    if verbose:
+        logger.add(sys.stderr, level="DEBUG")
+    else:
+        logger.add(sys.stderr, level="INFO")
 
 def _get_theorems(
     formal_system: str,
@@ -228,7 +238,7 @@ def main() -> None:
     )
     # `file_path`, `full_name`, `name_filter`, and `num_theorems` can be used to filter theorems.
     parser.add_argument("--file-path", type=str)
-    parser.add_argument("--full-name", type=str, )#default="theorem induction_nfactltnexpnm1ngt3")
+    parser.add_argument("--full-name", type=str) #default="lemma is_invarI[intro?]")
     parser.add_argument("--name-filter", type=str)
     parser.add_argument("--num-theorems", type=int)
     parser.add_argument("--begin-num", type=int)

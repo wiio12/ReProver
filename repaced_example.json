@@ -1,0 +1,2240 @@
+{
+    "file_path": "/data2/wanghaiming/afp-2022-12-06/thys/Padic_Ints/Cring_Poly.thy",
+    "full_name": "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"",
+    "count": 1,
+    "split": "test",
+    "full_proof_text": "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"\nproof-\nobtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"\nby blast\nhave 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"\nproof-\nfix i\nshow \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"\nusing assms g_def  P_def coeff_simp monom_sub\nby (simp add: cfs_closed)\nqed\nhave 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"\nusing g_def assms\nby (simp add: cfs_closed)\nhave  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"\nusing assms up_repr_le[of p n] coeff_simp[of p]\nunfolding P_def\nby auto\nthen\nhave  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"\nusing g_def\nby auto\nthen\nhave \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"\nusing 0 1 poly_comp_finsum[of n g q p]\nusing assms(2)\nby blast\nthen\nshow ?thesis\nby(simp add: 0)\nqed",
+    "transitions": [
+        [
+            "",
+            "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"",
+            0,
+            "NA"
+        ],
+        [
+            "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof-",
+            1,
+            "NA"
+        ],
+        [
+            "proof (state)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"",
+            2,
+            "NA"
+        ],
+        [
+            "proof (prove)\ngoal (1 subgoal):\n 1. (\\<And>g. g = (\\<lambda>i. monom P (p i) i) \\<Longrightarrow> thesis) \\<Longrightarrow> thesis",
+            "by blast",
+            3,
+            "NA"
+        ],
+        [
+            "proof (state)\nthis:\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"",
+            2,
+            "NA"
+        ],
+        [
+            "proof (prove)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "proof-",
+            3,
+            "NA"
+        ],
+        [
+            "proof (state)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "fix i",
+            4,
+            "NA"
+        ],
+        [
+            "proof (state)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"",
+            4,
+            "NA"
+        ],
+        [
+            "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "using assms g_def  P_def coeff_simp monom_sub",
+            5,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\np \\<in> carrier P\nq \\<in> carrier P\ndeg R p \\<le> n\ng = (\\<lambda>i. monom P (p i) i)\nP \\<equiv> UP R\n?f \\<in> carrier P \\<Longrightarrow> coeff (UP R) ?f = ?f\n\\<lbrakk>?a \\<in> carrier R; ?g \\<in> carrier P\\<rbrakk> \\<Longrightarrow> Cring_Poly.compose R (monom P ?a ?n) ?g = ?a \\<odot>\\<^bsub>P\\<^esub> ?g [^]\\<^bsub>P\\<^esub> ?n\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "by (simp add: cfs_closed)",
+            5,
+            "NA"
+        ],
+        [
+            "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "qed",
+            4,
+            "NA"
+        ],
+        [
+            "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"",
+            2,
+            "NA"
+        ],
+        [
+            "proof (prove)\ngoal (1 subgoal):\n 1. \\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P",
+            "using g_def assms",
+            3,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\ng = (\\<lambda>i. monom P (p i) i)\np \\<in> carrier P\nq \\<in> carrier P\ndeg R p \\<le> n\n\ngoal (1 subgoal):\n 1. \\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P",
+            "by (simp add: cfs_closed)",
+            3,
+            "NA"
+        ],
+        [
+            "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"",
+            2,
+            "NA"
+        ],
+        [
+            "proof (prove)\ngoal (1 subgoal):\n 1. (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "using assms up_repr_le[of p n] coeff_simp[of p]",
+            3,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\np \\<in> carrier P\nq \\<in> carrier P\ndeg R p \\<le> n\n\\<lbrakk>deg R p \\<le> n; p \\<in> carrier P\\<rbrakk> \\<Longrightarrow> (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (coeff P p i) i) = p\np \\<in> carrier P \\<Longrightarrow> coeff (UP R) p = p\n\ngoal (1 subgoal):\n 1. (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "unfolding P_def",
+            3,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\np \\<in> carrier (UP R)\nq \\<in> carrier (UP R)\ndeg R p \\<le> n\n\\<lbrakk>deg R p \\<le> n; p \\<in> carrier (UP R)\\<rbrakk> \\<Longrightarrow> (\\<Oplus>\\<^bsub>UP R\\<^esub>i\\<in>{..n}. monom (UP R) (coeff (UP R) p i) i) = p\np \\<in> carrier (UP R) \\<Longrightarrow> coeff (UP R) p = p\n\ngoal (1 subgoal):\n 1. (\\<Oplus>\\<^bsub>UP R\\<^esub>i\\<in>{..n}. monom (UP R) (p i) i) = p",
+            "by auto",
+            3,
+            "NA"
+        ],
+        [
+            "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "then",
+            2,
+            "NA"
+        ],
+        [
+            "proof (chain)\npicking this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"",
+            2,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "using g_def",
+            3,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "by auto",
+            3,
+            "NA"
+        ],
+        [
+            "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "then",
+            2,
+            "NA"
+        ],
+        [
+            "proof (chain)\npicking this:\np = finsum P g {..n}",
+            "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"",
+            2,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "using 0 1 poly_comp_finsum[of n g q p]",
+            3,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\np = finsum P g {..n}\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\\<lbrakk>\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P; q \\<in> carrier P; p = finsum P g {..n}\\<rbrakk> \\<Longrightarrow> Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "using assms(2)",
+            3,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\np = finsum P g {..n}\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\\<lbrakk>\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P; q \\<in> carrier P; p = finsum P g {..n}\\<rbrakk> \\<Longrightarrow> Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\nq \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "by blast",
+            3,
+            "NA"
+        ],
+        [
+            "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "then",
+            2,
+            "NA"
+        ],
+        [
+            "proof (chain)\npicking this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "show ?thesis",
+            2,
+            "NA"
+        ],
+        [
+            "proof (prove)\nusing this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "by(simp add: 0)",
+            3,
+            "NA"
+        ],
+        [
+            "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)\n\ngoal:\nNo subgoals!",
+            "qed",
+            2,
+            "NA"
+        ]
+    ],
+    "multilevel_proof": {
+        "proof-_1": {
+            "tactic": "proof-",
+            "tactic_mark": "proof-_1",
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (state)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0"
+            ]
+        },
+        "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2": {
+            "tactic": "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry",
+            "tactic_mark": "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+            "state_before": "proof (state)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (state)\nthis:\ng = (λi. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1"
+            ]
+        },
+        "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4": {
+            "tactic": "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry",
+            "tactic_mark": "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+            "state_before": "proof (state)\nthis:\ng = (λi. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 ⊙⇘P⇙ q [^]⇘P⇙ ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2"
+            ]
+        },
+        "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11": {
+            "tactic": "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry",
+            "tactic_mark": "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 ⊙⇘P⇙ q [^]⇘P⇙ ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (state)\nthis:\n?i1 ≤ n ⟹ g ?i1 ∈ carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4"
+            ]
+        },
+        "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14": {
+            "tactic": "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry",
+            "tactic_mark": "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+            "state_before": "proof (state)\nthis:\n?i1 ≤ n ⟹ g ?i1 ∈ carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (state)\nthis:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11"
+            ]
+        },
+        "then_18": {
+            "tactic": "then",
+            "tactic_mark": "then_18",
+            "state_before": "proof (state)\nthis:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (chain)\npicking this:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14"
+            ]
+        },
+        "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19": {
+            "tactic": "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry",
+            "tactic_mark": "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+            "state_before": "proof (chain)\npicking this:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p",
+            "state_after": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18"
+            ]
+        },
+        "then_22": {
+            "tactic": "then",
+            "tactic_mark": "then_22",
+            "state_before": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (chain)\npicking this:\np = finsum P g {..n}",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19"
+            ]
+        },
+        "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23": {
+            "tactic": "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry",
+            "tactic_mark": "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+            "state_before": "proof (chain)\npicking this:\np = finsum P g {..n}",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22"
+            ]
+        },
+        "then_27": {
+            "tactic": "then",
+            "tactic_mark": "then_27",
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (chain)\npicking this:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23"
+            ]
+        },
+        "show ?thesis sorry_28": {
+            "tactic": "show ?thesis sorry",
+            "tactic_mark": "show ?thesis sorry_28",
+            "state_before": "proof (chain)\npicking this:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)\n\ngoal:\nNo subgoals!",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27"
+            ]
+        },
+        "qed_30": {
+            "tactic": "qed",
+            "tactic_mark": "qed_30",
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)\n\ngoal:\nNo subgoals!",
+            "state_after": "",
+            "proof_level": 0,
+            "reward": 1,
+            "done": true,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27",
+                "show ?thesis sorry_28"
+            ]
+        },
+        "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2": {
+            "tactic": "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"",
+            "tactic_mark": "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+            "state_before": "proof (state)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (prove)\ngoal (1 subgoal):\n 1. (⋀g. g = (λi. monom P (p i) i) ⟹ thesis) ⟹ thesis",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1"
+            ]
+        },
+        "by blast_3": {
+            "tactic": "by blast",
+            "tactic_mark": "by blast_3",
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. (⋀g. g = (λi. monom P (p i) i) ⟹ thesis) ⟹ thesis",
+            "state_after": "proof (state)\nthis:\ng = (λi. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2"
+            ]
+        },
+        "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4": {
+            "tactic": "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"",
+            "tactic_mark": "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+            "state_before": "proof (state)\nthis:\ng = (λi. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (prove)\ngoal (1 subgoal):\n 1. ⋀i. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3"
+            ]
+        },
+        "proof-_5": {
+            "tactic": "proof-",
+            "tactic_mark": "proof-_5",
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. ⋀i. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "state_after": "proof (state)\ngoal (1 subgoal):\n 1. ⋀i. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4"
+            ]
+        },
+        "fix i_6": {
+            "tactic": "fix i",
+            "tactic_mark": "fix i_6",
+            "state_before": "proof (state)\ngoal (1 subgoal):\n 1. ⋀i. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "state_after": "proof (state)\ngoal (1 subgoal):\n 1. ⋀i. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5"
+            ]
+        },
+        "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7": {
+            "tactic": "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry",
+            "tactic_mark": "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+            "state_before": "proof (state)\ngoal (1 subgoal):\n 1. ⋀i. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i\n\ngoal:\nNo subgoals!",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6"
+            ]
+        },
+        "qed_10": {
+            "tactic": "qed",
+            "tactic_mark": "qed_10",
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i\n\ngoal:\nNo subgoals!",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 ⊙⇘P⇙ q [^]⇘P⇙ ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7"
+            ]
+        },
+        "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11": {
+            "tactic": "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"",
+            "tactic_mark": "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 ⊙⇘P⇙ q [^]⇘P⇙ ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (prove)\ngoal (1 subgoal):\n 1. ⋀i. i ≤ n ⟹ g i ∈ carrier P",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10"
+            ]
+        },
+        "using g_def assms_12": {
+            "tactic": "using g_def assms",
+            "tactic_mark": "using g_def assms_12",
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. ⋀i. i ≤ n ⟹ g i ∈ carrier P",
+            "state_after": "proof (prove)\nusing this:\ng = (λi. monom P (p i) i)\np ∈ carrier P\nq ∈ carrier P\ndeg R p ≤ n\n\ngoal (1 subgoal):\n 1. ⋀i. i ≤ n ⟹ g i ∈ carrier P",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11"
+            ]
+        },
+        "by (simp add: cfs_closed)_13": {
+            "tactic": "by (simp add: cfs_closed)",
+            "tactic_mark": "by (simp add: cfs_closed)_13",
+            "state_before": "proof (prove)\nusing this:\ng = (λi. monom P (p i) i)\np ∈ carrier P\nq ∈ carrier P\ndeg R p ≤ n\n\ngoal (1 subgoal):\n 1. ⋀i. i ≤ n ⟹ g i ∈ carrier P",
+            "state_after": "proof (state)\nthis:\n?i1 ≤ n ⟹ g ?i1 ∈ carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12"
+            ]
+        },
+        "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14": {
+            "tactic": "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"",
+            "tactic_mark": "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+            "state_before": "proof (state)\nthis:\n?i1 ≤ n ⟹ g ?i1 ∈ carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (prove)\ngoal (1 subgoal):\n 1. (⨁⇘P⇙i∈{..n}. monom P (p i) i) = p",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13"
+            ]
+        },
+        "using assms up_repr_le[of p n] coeff_simp[of p]_15": {
+            "tactic": "using assms up_repr_le[of p n] coeff_simp[of p]",
+            "tactic_mark": "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. (⨁⇘P⇙i∈{..n}. monom P (p i) i) = p",
+            "state_after": "proof (prove)\nusing this:\np ∈ carrier P\nq ∈ carrier P\ndeg R p ≤ n\n\\<lbrakk>deg R p ≤ n; p ∈ carrier P\\<rbrakk> ⟹ (⨁⇘P⇙i∈{..n}. monom P (coeff P p i) i) = p\np ∈ carrier P ⟹ coeff (UP R) p = p\n\ngoal (1 subgoal):\n 1. (⨁⇘P⇙i∈{..n}. monom P (p i) i) = p",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14"
+            ]
+        },
+        "unfolding P_def_16": {
+            "tactic": "unfolding P_def",
+            "tactic_mark": "unfolding P_def_16",
+            "state_before": "proof (prove)\nusing this:\np ∈ carrier P\nq ∈ carrier P\ndeg R p ≤ n\n\\<lbrakk>deg R p ≤ n; p ∈ carrier P\\<rbrakk> ⟹ (⨁⇘P⇙i∈{..n}. monom P (coeff P p i) i) = p\np ∈ carrier P ⟹ coeff (UP R) p = p\n\ngoal (1 subgoal):\n 1. (⨁⇘P⇙i∈{..n}. monom P (p i) i) = p",
+            "state_after": "proof (prove)\nusing this:\np ∈ carrier (UP R)\nq ∈ carrier (UP R)\ndeg R p ≤ n\n\\<lbrakk>deg R p ≤ n; p ∈ carrier (UP R)\\<rbrakk> ⟹ (⨁⇘UP R⇙i∈{..n}. monom (UP R) (coeff (UP R) p i) i) = p\np ∈ carrier (UP R) ⟹ coeff (UP R) p = p\n\ngoal (1 subgoal):\n 1. (⨁⇘UP R⇙i∈{..n}. monom (UP R) (p i) i) = p",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15"
+            ]
+        },
+        "by auto_17": {
+            "tactic": "by auto",
+            "tactic_mark": "by auto_17",
+            "state_before": "proof (prove)\nusing this:\np ∈ carrier (UP R)\nq ∈ carrier (UP R)\ndeg R p ≤ n\n\\<lbrakk>deg R p ≤ n; p ∈ carrier (UP R)\\<rbrakk> ⟹ (⨁⇘UP R⇙i∈{..n}. monom (UP R) (coeff (UP R) p i) i) = p\np ∈ carrier (UP R) ⟹ coeff (UP R) p = p\n\ngoal (1 subgoal):\n 1. (⨁⇘UP R⇙i∈{..n}. monom (UP R) (p i) i) = p",
+            "state_after": "proof (state)\nthis:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16"
+            ]
+        },
+        "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19": {
+            "tactic": "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"",
+            "tactic_mark": "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+            "state_before": "proof (chain)\npicking this:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p",
+            "state_after": "proof (prove)\nusing this:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18"
+            ]
+        },
+        "using g_def_20": {
+            "tactic": "using g_def",
+            "tactic_mark": "using g_def_20",
+            "state_before": "proof (prove)\nusing this:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "state_after": "proof (prove)\nusing this:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p\ng = (λi. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19"
+            ]
+        },
+        "by auto_21": {
+            "tactic": "by auto",
+            "tactic_mark": "by auto_21",
+            "state_before": "proof (prove)\nusing this:\n(⨁⇘P⇙i∈{..n}. monom P (p i) i) = p\ng = (λi. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "state_after": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+                "using g_def_20"
+            ]
+        },
+        "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23": {
+            "tactic": "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"",
+            "tactic_mark": "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23",
+            "state_before": "proof (chain)\npicking this:\np = finsum P g {..n}",
+            "state_after": "proof (prove)\nusing this:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+                "using g_def_20",
+                "by auto_21",
+                "then_22"
+            ]
+        },
+        "using 0 1 poly_comp_finsum[of n g q p]_24": {
+            "tactic": "using 0 1 poly_comp_finsum[of n g q p]",
+            "tactic_mark": "using 0 1 poly_comp_finsum[of n g q p]_24",
+            "state_before": "proof (prove)\nusing this:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (prove)\nusing this:\np = finsum P g {..n}\nCring_Poly.compose R (g ?i1) q = p ?i1 ⊙⇘P⇙ q [^]⇘P⇙ ?i1\n?i1 ≤ n ⟹ g ?i1 ∈ carrier P\n\\<lbrakk>⋀i. i ≤ n ⟹ g i ∈ carrier P; q ∈ carrier P; p = finsum P g {..n}\\<rbrakk> ⟹ Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+                "using g_def_20",
+                "by auto_21",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23"
+            ]
+        },
+        "using assms(2)_25": {
+            "tactic": "using assms(2)",
+            "tactic_mark": "using assms(2)_25",
+            "state_before": "proof (prove)\nusing this:\np = finsum P g {..n}\nCring_Poly.compose R (g ?i1) q = p ?i1 ⊙⇘P⇙ q [^]⇘P⇙ ?i1\n?i1 ≤ n ⟹ g ?i1 ∈ carrier P\n\\<lbrakk>⋀i. i ≤ n ⟹ g i ∈ carrier P; q ∈ carrier P; p = finsum P g {..n}\\<rbrakk> ⟹ Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (prove)\nusing this:\np = finsum P g {..n}\nCring_Poly.compose R (g ?i1) q = p ?i1 ⊙⇘P⇙ q [^]⇘P⇙ ?i1\n?i1 ≤ n ⟹ g ?i1 ∈ carrier P\n\\<lbrakk>⋀i. i ≤ n ⟹ g i ∈ carrier P; q ∈ carrier P; p = finsum P g {..n}\\<rbrakk> ⟹ Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\nq ∈ carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+                "using g_def_20",
+                "by auto_21",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23",
+                "using 0 1 poly_comp_finsum[of n g q p]_24"
+            ]
+        },
+        "by blast_26": {
+            "tactic": "by blast",
+            "tactic_mark": "by blast_26",
+            "state_before": "proof (prove)\nusing this:\np = finsum P g {..n}\nCring_Poly.compose R (g ?i1) q = p ?i1 ⊙⇘P⇙ q [^]⇘P⇙ ?i1\n?i1 ≤ n ⟹ g ?i1 ∈ carrier P\n\\<lbrakk>⋀i. i ≤ n ⟹ g i ∈ carrier P; q ∈ carrier P; p = finsum P g {..n}\\<rbrakk> ⟹ Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\nq ∈ carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+                "using g_def_20",
+                "by auto_21",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23",
+                "using 0 1 poly_comp_finsum[of n g q p]_24",
+                "using assms(2)_25"
+            ]
+        },
+        "show ?thesis_28": {
+            "tactic": "show ?thesis",
+            "tactic_mark": "show ?thesis_28",
+            "state_before": "proof (chain)\npicking this:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (prove)\nusing this:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "proof_level": 3,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+                "using g_def_20",
+                "by auto_21",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23",
+                "using 0 1 poly_comp_finsum[of n g q p]_24",
+                "using assms(2)_25",
+                "by blast_26",
+                "then_27"
+            ]
+        },
+        "by(simp add: 0)_29": {
+            "tactic": "by(simp add: 0)",
+            "tactic_mark": "by(simp add: 0)_29",
+            "state_before": "proof (prove)\nusing this:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (⨁⇘P⇙i∈{..n}. p i ⊙⇘P⇙ q [^]⇘P⇙ i)\n\ngoal:\nNo subgoals!",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+                "using g_def_20",
+                "by auto_21",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23",
+                "using 0 1 poly_comp_finsum[of n g q p]_24",
+                "using assms(2)_25",
+                "by blast_26",
+                "then_27",
+                "show ?thesis_28"
+            ]
+        },
+        "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7": {
+            "tactic": "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"",
+            "tactic_mark": "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7",
+            "state_before": "proof (state)\ngoal (1 subgoal):\n 1. ⋀i. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "state_after": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "proof_level": 5,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6"
+            ]
+        },
+        "using assms g_def  P_def coeff_simp monom_sub_8": {
+            "tactic": "using assms g_def  P_def coeff_simp monom_sub",
+            "tactic_mark": "using assms g_def  P_def coeff_simp monom_sub_8",
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "state_after": "proof (prove)\nusing this:\np ∈ carrier P\nq ∈ carrier P\ndeg R p ≤ n\ng = (λi. monom P (p i) i)\nP \\<equiv> UP R\n?f ∈ carrier P ⟹ coeff (UP R) ?f = ?f\n\\<lbrakk>?a ∈ carrier R; ?g ∈ carrier P\\<rbrakk> ⟹ Cring_Poly.compose R (monom P ?a ?n) ?g = ?a ⊙⇘P⇙ ?g [^]⇘P⇙ ?n\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "proof_level": 5,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7"
+            ]
+        },
+        "by (simp add: cfs_closed)_9": {
+            "tactic": "by (simp add: cfs_closed)",
+            "tactic_mark": "by (simp add: cfs_closed)_9",
+            "state_before": "proof (prove)\nusing this:\np ∈ carrier P\nq ∈ carrier P\ndeg R p ≤ n\ng = (λi. monom P (p i) i)\nP \\<equiv> UP R\n?f ∈ carrier P ⟹ coeff (UP R) ?f = ?f\n\\<lbrakk>?a ∈ carrier R; ?g ∈ carrier P\\<rbrakk> ⟹ Cring_Poly.compose R (monom P ?a ?n) ?g = ?a ⊙⇘P⇙ ?g [^]⇘P⇙ ?n\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i ⊙⇘P⇙ q [^]⇘P⇙ i\n\ngoal:\nNo subgoals!",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+                "by blast_3",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7",
+                "using assms g_def  P_def coeff_simp monom_sub_8"
+            ]
+        }
+    },
+    "level_marker_proof": {
+        "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23": [
+            "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23",
+            "using 0 1 poly_comp_finsum[of n g q p]_24",
+            "using assms(2)_25",
+            "by blast_26"
+        ],
+        "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11": [
+            "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+            "using g_def assms_12",
+            "by (simp add: cfs_closed)_13"
+        ],
+        "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2": [
+            "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2",
+            "by blast_3"
+        ],
+        "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19": [
+            "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+            "using g_def_20",
+            "by auto_21"
+        ],
+        "show ?thesis_28": [
+            "show ?thesis_28",
+            "by(simp add: 0)_29"
+        ],
+        "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14": [
+            "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+            "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+            "unfolding P_def_16",
+            "by auto_17"
+        ],
+        "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7": [
+            "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7",
+            "using assms g_def  P_def coeff_simp monom_sub_8",
+            "by (simp add: cfs_closed)_9"
+        ],
+        "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4": [
+            "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+            "proof-_5",
+            "fix i_6",
+            "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+            "qed_10"
+        ],
+        "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0": [
+            "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+            "proof-_1",
+            "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+            "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+            "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+            "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+            "then_18",
+            "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+            "then_22",
+            "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+            "then_27",
+            "show ?thesis sorry_28",
+            "qed_30"
+        ]
+    },
+    "multilevel_proof_w3s3": {
+        "proof-_1": {
+            "tactic": "proof-\nobtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry\nhave 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry",
+            "tactic_mark": [
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0"
+            ]
+        },
+        "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11": {
+            "tactic": "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry\nhave  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry\nthen",
+            "tactic_mark": [
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18"
+            ],
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (chain)\npicking this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4"
+            ]
+        },
+        "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19": {
+            "tactic": "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry\nthen\nhave \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry",
+            "tactic_mark": [
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23"
+            ],
+            "state_before": "proof (chain)\npicking this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18"
+            ]
+        },
+        "then_27": {
+            "tactic": "then\nshow ?thesis sorry\nqed",
+            "tactic_mark": [
+                "then_27",
+                "show ?thesis sorry_28",
+                "qed_30"
+            ],
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "",
+            "proof_level": 0,
+            "reward": 1,
+            "done": true,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23"
+            ]
+        },
+        "by(simp add: 0)_29": {
+            "tactic": "by(simp add: 0)",
+            "tactic_mark": [
+                "by(simp add: 0)_29"
+            ],
+            "state_before": "proof (prove)\nusing this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)\n\ngoal:\nNo subgoals!",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27",
+                "show ?thesis_28"
+            ]
+        },
+        "using 0 1 poly_comp_finsum[of n g q p]_24": {
+            "tactic": "using 0 1 poly_comp_finsum[of n g q p]\nusing assms(2)\nby blast",
+            "tactic_mark": [
+                "using 0 1 poly_comp_finsum[of n g q p]_24",
+                "using assms(2)_25",
+                "by blast_26"
+            ],
+            "state_before": "proof (prove)\nusing this:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23"
+            ]
+        },
+        "using g_def_20": {
+            "tactic": "using g_def\nby auto",
+            "tactic_mark": [
+                "using g_def_20",
+                "by auto_21"
+            ],
+            "state_before": "proof (prove)\nusing this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "state_after": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19"
+            ]
+        },
+        "using assms up_repr_le[of p n] coeff_simp[of p]_15": {
+            "tactic": "using assms up_repr_le[of p n] coeff_simp[of p]\nunfolding P_def\nby auto",
+            "tactic_mark": [
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "state_after": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14"
+            ]
+        },
+        "using g_def assms_12": {
+            "tactic": "using g_def assms\nby (simp add: cfs_closed)",
+            "tactic_mark": [
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. \\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P",
+            "state_after": "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11"
+            ]
+        },
+        "proof-_5": {
+            "tactic": "proof-\nfix i\nshow \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry",
+            "tactic_mark": [
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4"
+            ]
+        },
+        "qed_10": {
+            "tactic": "qed",
+            "tactic_mark": [
+                "qed_10"
+            ],
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7"
+            ]
+        },
+        "using assms g_def  P_def coeff_simp monom_sub_8": {
+            "tactic": "using assms g_def  P_def coeff_simp monom_sub\nby (simp add: cfs_closed)",
+            "tactic_mark": [
+                "using assms g_def  P_def coeff_simp monom_sub_8",
+                "by (simp add: cfs_closed)_9"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7"
+            ]
+        },
+        "by blast_3": {
+            "tactic": "by blast",
+            "tactic_mark": [
+                "by blast_3"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. (\\<And>g. g = (\\<lambda>i. monom P (p i) i) \\<Longrightarrow> thesis) \\<Longrightarrow> thesis",
+            "state_after": "proof (state)\nthis:\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2"
+            ]
+        }
+    },
+    "multilevel_proof_w5s5": {
+        "proof-_1": {
+            "tactic": "proof-\nobtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry\nhave 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry\nhave 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry\nhave  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry",
+            "tactic_mark": [
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0"
+            ]
+        },
+        "then_18": {
+            "tactic": "then\nhave  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry\nthen\nhave \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry\nthen",
+            "tactic_mark": [
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27"
+            ],
+            "state_before": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (chain)\npicking this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14"
+            ]
+        },
+        "show ?thesis sorry_28": {
+            "tactic": "show ?thesis sorry\nqed",
+            "tactic_mark": [
+                "show ?thesis sorry_28",
+                "qed_30"
+            ],
+            "state_before": "proof (chain)\npicking this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "",
+            "proof_level": 0,
+            "reward": 1,
+            "done": true,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27"
+            ]
+        },
+        "by(simp add: 0)_29": {
+            "tactic": "by(simp add: 0)",
+            "tactic_mark": [
+                "by(simp add: 0)_29"
+            ],
+            "state_before": "proof (prove)\nusing this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)\n\ngoal:\nNo subgoals!",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27",
+                "show ?thesis_28"
+            ]
+        },
+        "using 0 1 poly_comp_finsum[of n g q p]_24": {
+            "tactic": "using 0 1 poly_comp_finsum[of n g q p]\nusing assms(2)\nby blast",
+            "tactic_mark": [
+                "using 0 1 poly_comp_finsum[of n g q p]_24",
+                "using assms(2)_25",
+                "by blast_26"
+            ],
+            "state_before": "proof (prove)\nusing this:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23"
+            ]
+        },
+        "using g_def_20": {
+            "tactic": "using g_def\nby auto",
+            "tactic_mark": [
+                "using g_def_20",
+                "by auto_21"
+            ],
+            "state_before": "proof (prove)\nusing this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "state_after": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19"
+            ]
+        },
+        "using assms up_repr_le[of p n] coeff_simp[of p]_15": {
+            "tactic": "using assms up_repr_le[of p n] coeff_simp[of p]\nunfolding P_def\nby auto",
+            "tactic_mark": [
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "state_after": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14"
+            ]
+        },
+        "using g_def assms_12": {
+            "tactic": "using g_def assms\nby (simp add: cfs_closed)",
+            "tactic_mark": [
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. \\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P",
+            "state_after": "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11"
+            ]
+        },
+        "proof-_5": {
+            "tactic": "proof-\nfix i\nshow \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry\nqed",
+            "tactic_mark": [
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4"
+            ]
+        },
+        "using assms g_def  P_def coeff_simp monom_sub_8": {
+            "tactic": "using assms g_def  P_def coeff_simp monom_sub\nby (simp add: cfs_closed)",
+            "tactic_mark": [
+                "using assms g_def  P_def coeff_simp monom_sub_8",
+                "by (simp add: cfs_closed)_9"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7"
+            ]
+        },
+        "by blast_3": {
+            "tactic": "by blast",
+            "tactic_mark": [
+                "by blast_3"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. (\\<And>g. g = (\\<lambda>i. monom P (p i) i) \\<Longrightarrow> thesis) \\<Longrightarrow> thesis",
+            "state_after": "proof (state)\nthis:\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2"
+            ]
+        }
+    },
+    "multilevel_proof_w3s1": {
+        "proof-_1": {
+            "tactic": "proof-\nobtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry\nhave 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry",
+            "tactic_mark": [
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0"
+            ]
+        },
+        "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2": {
+            "tactic": "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry\nhave 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry\nhave 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry",
+            "tactic_mark": [
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11"
+            ],
+            "state_before": "proof (state)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1"
+            ]
+        },
+        "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4": {
+            "tactic": "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry\nhave 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry\nhave  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry",
+            "tactic_mark": [
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14"
+            ],
+            "state_before": "proof (state)\nthis:\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2"
+            ]
+        },
+        "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11": {
+            "tactic": "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry\nhave  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry\nthen",
+            "tactic_mark": [
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18"
+            ],
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (chain)\npicking this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4"
+            ]
+        },
+        "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14": {
+            "tactic": "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry\nthen\nhave  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry",
+            "tactic_mark": [
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19"
+            ],
+            "state_before": "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11"
+            ]
+        },
+        "then_18": {
+            "tactic": "then\nhave  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry\nthen",
+            "tactic_mark": [
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22"
+            ],
+            "state_before": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (chain)\npicking this:\np = finsum P g {..n}",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14"
+            ]
+        },
+        "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19": {
+            "tactic": "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry\nthen\nhave \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry",
+            "tactic_mark": [
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23"
+            ],
+            "state_before": "proof (chain)\npicking this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18"
+            ]
+        },
+        "then_22": {
+            "tactic": "then\nhave \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry\nthen",
+            "tactic_mark": [
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27"
+            ],
+            "state_before": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (chain)\npicking this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19"
+            ]
+        },
+        "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23": {
+            "tactic": "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry\nthen\nshow ?thesis sorry",
+            "tactic_mark": [
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27",
+                "show ?thesis sorry_28"
+            ],
+            "state_before": "proof (chain)\npicking this:\np = finsum P g {..n}",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)\n\ngoal:\nNo subgoals!",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22"
+            ]
+        },
+        "then_27": {
+            "tactic": "then\nshow ?thesis sorry\nqed",
+            "tactic_mark": [
+                "then_27",
+                "show ?thesis sorry_28",
+                "qed_30"
+            ],
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "",
+            "proof_level": 0,
+            "reward": 1,
+            "done": true,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23"
+            ]
+        },
+        "show ?thesis sorry_28": {
+            "tactic": "show ?thesis sorry\nqed",
+            "tactic_mark": [
+                "show ?thesis sorry_28",
+                "qed_30"
+            ],
+            "state_before": "proof (chain)\npicking this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "",
+            "proof_level": 0,
+            "reward": 1,
+            "done": true,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27"
+            ]
+        },
+        "qed_30": {
+            "tactic": "qed",
+            "tactic_mark": [
+                "qed_30"
+            ],
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)\n\ngoal:\nNo subgoals!",
+            "state_after": "",
+            "proof_level": 0,
+            "reward": 1,
+            "done": true,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27",
+                "show ?thesis sorry_28"
+            ]
+        },
+        "by(simp add: 0)_29": {
+            "tactic": "by(simp add: 0)",
+            "tactic_mark": [
+                "by(simp add: 0)_29"
+            ],
+            "state_before": "proof (prove)\nusing this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)\n\ngoal:\nNo subgoals!",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry_23",
+                "then_27",
+                "show ?thesis_28"
+            ]
+        },
+        "using 0 1 poly_comp_finsum[of n g q p]_24": {
+            "tactic": "using 0 1 poly_comp_finsum[of n g q p]\nusing assms(2)\nby blast",
+            "tactic_mark": [
+                "using 0 1 poly_comp_finsum[of n g q p]_24",
+                "using assms(2)_25",
+                "by blast_26"
+            ],
+            "state_before": "proof (prove)\nusing this:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23"
+            ]
+        },
+        "using assms(2)_25": {
+            "tactic": "using assms(2)\nby blast",
+            "tactic_mark": [
+                "using assms(2)_25",
+                "by blast_26"
+            ],
+            "state_before": "proof (prove)\nusing this:\np = finsum P g {..n}\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\\<lbrakk>\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P; q \\<in> carrier P; p = finsum P g {..n}\\<rbrakk> \\<Longrightarrow> Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23",
+                "using 0 1 poly_comp_finsum[of n g q p]_24"
+            ]
+        },
+        "by blast_26": {
+            "tactic": "by blast",
+            "tactic_mark": [
+                "by blast_26"
+            ],
+            "state_before": "proof (prove)\nusing this:\np = finsum P g {..n}\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\\<lbrakk>\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P; q \\<in> carrier P; p = finsum P g {..n}\\<rbrakk> \\<Longrightarrow> Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\nq \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry_19",
+                "then_22",
+                "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"_23",
+                "using 0 1 poly_comp_finsum[of n g q p]_24",
+                "using assms(2)_25"
+            ]
+        },
+        "using g_def_20": {
+            "tactic": "using g_def\nby auto",
+            "tactic_mark": [
+                "using g_def_20",
+                "by auto_21"
+            ],
+            "state_before": "proof (prove)\nusing this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "state_after": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19"
+            ]
+        },
+        "by auto_21": {
+            "tactic": "by auto",
+            "tactic_mark": [
+                "by auto_21"
+            ],
+            "state_before": "proof (prove)\nusing this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. p = finsum P g {..n}",
+            "state_after": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry_14",
+                "then_18",
+                "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"_19",
+                "using g_def_20"
+            ]
+        },
+        "using assms up_repr_le[of p n] coeff_simp[of p]_15": {
+            "tactic": "using assms up_repr_le[of p n] coeff_simp[of p]\nunfolding P_def\nby auto",
+            "tactic_mark": [
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16",
+                "by auto_17"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "state_after": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14"
+            ]
+        },
+        "unfolding P_def_16": {
+            "tactic": "unfolding P_def\nby auto",
+            "tactic_mark": [
+                "unfolding P_def_16",
+                "by auto_17"
+            ],
+            "state_before": "proof (prove)\nusing this:\np \\<in> carrier P\nq \\<in> carrier P\ndeg R p \\<le> n\n\\<lbrakk>deg R p \\<le> n; p \\<in> carrier P\\<rbrakk> \\<Longrightarrow> (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (coeff P p i) i) = p\np \\<in> carrier P \\<Longrightarrow> coeff (UP R) p = p\n\ngoal (1 subgoal):\n 1. (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+            "state_after": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15"
+            ]
+        },
+        "by auto_17": {
+            "tactic": "by auto",
+            "tactic_mark": [
+                "by auto_17"
+            ],
+            "state_before": "proof (prove)\nusing this:\np \\<in> carrier (UP R)\nq \\<in> carrier (UP R)\ndeg R p \\<le> n\n\\<lbrakk>deg R p \\<le> n; p \\<in> carrier (UP R)\\<rbrakk> \\<Longrightarrow> (\\<Oplus>\\<^bsub>UP R\\<^esub>i\\<in>{..n}. monom (UP R) (coeff (UP R) p i) i) = p\np \\<in> carrier (UP R) \\<Longrightarrow> coeff (UP R) p = p\n\ngoal (1 subgoal):\n 1. (\\<Oplus>\\<^bsub>UP R\\<^esub>i\\<in>{..n}. monom (UP R) (p i) i) = p",
+            "state_after": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry_11",
+                "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"_14",
+                "using assms up_repr_le[of p n] coeff_simp[of p]_15",
+                "unfolding P_def_16"
+            ]
+        },
+        "using g_def assms_12": {
+            "tactic": "using g_def assms\nby (simp add: cfs_closed)",
+            "tactic_mark": [
+                "using g_def assms_12",
+                "by (simp add: cfs_closed)_13"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. \\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P",
+            "state_after": "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11"
+            ]
+        },
+        "by (simp add: cfs_closed)_13": {
+            "tactic": "by (simp add: cfs_closed)",
+            "tactic_mark": [
+                "by (simp add: cfs_closed)_13"
+            ],
+            "state_before": "proof (prove)\nusing this:\ng = (\\<lambda>i. monom P (p i) i)\np \\<in> carrier P\nq \\<in> carrier P\ndeg R p \\<le> n\n\ngoal (1 subgoal):\n 1. \\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P",
+            "state_after": "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry_4",
+                "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"_11",
+                "using g_def assms_12"
+            ]
+        },
+        "proof-_5": {
+            "tactic": "proof-\nfix i\nshow \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry",
+            "tactic_mark": [
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4"
+            ]
+        },
+        "fix i_6": {
+            "tactic": "fix i\nshow \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry\nqed",
+            "tactic_mark": [
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10"
+            ],
+            "state_before": "proof (state)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5"
+            ]
+        },
+        "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7": {
+            "tactic": "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry\nqed",
+            "tactic_mark": [
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7",
+                "qed_10"
+            ],
+            "state_before": "proof (state)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6"
+            ]
+        },
+        "qed_10": {
+            "tactic": "qed",
+            "tactic_mark": [
+                "qed_10"
+            ],
+            "state_before": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry_7"
+            ]
+        },
+        "using assms g_def  P_def coeff_simp monom_sub_8": {
+            "tactic": "using assms g_def  P_def coeff_simp monom_sub\nby (simp add: cfs_closed)",
+            "tactic_mark": [
+                "using assms g_def  P_def coeff_simp monom_sub_8",
+                "by (simp add: cfs_closed)_9"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7"
+            ]
+        },
+        "by (simp add: cfs_closed)_9": {
+            "tactic": "by (simp add: cfs_closed)",
+            "tactic_mark": [
+                "by (simp add: cfs_closed)_9"
+            ],
+            "state_before": "proof (prove)\nusing this:\np \\<in> carrier P\nq \\<in> carrier P\ndeg R p \\<le> n\ng = (\\<lambda>i. monom P (p i) i)\nP \\<equiv> UP R\n?f \\<in> carrier P \\<Longrightarrow> coeff (UP R) ?f = ?f\n\\<lbrakk>?a \\<in> carrier R; ?g \\<in> carrier P\\<rbrakk> \\<Longrightarrow> Cring_Poly.compose R (monom P ?a ?n) ?g = ?a \\<odot>\\<^bsub>P\\<^esub> ?g [^]\\<^bsub>P\\<^esub> ?n\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+            "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!",
+            "proof_level": 4,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry_2",
+                "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"_4",
+                "proof-_5",
+                "fix i_6",
+                "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"_7",
+                "using assms g_def  P_def coeff_simp monom_sub_8"
+            ]
+        },
+        "by blast_3": {
+            "tactic": "by blast",
+            "tactic_mark": [
+                "by blast_3"
+            ],
+            "state_before": "proof (prove)\ngoal (1 subgoal):\n 1. (\\<And>g. g = (\\<lambda>i. monom P (p i) i) \\<Longrightarrow> thesis) \\<Longrightarrow> thesis",
+            "state_after": "proof (state)\nthis:\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+            "proof_level": 2,
+            "reward": 0,
+            "done": false,
+            "history": [
+                "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"_0",
+                "proof-_1",
+                "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"_2"
+            ]
+        }
+    }
+}

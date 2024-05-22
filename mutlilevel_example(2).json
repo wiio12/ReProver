@@ -1,0 +1,89 @@
+[
+    "lemma(in UP_cring) poly_comp_expansion:\n  assumes \"p \\<in> carrier P\"\n  assumes \"q \\<in> carrier P\"\n  assumes \"degree p \\<le> n\"\n  shows \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i)\"",
+    "proof-",
+    {
+        "step": "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\" sorry",
+        "proof": [
+            "obtain g where g_def: \"g = (\\<lambda>i. monom P (p i) i)\"",
+            "by blast"
+        ],
+        "state_before": "proof (state)\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+        "state_after": "proof (state)\nthis:\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)"
+    },
+    {
+        "step": "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\" sorry",
+        "proof": [
+            "have 0: \"\\<And>i. (g i) of q = (p i) \\<odot>\\<^bsub>P\\<^esub> q[^]\\<^bsub>P\\<^esub>i\"",
+            "proof-",
+            "fix i",
+            {
+                "step": "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\" sorry",
+                "proof": [
+                    "show \"g i of q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\"",
+                    "using assms g_def  P_def coeff_simp monom_sub",
+                    "by (simp add: cfs_closed)"
+                ],
+                "state_before": "proof (state)\ngoal (1 subgoal):\n 1. \\<And>i. Cring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i",
+                "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g i) q = p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i\n\ngoal:\nNo subgoals!"
+            },
+            "qed"
+        ],
+        "state_before": "proof (state)\nthis:\ng = (\\<lambda>i. monom P (p i) i)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+        "state_after": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)"
+    },
+    {
+        "step": "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\" sorry",
+        "proof": [
+            "have 1: \"(\\<And>i. i \\<le> n \\<Longrightarrow> g i \\<in> carrier P)\"",
+            "using g_def assms",
+            "by (simp add: cfs_closed)"
+        ],
+        "state_before": "proof (state)\nthis:\nCring_Poly.compose R (g ?i1) q = p ?i1 \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> ?i1\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+        "state_after": "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)"
+    },
+    {
+        "step": "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\" sorry",
+        "proof": [
+            "have  \"(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\"",
+            "using assms up_repr_le[of p n] coeff_simp[of p]",
+            "unfolding P_def",
+            "by auto"
+        ],
+        "state_before": "proof (state)\nthis:\n?i1 \\<le> n \\<Longrightarrow> g ?i1 \\<in> carrier P\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)",
+        "state_after": "proof (state)\nthis:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)"
+    },
+    "then",
+    {
+        "step": "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\" sorry",
+        "proof": [
+            "have  \"p = (\\<Oplus>\\<^bsub>P\\<^esub> i \\<in> {..n}. g i)\"",
+            "using g_def",
+            "by auto"
+        ],
+        "state_before": "proof (chain)\npicking this:\n(\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. monom P (p i) i) = p",
+        "state_after": "proof (state)\nthis:\np = finsum P g {..n}\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)"
+    },
+    "then",
+    {
+        "step": "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\" sorry",
+        "proof": [
+            "have \"p of q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. g i of q)\"",
+            "using 0 1 poly_comp_finsum[of n g q p]",
+            "using assms(2)",
+            "by blast"
+        ],
+        "state_before": "proof (chain)\npicking this:\np = finsum P g {..n}",
+        "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)\n\ngoal (1 subgoal):\n 1. Cring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)"
+    },
+    "then",
+    {
+        "step": "show ?thesis sorry",
+        "proof": [
+            "show ?thesis",
+            "by(simp add: 0)"
+        ],
+        "state_before": "proof (chain)\npicking this:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. Cring_Poly.compose R (g i) q)",
+        "state_after": "proof (state)\nthis:\nCring_Poly.compose R p q = (\\<Oplus>\\<^bsub>P\\<^esub>i\\<in>{..n}. p i \\<odot>\\<^bsub>P\\<^esub> q [^]\\<^bsub>P\\<^esub> i)\n\ngoal:\nNo subgoals!"
+    },
+    "qed"
+]

@@ -15,6 +15,7 @@ from abc import ABC, abstractmethod
 from functools import total_ordering
 from dataclasses import dataclass, field
 from typing import Optional, List, Tuple, Iterable, Union
+from loguru import logger
 
 
 class Status(Enum):
@@ -23,6 +24,7 @@ class Status(Enum):
     PROVED = "Proved"  # This node (or search) has at least one known proof.
     FAILED = "Failed"  # This node (or search) has exhausted its options and cannot be proved within the current run.
     OPEN = "Open"  # This node (or search) has not been proven or given up on yet.
+    FAKE_PROVED = "FakeProved"
 
 class Node(ABC):
     @property
@@ -151,31 +153,47 @@ class InternalNode(Node):
         # if self._status not in [Status.OPEN, Status.HALF_PROVED]:
         #     return
         if self._status == Status.FAILED:
+            for edge in self.out_edges:
+                if edge.dst.status != Status.FAILED:
+                    assert isinstance(edge, SorryEdge)
+                    assert any([root.status == Status.FAILED for root in edge.sorry_roots])
             return
         
         # merge status in sorry edge
-        temp_dst_nodes = []
-        new_failed_nodes = []
+        # temp_dst_nodes = []
+        merged_status = []
         re_opened = False
-        for edge in self.out_edges:
+        for idx, edge in enumerate(self.out_edges):
             if isinstance(edge, SorryEdge):
                 # if sub-root is proved, it have no effect on the status of dst node
-                if edge.sorry_root.status == Status.PROVED:
-                    edge.dst.status = edge.dst.status
+                if all([root.status == Status.PROVED for root in edge.sorry_roots]):
+                    # edge.dst.status = edge.dst.status
+                    merged_status.append(edge.dst.status)
                 # if sub-root is failed, it fails the dst node. Only true when sub-root is not allow to revisit!
-                elif edge.sorry_root.status == Status.FAILED and edge.dst.status != Status.FAILED:
-                    edge.dst.status = Status.FAILED
-                    new_failed_nodes.append(edge.dst)
+                elif any([root.status == Status.FAILED for root in edge.sorry_roots]) and edge.dst.status != Status.FAILED:
+                    # new_failed_nodes_ori_status.append(edge.dst.status)
+                    # edge.dst.status = Status.FAILED
+                    # new_failed_nodes.append(edge.dst)
+                    merged_status.append(Status.FAILED)
                 # if sub-root is open or half-proved, it does not affect the status of dst node, but creates a special half-flag.
-                elif edge.sorry_root.status in [Status.OPEN, Status.HALF_PROVED]:
+                elif any([root.status in [Status.OPEN, Status.HALF_PROVED] for root in edge.sorry_roots]):
                     # for implementation convenience, we use half-proved to represent the sorry edge
                     if edge.dst.status == Status.PROVED:
-                        edge.dst.status = Status.HALF_PROVED
-                        temp_dst_nodes.append(edge.dst)
+                        # edge.dst.status = Status.HALF_PROVED
+                        # temp_dst_nodes.append(edge.dst)
+                        merged_status.append(Status.HALF_PROVED)
+                    else:
+                        merged_status.append(edge.dst.status)
+                else:
+                    merged_status.append(edge.dst.status)
+            else:
+                merged_status.append(edge.dst.status)
+        
+        assert len(merged_status) == len(self.out_edges)
 
         # If any child is half-proved (path to this node contains sorry edge), 
         # this node is half-proved, and so are parents recursively
-        if any(edge.dst.status == Status.HALF_PROVED for edge in self.out_edges):
+        if any(status == Status.HALF_PROVED for status in merged_status):
             self._status = Status.HALF_PROVED
         else:
             if self._status != Status.OPEN:
@@ -183,24 +201,25 @@ class InternalNode(Node):
                 re_opened = True
 
         # If any children are proved, and no, this node is proved. This may prove some parents too.
-        if any(edge.dst.status == Status.PROVED for edge in self.out_edges):
-            self._status = Status.PROVED          
+        if any(status == Status.PROVED for status in merged_status):
+            self._status = Status.PROVED
             
         # If all children failed, this node is failed. This may fail some parents too.
-        if all(edge.dst.status == Status.FAILED for edge in self.out_edges):
+        if all(status == Status.FAILED for status in merged_status):
             self._status = Status.FAILED
 
         # reset the temp dst nodes
-        for node in temp_dst_nodes:
-            node.status = Status.PROVED
+        # for node in temp_dst_nodes:
+        #     node.status = Status.PROVED
 
-        # boardcast the failure
-        for node in new_failed_nodes:
-            in_nodes_to_update = node.boardcast_failure()
-            print("in_nodes_to_update:", len(in_nodes_to_update))
-            for in_node in in_nodes_to_update*2:
-                # if in_node != self:
-                in_node._recompute_status()
+        # # restore the temp failure
+        # for idx, node in enumerate(new_failed_nodes):
+        #     node.status = new_failed_nodes_ori_status[idx]
+            # in_nodes_to_update = node.boardcast_failure()
+            # # print("in_nodes_to_update:", len(in_nodes_to_update))
+            # for in_node in in_nodes_to_update*2:
+            #     # if in_node != self:
+            #     in_node._recompute_status()
 
         # If this node was proved or failed, parents may need to recompute.
         # This is guaranteed to terminate because only open nodes can change, and
@@ -218,9 +237,12 @@ class InternalNode(Node):
                 in_nodes_to_updates.extend(in_nodes)
 
             # It seems like we have to update the parent as well. Chile: Proved -> Failure, Parent: Proved/HalfProved -> Open/Failure
-            if self.in_edges is not None:
-                for edge in self.in_edges:
-                    in_nodes_to_updates.append(edge.src)
+        if self.status == Status.FAILED and self.in_edges is not None:
+            for edge in self.in_edges:
+                in_nodes_to_updates.append(edge.src)
+
+        # TODO: How to deal with multiple sorry root? do we need to boardcast to other sorry node
+        # we might not update the other sorry node, other sorry node may also be use in other sorry edge that only them exist.
 
         return in_nodes_to_updates
 
@@ -250,12 +272,13 @@ class InternalNode(Node):
     def __lt__(self, other: "InternalNode") -> bool:
         return self.priority > other.priority
 
-    def extract_proof(self) -> Optional[List["Edge"]]:
+
+    def extract_proof(self):
         """
         Extract a proof of the current node as a sequence of edges.
         """
         if self.status != Status.PROVED:
-            return None
+            return None, False
         assert self.is_explored
 
         # proving_edge = min(
@@ -266,42 +289,33 @@ class InternalNode(Node):
             np.argmin([edge.distance_to_proof() for edge in self.out_edges])
         ]
 
-        sorry_proof = []
+        proof = []
+        sorry_flag = False
         if isinstance(proving_edge, SorryEdge):
-            sorry_proof = proving_edge.sorry_root.extract_proof()
+            sorry_flag = True
+            all_tac = proving_edge.tactic.split("sorry")
+            for idx, sorry_root in enumerate(proving_edge.sorry_roots):
+                root_proof, _ = sorry_root.extract_proof()
+                proof.append(all_tac[idx])
+                proof.extend(root_proof)
+            if len(all_tac[-1]) > 0:
+                proof.append(all_tac[-1])
+        else:
+            proof.append(proving_edge.tactic)
+        
 
         if proving_edge.dst.is_terminal:
             # Base case: this edge is all that's required to finish the proof
             assert isinstance(proving_edge.dst, ProofFinishedNode)
-            return [proving_edge] + sorry_proof
+            return proof, sorry_flag
         else:
             # Recursive case: prove the child, then add this edge
             assert isinstance(proving_edge.dst, InternalNode)
-            child_proof = proving_edge.dst.extract_proof()
+            child_proof, dst_sorry_flag = proving_edge.dst.extract_proof()
+            sorry_flag = dst_sorry_flag or sorry_flag
             assert child_proof
-            return [proving_edge] + sorry_proof + child_proof
-    
-    # def get_sorry_root(self):
-    #     """
-    #     Get the sub-root of the current node.
-    #     """
-    #     if len(self.in_edges) == 0:
-    #         return self
-        
-    #     if len(self.in_edges) == 1:
-    #         if isinstance(self.in_edges[0], SorryEdge) and self.in_edges[0].sorry_root == self:
+            return proof + child_proof, sorry_flag
 
-                
-        
-    #     if len(self.in_edges) > 1:
-    #         for edge in self.in_edges:
-    #             assert not isinstance(edge, SorryEdge), "sorry edge can't have duplicate"
-            
-        
-    #     for edge in self.in_edges:
-    #         if isinstance(edge, SorryEdge):
-    #             return edge.sorry_root
-        
 
     #########
     # Debug #
@@ -362,21 +376,39 @@ class Edge:
 @dataclass
 class SorryEdge(Edge):
 
-    sorry_tactic: str
-    sorry_root: InternalNode = field(repr=False)
+    sorry_tactics: List[str]
+    sorry_roots: List[InternalNode] = field(repr=False)
 
     def distance_to_proof(self) -> float:
-        return self.sorry_root.distance_to_proof + 1 + self.dst.distance_to_proof
+        return sum([sr.distance_to_proof for sr in self.sorry_roots])+ 1 + self.dst.distance_to_proof
 
 @dataclass
 class Trajectory:
     traj: List[Union[Node, Edge]]
+    marked_sorry_root : InternalNode = field(default=None, compare=False)
 
     def __repr__(self) -> str:
         traj = []
         for elem in self.traj:
-            if isinstance(elem, Edge):
+            if isinstance(elem, SorryEdge):
+                if self.marked_sorry_root in elem.sorry_roots:
+                    tactics = elem.tactic.split("sorry")
+                    all_tac = []
+                    for i in range(len(tactics)-1):
+                        all_tac.append(tactics[i])
+                        if elem.sorry_roots[i] == self.marked_sorry_root:
+                            all_tac.append("**sorry**")
+                        else:
+                            all_tac.append("sorry")
+                    all_tac.append(tactics[-1])
+                    tactics_with_marked_sorry = "".join(all_tac)
+                    traj.append(tactics_with_marked_sorry)
+                else:
+                    traj.append(elem.tactic)
+            elif isinstance(elem, Edge):
                 traj.append(elem.tactic)
+            else:
+                pass
         return f"Trajectory({str(traj)})"
 
     def __add__(self, o: "Trajectory"):
@@ -390,3 +422,24 @@ class Trajectory:
 
     def reverse(self):
         self.traj.reverse()
+
+def get_trajectory(begin_node, stop_node=None, status_requirements=None, recursive_level=0):
+        if recursive_level > 500:
+            logger.warning("The recursive loop is larger than 500")
+
+        if len(begin_node.in_edges) == 0 or begin_node == stop_node:
+            return [Trajectory([begin_node])]
+        
+        all_trajectories = []
+        for edge in begin_node.in_edges:
+            if status_requirements and edge.src.status not in status_requirements:
+                continue
+            trajs_to_node = get_trajectory(
+                edge.src, 
+                status_requirements=status_requirements, 
+                stop_node=stop_node, 
+                recursive_level=recursive_level+1
+            )
+            for traj in trajs_to_node:
+                all_trajectories.append(traj + Trajectory([edge, begin_node]))
+        return all_trajectories

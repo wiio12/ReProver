@@ -24,9 +24,8 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple
 from ray.util.actor_pool import ActorPool
 
-from common import zip_strict
 from prover.search_tree import *
-from generator.model import RetrievalAugmentedGenerator, FixedTacticGenerator, DecoderOnlyTacticGenerator
+from generator.model import FixedTacticGenerator, DecoderOnlyTacticGenerator
 
 
 @dataclass(frozen=True)

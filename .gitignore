@@ -8,6 +8,7 @@ temp/
 output*
 test_detailed_split.json
 val_detailed_split.json
+*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

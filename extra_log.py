@@ -1,19 +1,23 @@
 
 begin = False
 lines = []
-with open("multilevel-c1w1s1-miniF2F-test_2.log", "r") as f:
+gpu_line = None
+with open("test_mul_all.log", "r") as f:
     for line in f:
-        if "GpuProver pid=3042866" not in line:
+        if gpu_line and gpu_line not in line:
             continue
-        if "mathd_algebra_209" in line:
+        # else:
+        #     lines.append(line)
+        if "n_mult_closed" in line:
             begin = True
             lines.append(line)
+            # gpu_line = line[line.index("(GpuProver pid="): line.index(")")]
             continue
         if begin:
             lines.append(line)
         if "Proving Theorem" in line and begin:
             break
 
-with open("tmps2.log", "w") as f:
+with open("checkss/new_induction_12dvd4expnp1p20.log", "w") as f:
     for line in lines:
         f.write(line)

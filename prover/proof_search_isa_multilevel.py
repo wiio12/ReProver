@@ -26,10 +26,8 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple
 from ray.util.actor_pool import ActorPool
 
-from common import zip_strict
 from prover.search_tree_multilevel import *
-from generator.model import RetrievalAugmentedGenerator, FixedTacticGenerator, DecoderOnlyTacticGenerator, DummyTacticGenerator
-from itertools import chain
+from generator.model import DecoderOnlyTacticGenerator, DummyTacticGenerator
 
 
 @dataclass(frozen=True)
@@ -112,10 +110,14 @@ class BestFirstSearchProver:
                     )
                     self.nodes = {init_state: self.root}
                     self.priority_queue = [self.root]
+                    self.shared_node = 0
+                    self.incorrect_count = []
+                    self.incorrect_node_count = []
 
                     with torch.no_grad():
                         try:
                             with logger.contextualize(root_level=0):
+                                self.begin_time = time.monotonic()
                                 self._best_first_search(self.root, self.nodes, self.priority_queue, root_level=0)
                         except DojoCrashError:
                             logger.warning(f"Dojo crashed when proving {thm}")
@@ -128,11 +130,31 @@ class BestFirstSearchProver:
                         is_root=True,
                     )
                     self.nodes = {init_state: self.root}
+                
+                sorry_flag = False
+                if self.root.status == Status.PROVED:
+                    proof = self.extract_proof2(self.root)
+                else:
+                    proof = None
+                
+                if proof:
+                    flag = False
+                    if len(proof) > 390:
+                        a_proof, b_proof = proof[:50], proof[50:]
+                        random.shuffle(b_proof)
+                        proof = a_proof + b_proof
+                    for p in proof[:390]:
+                        if dojo.check_proof(p):
+                            proof = p
+                            flag = True
+                            break
+                    if not flag:
+                        self.root.status = Status.FAKE_PROVED
+                        proof = proof[0]
+                
+                if sorry_flag:
+                    proof.append("sorry!")
 
-            if self.root.status == Status.PROVED:
-                proof = [e.tactic for e in self.root.extract_proof()]
-            else:
-                proof = None
 
             result = SearchResult(
                 theorem=thm,
@@ -153,23 +175,38 @@ class BestFirstSearchProver:
 
     def _best_first_search(self, root, nodes, priority_queue, root_level) -> None:
         time_start = time.monotonic()
+        sub_search_time = 0
 
         while True:
             if len(priority_queue) == 0 or root_level > 10:
                 logger.info(f"Ran out of nodes to search or root level {root_level} too deep")
                 root.status = Status.FAILED
-                root.boardcast_failure()
+                in_nodes_to_update = root.boardcast_failure()
+                for in_node in in_nodes_to_update*2:
+                    in_node._recompute_status()
+                for edge in root.in_edges:
+                    edge.src._recompute_status()
+                break
+
+            if root_level > 0 and time.monotonic() - time_start - sub_search_time >= 120:
+                logger.info(f"Current level {root_level} is searching for too long: {time.monotonic() - time_start - sub_search_time}, subsearch_time: {sub_search_time}, returning back")
+                root.status = Status.FAILED
+                in_nodes_to_update = root.boardcast_failure()
+                for in_node in in_nodes_to_update*2:
+                    in_node._recompute_status()
                 for edge in root.in_edges:
                     edge.src._recompute_status()
                 break
 
             try:
-                if root.status in [Status.OPEN, Status.HALF_PROVED]:
+                # TODO: I not sure this is right thing to do, origianl one is in [Status.OPEN, Status.HalfProved]
+                if root.status == Status.OPEN:
                     self._step(root, nodes, priority_queue)
             except DojoHardTimeoutError:
                 assert time.monotonic() - time_start >= self.timeout
 
-            self.total_time = time.monotonic() - time_start
+            self.total_time = time.monotonic() - self.begin_time
+            print("time:", self.total_time)
             if self.total_time > self.timeout:
                 if root.status == Status.PROVED:
                     logger.info(f"Root {root} found a proof but timed out.")
@@ -187,70 +224,158 @@ class BestFirstSearchProver:
 
             if root.status == Status.HALF_PROVED:
                 # last first
-                c_root, succes_trajs = self._get_last_half_proved_roots(root)
-                for traj in list(chain.from_iterable(succes_trajs)):
+                c_root, c_traj, succes_trajs = self._get_next_sorry_root(root)
+                logger.debug(f"Choosen root: {c_root}")
+                logger.debug(f"Choosen trajectory: {c_traj}")
+                logger.debug(f"There are {len(succes_trajs)} with choosen root, here listed the first 10")
+                for traj in succes_trajs[:10]:
                     logger.debug(traj)
                 c_nodes = {c_root.state: c_root}
                 c_priority_queue = [c_root]
                 logger.info(f">>> Root {root} found a proof, going deeper with root {c_root}")
                 with logger.contextualize(root_level=root_level+1):
+                    sub_search_start_time = time.monotonic()
                     self._best_first_search(c_root, c_nodes, c_priority_queue, root_level=root_level+1)
+                    sub_search_time += time.monotonic() - sub_search_start_time
 
-    def _get_last_half_proved_roots(self, root):
-        sorry_roots = []
+    def _get_next_sorry_root(self, root: InternalNode):
+        def __filter_failed_trajectory(trajectory):
+            for obj in trajectory.traj:
+                if isinstance(obj, Node):
+                    assert obj.status in [Status.PROVED, Status.HALF_PROVED]
+                if isinstance(obj, SorryEdge):
+                    if any([sorry_root.status == Status.FAILED for sorry_root in obj.sorry_roots]):
+                        return False
+            return True
+
+        # collect success nodes
+        success_nodes = self._collect_success_nodes(root)
+
+        all_success_trajectories = []
+        for success_node in success_nodes:
+            success_trajectories = get_trajectory(success_node, stop_node=root, status_requirements=[Status.PROVED, Status.HALF_PROVED])
+            success_trajectories = list(filter(__filter_failed_trajectory, success_trajectories))
+            all_success_trajectories.extend(success_trajectories)
+        assert len(all_success_trajectories) > 0, "No success trajectory"
+        
+        all_trajectory_sorry_roots = []
+        for traj in all_success_trajectories:
+            traj_sorry_roots = []
+            for obj in traj.traj:
+                if isinstance(obj, Node):
+                    assert obj.status in [Status.PROVED, Status.HALF_PROVED]
+                if isinstance(obj, SorryEdge):
+                    assert not any([sorry_root.status == Status.FAILED for sorry_root in obj.sorry_roots]), \
+                        f"Success trajectory contains failed sorry root: {traj}"
+                    # if any([sorry_root.status == Status.FAILED for sorry_root in obj.sorry_roots]):
+                    #     print("here")
+                    traj_sorry_roots.extend(obj.sorry_roots)
+            all_trajectory_sorry_roots.append(traj_sorry_roots)
+        
+        traj_and_sorry_roots = list(zip(all_success_trajectories, all_trajectory_sorry_roots))
+        traj_and_sorry_roots = sorted(traj_and_sorry_roots, 
+                                      key=lambda x: len([r for r in x[1] 
+                                      if r.status in [Status.OPEN, Status.HALF_PROVED]]))
+        
+        choosen_traj, choosen_sorry_roots = traj_and_sorry_roots[0]
+        
+        # last first stragies
+        choosen_sorry_root = [r for r in choosen_sorry_roots if r.status in [Status.OPEN, Status.HALF_PROVED]][-1]
+
+        trajectory_with_choosen_root = []
+        for trajectory, sorry_roots in traj_and_sorry_roots:
+            if choosen_sorry_root in sorry_roots:
+                trajectory.marked_sorry_root = choosen_sorry_root
+                trajectory_with_choosen_root.append(trajectory)
+        
+        return choosen_sorry_root, choosen_traj, trajectory_with_choosen_root
+
+    def extract_proof2(self, root):
+        def __filter_failed_trajectory(trajectory):
+            for obj in trajectory.traj:
+                if isinstance(obj, Node):
+                    assert obj.status == Status.PROVED
+                if isinstance(obj, SorryEdge):
+                    if any([sorry_root.status != Status.PROVED for sorry_root in obj.sorry_roots]):
+                        return False
+            return True
+
+        # collect success nodes
+        success_nodes = self._collect_success_nodes(root)
+
+        all_success_trajectories = []
+        for success_node in success_nodes:
+            success_trajectories = get_trajectory(success_node, stop_node=root, status_requirements=[Status.PROVED])
+            success_trajectories = list(filter(__filter_failed_trajectory, success_trajectories))
+            all_success_trajectories.extend(success_trajectories)
+        assert len(all_success_trajectories) > 0, "No proven trajectory"
+
+        final_trajs = []
+        for traj in all_success_trajectories:
+            if not any([isinstance(t, SorryEdge) for t in traj.traj]):
+                str_traj = [t.tactic.strip() for t in traj.traj if isinstance(t, Edge)]
+                final_trajs.append(str_traj)
+                continue
+
+            current_traj = [[]]
+            traj_edges = [t for t in traj.traj if isinstance(t, Edge)]
+            for edge in traj_edges:
+                if isinstance(edge, SorryEdge):
+                    all_tac = edge.tactic.split("sorry")
+                    for idx, sorry_root in enumerate(edge.sorry_roots):
+                        assert sorry_root.status == Status.PROVED
+                        root_proof = self.extract_proof2(sorry_root)
+                        for ct in current_traj:
+                            ct.append(all_tac[idx].strip())
+                        new_current_traj = []
+                        for rp in root_proof:
+                            for ct in current_traj:
+                                new_current_traj.append(ct + rp)
+                        current_traj = new_current_traj
+                    if len(all_tac[-1]) > 0:
+                        for ct in current_traj:
+                            ct.append(all_tac[-1])
+                else:
+                    for ct in current_traj:
+                        ct.append(edge.tactic)
+            final_trajs.extend(current_traj)
+        
+        return final_trajs
+
+    
+    def _collect_success_nodes(self, root):
         success_node = []
         node_queue = Queue()
         node_queue.put(root)
         while not node_queue.empty():
             node = node_queue.get()
-            if isinstance(node, ProofFinishedNode):
+            if isinstance(node, ProofFinishedNode) and node.status == Status.PROVED and node not in success_node:
                 success_node.append(node)
             if not isinstance(node, InternalNode):
                 continue
             for edge in node.out_edges:
                 if edge.dst.status in [Status.PROVED, Status.HALF_PROVED]:
-                    # print(edge)
                     node_queue.put(edge.dst)
-                    if isinstance(edge, SorryEdge) and edge.sorry_root.status == Status.OPEN:
-                        sorry_roots.append(edge.sorry_root)
-        success_node = success_node[:10]
-        success_traj = [self._get_traj(node, status_requirements = [Status.PROVED, Status.HALF_PROVED]) for node in success_node]
-        return sorry_roots[-1], success_traj
+        return success_node
 
-    def _get_traj(self, node, status_requirements=None, recursive_level=0):
-        if recursive_level > 50:
-            print("ehereherh")
-
-        if len(node.in_edges) == 0:
-            return [Trajectory([node])]
-        
-        all_traj = []
-        for edge in node.in_edges:
-            if status_requirements and edge.src.status not in status_requirements:
-                continue
-            trajs_to_node = self._get_traj(edge.src, status_requirements=status_requirements, recursive_level=recursive_level+1)
-            for traj in trajs_to_node:
-                all_traj.append(traj + Trajectory([edge, node]))
-        # all_traj = random.sample(all_traj, min(3, len(all_traj)))
-        return all_traj
-    
-    def ring_detector(self, node, vistied_traj=[]):
-        if len(vistied_traj)> 0 and node == vistied_traj[0]:
-            return True
-        
-        if len(node.in_edges) == 0:
-            return False
-
-        for edge in node.in_edges:
-            vistied_traj.extend([node, edge])
-            return self.ring_detector(edge.src, vistied_traj)
-    
     def _get_single_history(self, node):
         history = []
         current_node = node
         while len(current_node.in_edges) > 0:
             edge = current_node.in_edges[0]
-            history.append(edge.tactic)
+            if isinstance(edge, SorryEdge):
+                if edge.dst == current_node:
+                    history.append(edge.tactic)
+                else:
+                    assert current_node in edge.sorry_roots
+                    sorry_tactic = None
+                    for i, r in enumerate(edge.sorry_roots):
+                        if current_node == r:
+                            sorry_tactic = edge.sorry_tactics[i]
+                    assert sorry_tactic is not None
+                    history.append(sorry_tactic)
+            else:
+                history.append(edge.tactic)
             current_node = edge.src
         history.append(self.root.state.from_tactic)
         history =  list(reversed(history))
@@ -271,7 +396,11 @@ class BestFirstSearchProver:
         # Search the node with highest priority.
         search_node = heapq.heappop(priority_queue)
         logger.debug(f"Expanding node: {search_node}")
-        logger.debug(f"Privous Step: {self._get_traj(search_node)[0]}")
+        logger.debug(f"Privous Step: {get_trajectory(search_node)[0]}")
+        if search_node.status == Status.FAILED:
+            logger.debug("Node is already failed, returning...")
+            return
+
 
         if self.debug:
             assert all(
@@ -285,6 +414,14 @@ class BestFirstSearchProver:
             # ts = search_node.state.unsolved_tactic_state
             assert False, "Why this will happen?"
         suggestions = self._generate_tactics(ts, context=from_tactic)
+
+        # if self.check_share_tactics(search_node, suggestions) > 0:
+        #     self.incorrect_node_count.append(search_node)
+        # # self.incorrect_count += incorrect_count
+        # logger.warning(f"Incorrect shared node count: {len(self.incorrect_count)}")
+
+        if '''show "\\<And>n. deg R f < n \\<Longrightarrow> n_mult f n = \\<zero>" sorry''' in [t[0] for t in suggestions]:
+            print("herere")
 
         # Try all tactics in order of descending logprob, and collect the results. Any
         # new nodes are added to `self.nodes`, and edges are added to the result node.
@@ -308,6 +445,30 @@ class BestFirstSearchProver:
         #         if isinstance(node, InternalNode)
         #     )
         #     self.check_invariants()
+    
+    def check_share_tactics(self, node: InternalNode, tactics):
+        if len(node.in_edges) < 2:
+            return 0
+        
+        all_result_states = []
+        for edge in node.in_edges:
+            cur_state = self.dojo.run_tac(edge.src.state, tactic=edge.tactic)
+            assert cur_state == node.state
+            # assert actual_tac == edge.tactic
+
+            result_states = [self.dojo.run_tac(cur_state, tactic=tac[0]) for tac in tactics]
+            all_result_states.append(result_states)
+        for gold_result in all_result_states:
+            other_result = all_result_states
+            incorrect_count = 0
+            for results in other_result:
+                for idx, state in enumerate(results):
+                    if state != gold_result[idx]:
+                        logger.warning(f"State not equal to gold result, {state}, gold: {gold_result[idx]}")
+                        self.incorrect_count.append([state, gold_result[idx]])
+                        incorrect_count += 1
+        return incorrect_count
+            
 
     def _generate_tactics(self, ts: str, context: str) -> List[Tuple[str, float]]:
         t0 = time.monotonic()
@@ -340,118 +501,114 @@ class BestFirstSearchProver:
         t0 = time.monotonic()
         log_result(f"Running tactic: {tactic}")
         response = self.dojo.run_tac(node.state, tactic, root.state)
-        no_sorry_response = None
-        sorry_root = None
-        if isinstance(response, TacticState) and "sorry" in tactic:
-            no_sorry_tactic = tactic[:tactic.index("sorry")].strip()
-            no_sorry_response = self.dojo.run_tac(node.state, no_sorry_tactic, root.state)
-            if isinstance(no_sorry_response, IsabelleError):
-                response = no_sorry_response
+        sorry_responses = []
+        sorry_tactics = []
+        if (isinstance(response, TacticState) or isinstance(response, ProofFinished)) and "sorry" in tactic:
+            tactics = tactic.split("sorry")
+            # tactics = tactics if len(tactics[-1]) > 0 else tactics[:-1]
+            for i in range(len(tactics)-1):
+                if len(tactics[i]) <= 0:
+                    logger.warning(f"No sorry tactic contains empty string: {tactics}")
+                    return None
+                sorry_tactic = "sorry".join(tactics[:i+1]).strip()
+                sorry_response = self.dojo.run_tac(node.state, sorry_tactic, root.state)
+                # if actual_sorry_tac != sorry_tactic:
+                #     sorry_response = IsabelleError(f"actual_sorry_tac != sorry_tactic: {actual_sorry_tac}, {sorry_tactic}")
+                
+                # if the sorry tactic failed, we don't need the original tactic either.
+                if isinstance(sorry_response, IsabelleError):
+                    response = sorry_response
+                    sorry_tactics, sorry_responses = [], []
+                    break
+
+                sorry_tactics.append(sorry_tactic)
+                sorry_responses.append(sorry_response)
 
         elapsed = time.monotonic() - t0
         self.environment_time += elapsed
-        trajctory_to_node = self._get_traj(node)
+        trajctory_to_node = get_trajectory(node)
 
-        try:
-            # If we've seen this response before, use the existing node
-            # TODO: I don't know if this is good to do
-            result_node = nodes[response]
-            if any([result_node in traj for traj in trajctory_to_node]):
-                return None
+        result_nodes = []
+        add_queue_flag = False
+        for idx, resp in enumerate([response] + sorry_responses):
+            if idx > 0:
+                assert isinstance(resp, TacticState), f"sorry root is not TacticState: {resp}"
 
-            if isinstance(response, ProofFinished):
-                log_result(f"Result: proof successed! - {str(response.message)}")
-            elif isinstance(response, IsabelleError):
-                log_result(f"Result: tactic failed! - {str(response)}")
-            else:
-                log_result(f"Result: duplicate result ! - {str(response.pp)}")
-        except KeyError:
-            # Build a new node
-            if isinstance(response, ProofFinished):
-                result_node = ProofFinishedNode(response)
-                log_result(f'Result: proof successed! - {str(response.message)}')
-                logger.info("hererererer!!!SSSS!!!!!!!!!!!!!!!")
-            elif type(response) in (
-                IsabelleError,
-                TimeoutError,
-                ProofGivenUp,
-            ):
-                result_node = ErrorNode(response)
-                log_result(f'Result: tactic failed! - {str(response)}')
-            else:
-                assert isinstance(response, TacticState)
-                result_node = InternalNode(
-                    state=response,
-                    cumulative_logprob=logprob + node.cumulative_logprob,
-                )
-                log_result(f'Result: tactic success! - {response.pp}')
-                if no_sorry_response is not None:
-                    assert isinstance(no_sorry_response, TacticState)
-                    if no_sorry_response not in nodes:
-                        sorry_root = InternalNode(
-                            state=no_sorry_response,
-                            cumulative_logprob=0,    # TODO: correct way to calculate the logprob, I think for now it's 0 is good
-                            is_root=True
-                        )
-                    else:
-                        sorry_root = nodes[no_sorry_response]
-                        if any([sorry_root in traj for traj in trajctory_to_node]):
-                            return None
+            try:
+                # If we've seen this response before, use the existing node
+                result_node = nodes[resp]
 
-            if result_node.status == Status.OPEN:  # Don't search proved/failed nodes
-                heapq.heappush(priority_queue, result_node)  # type: ignore
-            
-            # if sorry_root.status == Status.OPEN:
-            #     heapq.heappush(priority_queue, sorry_root)
-
-        if sorry_root is None and "sorry" in tactic and isinstance(response, TacticState):
-            assert response in nodes
-            if no_sorry_response in nodes:
-                flag = False
-                for edge in result_node.in_edges:
-                    if isinstance(edge, SorryEdge):
-                        if edge.sorry_root == nodes[no_sorry_response]:
-                            flag = True
-                if not flag:
-                    logger.warning("There are common sorry root but diffent result after sorry root in this tree")
-                assert isinstance(no_sorry_response, TacticState)
-                sorry_root = nodes[no_sorry_response]
-                if any([sorry_root in traj for traj in trajctory_to_node]):
+                # check to aviod loop
+                if any([result_node in traj for traj in trajctory_to_node]):
                     return None
-                assert sorry_root.is_root is True
-            if sorry_root is None:
-                assert isinstance(no_sorry_response, TacticState)
-                sorry_root = InternalNode(
-                    state=no_sorry_response,
-                    cumulative_logprob=0,    # TODO: correct way to calculate the logprob, I think for now it's 0 is good
-                    is_root=True
-                )
 
+                if isinstance(resp, ProofFinished):
+                    log_result(f"Result: proof successed! - {str(resp.message)}")
+                elif isinstance(resp, IsabelleError):
+                    log_result(f"Result: tactic failed! - {str(resp)}")
+                else:
+                    log_result(f"Result: duplicate result ! - {str(resp.pp)}")
+            except KeyError:
+                # Build a new node
+                if isinstance(resp, ProofFinished):
+                    result_node = ProofFinishedNode(resp)
+                    log_result(f'Result: proof successed! - {str(resp.message)}')
+                    logger.info("hererererer!!!SSSS!!!!!!!!!!!!!!!")
+                elif type(resp) in (
+                    IsabelleError,
+                    TimeoutError,
+                    ProofGivenUp,
+                ):
+                    result_node = ErrorNode(resp)
+                    log_result(f'Result: tactic failed! - {str(resp)}')
+                else:
+                    assert isinstance(resp, TacticState)
+                    result_node = InternalNode(
+                        state=resp,
+                        cumulative_logprob=logprob + node.cumulative_logprob if idx == 0 else 0,
+                        is_root=idx!=0
+                    )
+                    log_result(f'Result: tactic success! - {resp.pp}')
+                
+                if idx == 0 and result_node.status == Status.OPEN:
+                    add_queue_flag = True
+
+            
+            result_nodes.append(result_node)
+
+        result_node, sorry_roots = result_nodes[0], result_nodes[1:]
         
         # if the tactic gives a root node, don's search here, return None
         if isinstance(result_node, InternalNode) and result_node.is_root:
             return None
+        
+        # if root node later bump into a non-root node, we also don't make it a root node.
+        if any(sr.is_root == False for sr in sorry_roots):
+            return None
 
         # Record the new node and add it to the search queue.
-        nodes[response] = result_node
-        if sorry_root is not None:
-            nodes[no_sorry_response] = sorry_root
+        for idx, resp in enumerate([response] + sorry_responses):
+            nodes[resp] = result_nodes[idx]
 
         # Build an edge connecting these nodes.
-        # Will be added to the source node externally.
-        if sorry_root is None:
-            edge = Edge(tactic=tactic, src=node, dst=result_node)
-        else:
-            edge = SorryEdge(tactic=tactic, src=node, dst=result_node, sorry_root=sorry_root, sorry_tactic=no_sorry_tactic)
+        # Will be added to the source node externally.  
+        edge = Edge(tactic=tactic, src=node, dst=result_node)
+        if len(sorry_roots) > 0:
+            edge = SorryEdge(
+                tactic=tactic,
+                src=node,
+                dst=result_node,
+                sorry_tactics=sorry_tactics,
+                sorry_roots=sorry_roots,
+            )
 
-        # if isinstance(result_node, InternalNode):
-        result_node.in_edges.append(edge)
-        # self._get_traj(node)
+        for res_node in result_nodes:
+            res_node.in_edges.append(edge)
+            self.shared_node += 1
+            # logger.debug(f"Number of shared node: {self.shared_node}")
         
-        if sorry_root is not None:
-            # self._get_traj(node)
-            sorry_root.in_edges.append(edge)
-            # self._get_traj(node)
+        if add_queue_flag:  # Don't search proved/failed nodes
+            heapq.heappush(priority_queue, result_node)  # type: ignore
 
         return edge
 
@@ -679,3 +836,18 @@ class DistributedProver:
             sys.exit(1)
 
         return results
+
+
+def check_tree(node):
+    nodelist = Queue()
+    nodelist.put(node)
+    while not nodelist.empty():
+        cur_node = nodelist.get()
+        if isinstance(cur_node, InternalNode) and cur_node.status == Status.FAILED and cur_node.out_edges is not None:
+            for dedge in cur_node.out_edges:
+                if dedge.dst.status != Status.FAILED:
+                    assert isinstance(dedge, SorryEdge)
+                    assert any([rootd.status == Status.FAILED for rootd in dedge.sorry_roots])
+        if isinstance(cur_node, InternalNode) and cur_node.out_edges is not None:
+            for dedge in cur_node.out_edges:
+                nodelist.put(dedge.dst)
